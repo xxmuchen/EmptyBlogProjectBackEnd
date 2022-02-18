@@ -13,10 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
 
 
@@ -47,14 +44,18 @@ public class MyConfiguration {
     @Bean
     public WebMvcConfigurer webMvcConfigurer(){
         return new WebMvcConfigurer() {
+
+//            映射虚拟路径到磁盘路径
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
                 registry.addResourceHandler("/images/**").addResourceLocations("file:E:/upload/");
             }
+
         };
     }
 
-//    组件自动添加创建时间和修改时间
+
+    /* mybatis plus自动注入*/
     @Bean
     public MetaObjectHandler MyMetaObjectHandler() {
         return new MetaObjectHandler() {

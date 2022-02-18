@@ -39,3 +39,9 @@ mybatis-plus:
 file:
   path: E:/upload/
   avatarPath: E:/upload/UserAvatar/
+
+
+token:
+  privateKey: 'fdasfgdsagaxgsregdfdjyghjfhebfdgwe45ygrfbsdfshfdsag'
+  yangToken: 1000000
+  oldToken: 3000000000
