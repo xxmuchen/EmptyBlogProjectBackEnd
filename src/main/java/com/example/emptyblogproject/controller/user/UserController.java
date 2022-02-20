@@ -8,6 +8,7 @@ import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.user.UserService;
 
+import com.example.emptyblogproject.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -38,30 +39,32 @@ public class UserController {
 //    @Autowired
 //    TokenService tokenService;
 
+    @Autowired
+    TokenUtils tokenUtils;
 
     @PostMapping("/registUser")
     public String saveUser(@RequestBody User user) {
 //        System.out.println(user);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_name", user);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>(   );
+        queryWrapper.eq("user_name", user.getUserName());
         List<User> list = userService.list(queryWrapper);
         if (list != null && list.size() != 0) {
-            return "该昵称已被占用，请重新更换昵称";
+            throw new RuntimeException("该昵称已被占用，请重新更换昵称");
         }
 
         if (user == null || user.getUserName() == null || user.getUserName().equals("")) {
-            return "您的昵称输入错误，请重试";
+            throw new RuntimeException("您的昵称输入错误，请重试");
         }
 
         if (user == null || user.getPassword() == null || user.getPassword().equals("") ||user.getPassword().length() < 6 || user.getPassword().length() > 20) {
-            return "您的密码输入错误，请重试";
+            throw new RuntimeException("您的密码输入错误，请重试");
         }
 
         if (user == null || user.getSex() == null || user.getSex().equals("")) {
-            return "您的性别选择错误，请重试";
+            throw new RuntimeException("您的性别选择错误，请重试");
         }
         if (user == null || user.getEmail() == null || user.getEmail().equals("") || !user.getEmail().contains("@")) {
-            return "您的邮箱输入错误，请重试";
+            throw new RuntimeException("您的邮箱输入错误，请重试");
         }
 
         System.out.println(user);
@@ -69,7 +72,7 @@ public class UserController {
         System.out.println(user.getAvatar());
         if (flag) {
 
-            return "注册成功,马上为您转到登录界面.id:" + user.getId();
+            return "注册成功,马上为您转到登录界面";
         }
 //        System.out.println(user);
 
@@ -101,6 +104,7 @@ public class UserController {
         return "上传失败，请重试";
     }
 
+
     @PostMapping("/userLogin")
     public String userLogin(@RequestBody String userData , HttpServletRequest request) {
         System.out.println(userData);
@@ -112,16 +116,20 @@ public class UserController {
         User user = userService.getOne(new QueryWrapper<User>().eq("user_name", userName));
 
         if (user == null) {
-            return "该用户不存在";
+//            return "该用户不存在";
+            throw new RuntimeException("该用户不存在");
         }
 
         if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
 //            String token = tokenService.getToken(user);
 //            return token;
+            String token = tokenUtils.getToken(user);
+            System.out.println(token);
+            return token;
         }else {
-            return "密码错误，请重试";
+            throw new RuntimeException("密码错误，请重试");
+//            return "";
         }
-        return null;
     }
     /*测试token  不登录没有token*/
     @UserLoginToken

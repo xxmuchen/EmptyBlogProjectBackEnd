@@ -5,7 +5,8 @@ spring:
     password: root
 #    url: jdbc:p6spy://110.42.182.222:3306/EmptyBlog?serverTimezone=UTC
     url: jdbc:p6spy:mysql://110.42.182.222:3306/EmptyBlog?serverTime=UTC
-
+    hikari:
+      max-lifetime: 6000
   devtools:
     remote:
       restart:
