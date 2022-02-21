@@ -3,6 +3,8 @@ package com.example.emptyblogproject.controller.user;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.user.User;
@@ -19,7 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.Result;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -42,6 +46,7 @@ public class UserController {
     @Autowired
     TokenUtils tokenUtils;
 
+//    注册用户
     @PostMapping("/registUser")
     public String saveUser(@RequestBody User user) {
 //        System.out.println(user);
@@ -79,10 +84,11 @@ public class UserController {
         return "注册失败，请联系后台管理员QQ邮箱：2879257224@qq.com";
     }
 
+//    上传头像
     @RequestMapping("/avatarUpload")
     public String avatarUpload(@RequestParam("userAvatarFile") MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
-            return "文件不能为空";
+            throw new RuntimeException("文件不能为空");
         }
         String originalFilename = multipartFile.getOriginalFilename();
 
@@ -91,7 +97,7 @@ public class UserController {
             absolutePath.mkdirs();
         }
 
-        String avatarFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() + originalFilename;
+        String avatarFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() + originalFilename.substring(originalFilename.lastIndexOf("."));;
 
         File dest = new File(absolutePath , avatarFileName);
         try {
@@ -99,12 +105,11 @@ public class UserController {
             return "http://localhost:8080/images/UserAvatar/" + avatarFileName;
         } catch (IOException e) {
             e.printStackTrace();
-
+            throw new RuntimeException("上传失败，请重试");
         }
-        return "上传失败，请重试";
     }
 
-
+//    用户登录
     @PostMapping("/userLogin")
     public String userLogin(@RequestBody String userData , HttpServletRequest request) {
         System.out.println(userData);
@@ -130,6 +135,28 @@ public class UserController {
             throw new RuntimeException("密码错误，请重试");
 //            return "";
         }
+    }
+
+//    获取用户名和头像
+
+    @PostMapping("/getAvatarAndUserName")
+    public Map<String , String> getAvatorAndUserName(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        String userId = null;
+        try {
+            userId = JWT.decode(authorization).getAudience().get(0);
+        } catch (JWTDecodeException j) {
+            throw new RuntimeException("401");
+        }
+        Long user_id = Long.parseLong(userId);
+        User user = userService.getById(user_id);
+        if (user == null) {
+            throw new RuntimeException("token出错，请用户重新登陆");
+        }
+        Map<String , String> map = new HashMap<>();
+        map.put("avatar" , user.getAvatar());
+        map.put("userName" , user.getUserName());
+        return map;
     }
     /*测试token  不登录没有token*/
     @UserLoginToken

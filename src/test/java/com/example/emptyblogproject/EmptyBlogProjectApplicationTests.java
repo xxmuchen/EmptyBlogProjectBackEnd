@@ -1,14 +1,13 @@
 package com.example.emptyblogproject;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.emptyblogproject.bean.dairypage.DiaryPageInfo;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.homepage.HomePageInfo;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoExample;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoMedia;
-import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.mapper.UsersMapper.UserMapper;
-import com.example.emptyblogproject.mapper.diarypagemapper.DiaryPageInfoMapper;
+import com.example.emptyblogproject.mapper.diarypagemapper.DiaryMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMapper;
@@ -17,7 +16,6 @@ import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -99,12 +97,12 @@ class EmptyBlogProjectApplicationTests {
     /*日记数据提取*/
 
     @Autowired
-    DiaryPageInfoMapper diaryPageInfoMapper;
+    DiaryMapper diaryPageInfoMapper;
     @Test
     void diaryData() {
-        List<DiaryPageInfo> diaryPageInfos = diaryPageInfoMapper.selectList(null);
+        List<Diary> diaryPageInfos = diaryPageInfoMapper.selectList(null);
 //        System.out.println(diaryPageInfos);
-        for (DiaryPageInfo d: diaryPageInfos) {
+        for (Diary d: diaryPageInfos) {
 //            System.out.println(d);
         }
     }
