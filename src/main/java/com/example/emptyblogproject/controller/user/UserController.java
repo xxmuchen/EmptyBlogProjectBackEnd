@@ -136,7 +136,7 @@ public class UserController {
     }
 
 //    获取用户名和头像
-
+    @UserLoginToken
     @PostMapping("/getAvatarAndUserName")
     public Map<String , String> getAvatorAndUserName(HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");

@@ -9,8 +9,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.dairy.diarystar.DiaryStar;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diary.DiaryService;
+import com.example.emptyblogproject.service.diary.diarystar.DiaryStarService;
 import com.example.emptyblogproject.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +41,9 @@ public class DiaryController {
 
     @Autowired
     DiaryService diaryService;
+
+    @Autowired
+    DiaryStarService diaryStarService;
 
 //    日记内容图片上传
     @UserLoginToken
@@ -179,4 +184,88 @@ public class DiaryController {
         }
     }
 
+    @UserLoginToken
+    @PostMapping("/saveDiaryStar")
+    /*日记点赞功能*/
+    public String saveDiaryStar(@RequestParam("diaryId") Long diaryId , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        long userId = Long.parseLong(authorization);
+
+        User user = userService.getById(userId);
+
+        if (user == null) {
+            throw new RuntimeException("点赞失败，该作者不存在");
+        }
+
+        Diary diary = diaryService.getById(diaryId);
+
+        if (diary == null) {
+            throw new RuntimeException("点赞失败，该日记不存在");
+        }
+
+//        查询取消点赞的记录
+        QueryWrapper<DiaryStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id" , user.getId());
+        queryWrapper.eq("diary_id" , diary.getId());
+        queryWrapper.eq("del" , 1);
+        DiaryStar diaryStar = diaryStarService.getOne(queryWrapper);
+        boolean flag = false;
+
+        if (diaryStar == null) {
+            diaryStar = new DiaryStar();
+            diaryStar.setUserId(user.getId());
+            diaryStar.setDiaryId(diary.getId());
+            flag = diaryStarService.save(diaryStar);
+        }else {
+            diaryStarService.reLikeDiary(diaryStar.getId());
+        }
+
+//        DiaryStar diaryStar;
+
+        if (flag) {
+            return "点赞成功";
+        }else {
+            throw new RuntimeException("点赞失败，请重试");
+        }
+    }
+
+    /*取消日记点赞*/
+    @UserLoginToken
+    @PostMapping("/cancelDiaryStar")
+    public String cancelDiaryStar(@RequestParam("diaryId") Long diaryId , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        long userId = Long.parseLong(authorization);
+
+        User user = userService.getById(userId);
+
+        if (user == null) {
+            throw new RuntimeException("取消点赞失败，该作者不存在");
+        }
+
+        Diary diary = diaryService.getById(diaryId);
+
+        if (diary == null) {
+            throw new RuntimeException("取消点赞失败，该日记不存在");
+        }
+
+//        DiaryStar diaryStar = new DiaryStar();
+//        diaryStar.setUserId(user.getId());
+//        diaryStar.setDiaryId(diary.getId());
+        QueryWrapper<DiaryStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id" , user.getId());
+        queryWrapper.eq("diary_id" , diary.getId());
+        DiaryStar diaryStar = diaryStarService.getOne(queryWrapper);
+
+        if (diaryStar == null) {
+            throw new RuntimeException("取消点赞失败，您未赞过");
+        }
+
+        boolean flag = diaryStarService.removeById(diaryId);
+
+        if (flag) {
+            return "取消点赞成功";
+        }else {
+            throw new RuntimeException("取消点赞失败，请重试");
+        }
+    }
 }

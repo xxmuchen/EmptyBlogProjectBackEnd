@@ -7,11 +7,12 @@ import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoExample;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoMedia;
 import com.example.emptyblogproject.mapper.UsersMapper.UserMapper;
-import com.example.emptyblogproject.mapper.diarypagemapper.DiaryMapper;
+import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMediaMapper;
+import com.example.emptyblogproject.service.diary.diarystar.DiaryStarService;
 import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,17 @@ class EmptyBlogProjectApplicationTests {
 
     @Autowired
     HomepageInfoService homepageInfoService;
+
+    @Autowired
+    DiaryStarService diaryStarService;
+
+    @Test
+    public void test3(){
+        System.out.println(diaryStarService.reLikeDiary(10L));
+    }
+
+
+
     @Test
     public void test2() {
         QueryWrapper<HomePageInfo> homePageInfoQueryWrapper = new QueryWrapper<>();
