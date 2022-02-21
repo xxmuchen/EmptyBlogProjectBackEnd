@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diary.DiaryService;
+import com.example.emptyblogproject.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +33,9 @@ public class DiaryController {
 
     @Value("${file.diaryVideoPath}")
     private String uploadVideoAbsolutePath;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     DiaryService diaryService;
@@ -117,7 +122,10 @@ public class DiaryController {
             throw new RuntimeException("401");
         }
         Long user_id = Long.parseLong(userId);
-        diary.setAuthorId(user_id);
+        User user = userService.getById(userId);
+
+        diary.setAuthorId(user.getId());
+        diary.setAuthorName(user.getUserName());
 //        System.out.println(diary);
         boolean flag = diaryService.save(diary);
         if (flag) {
@@ -135,27 +143,40 @@ public class DiaryController {
         queryWrapper.last("limit 0,4");
         List<Diary> diaryList = diaryService.list(queryWrapper);
 
+
         return diaryList;
     }
 
     /*分页查询最新日记*/
     @GetMapping("/newDiaryListDisplay")
-    public Page<Diary> newDiaryListDisplay() {
-//        QueryWrapper queryWrapper = new QueryWrapper();
-//        queryWrapper.orderByDesc("create_time");
-//        queryWrapper.last("limit 0,4");
-//        List<Diary> diaryList = diaryService.list(queryWrapper);
-
-//        return diaryList;
-        Page<Diary> page = new Page<>(1 , 5);
+    public Page<Diary> newDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
+//        System.out.println(currentPage);
+        Page<Diary> page = new Page<>(currentPage , 10);
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.orderByDesc("create_time");
 
         Page page1 = diaryService.page(page, queryWrapper);
 
-
-
+//        System.out.println(page1);
         return page1;
+//        return null;
+    }
+
+    /*根据日记id查询日记*/
+    @GetMapping("/getDiaryByDiaryId")
+    public Diary getDiaryByDiaryId(@RequestParam("diaryId")String diaryId) {
+//        System.out.println(diaryId);
+        Long diary_Id = Long.parseLong(diaryId);
+
+        Diary diary = diaryService.getById(diary_Id);
+//        System.out.println(diary);
+//        diaryService.getById()
+
+        if (diary != null) {
+            return diary;
+        }else {
+            throw new RuntimeException("该日记不存在");
+        }
     }
 
 }

@@ -3,12 +3,13 @@ package com.example.emptyblogproject.bean.dairy;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class Diary {
+public class Diary implements Serializable {
     @TableId(type = IdType.ASSIGN_ID)
-    private int id;
+    private Long id;
     private String title;
     private String content;
 
@@ -20,15 +21,25 @@ public class Diary {
     private String weather;
     private String bgColor;
     private Long authorId;
+    private String authorName;
     private boolean see;
     @TableLogic(value = "0" , delval = "1")
     private boolean del;
 
-    public int getId() {
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

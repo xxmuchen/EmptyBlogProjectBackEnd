@@ -121,7 +121,6 @@ public class UserController {
         User user = userService.getOne(new QueryWrapper<User>().eq("user_name", userName));
 
         if (user == null) {
-//            return "该用户不存在";
             throw new RuntimeException("该用户不存在");
         }
 
@@ -133,7 +132,6 @@ public class UserController {
             return token;
         }else {
             throw new RuntimeException("密码错误，请重试");
-//            return "";
         }
     }
 
