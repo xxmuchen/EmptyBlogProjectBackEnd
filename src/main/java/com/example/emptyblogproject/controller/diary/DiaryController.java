@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
@@ -145,31 +144,18 @@ public class DiaryController {
         }
     }
 
-    /*日记页首页的最新日记三条数据*/
+    /*日记页首页的最新日记四条数据*/
     @GetMapping("/diaryHomePageNewDiaryDisplayThreePieces")
     public List<Diary> diaryHomePageNewDiaryDisplayThreePieces() {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByDesc("create_time");
-        queryWrapper.last("limit 0,4");
-        List<Diary> diaryList = diaryService.list(queryWrapper);
-
-
+        List<Diary> diaryList = diaryService.getNewDiaryFourPieces();
         return diaryList;
     }
 
     /*分页查询最新日记*/
     @GetMapping("/newDiaryListDisplay")
     public Page<Diary> newDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
-//        System.out.println(currentPage);
-        Page<Diary> page = new Page<>(currentPage , 10);
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByDesc("create_time");
-
-        Page page1 = diaryService.page(page, queryWrapper);
-
-//        System.out.println(page1);
-        return page1;
-//        return null;
+        Page<Diary> diaryListPageing = diaryService.getNewDiaryListPageing(currentPage);
+        return diaryListPageing;
     }
 
     /*根据日记id查询日记*/
@@ -177,6 +163,8 @@ public class DiaryController {
     public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")String diaryId , HttpServletRequest httpServletRequest) {
 //        System.out.println(diaryId);
         httpServletRequest.getHeader("token");
+
+
         Long diary_Id = Long.parseLong(diaryId);
 
         Diary diary = diaryService.getById(diary_Id);
@@ -272,14 +260,7 @@ public class DiaryController {
             throw new RuntimeException("取消点赞失败，该日记不存在");
         }
 
-//        DiaryStar diaryStar = new DiaryStar();
-//        diaryStar.setUserId(user.getId());
-//        diaryStar.setDiaryId(diary.getId());
-        QueryWrapper<ProductionStar> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id" , user.getId());
-        queryWrapper.eq("obj_id" , diary.getId());
-        queryWrapper.eq("type" , "放空日记");
-        ProductionStar productionStar = productionStarService.getOne(queryWrapper);
+        ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), diary.getId(), "放空日记");
 
         if (productionStar == null) {
             throw new RuntimeException("取消点赞失败，您未赞过");
@@ -375,12 +356,7 @@ public class DiaryController {
             throw new RuntimeException("取消收藏失败，该日记不存在");
         }
 
-        QueryWrapper<ProductionCollection> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id" , user.getId());
-        queryWrapper.eq("obj_id" , diary.getId());
-        queryWrapper.eq("type" , "放空日记");
-        ProductionCollection productionCollection = productionCollectionService.getOne(queryWrapper);
-
+        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), diary.getId(), "放空日记");
         if (productionCollection == null) {
             throw new RuntimeException("取消收藏失败，您未赞过");
         }
@@ -425,12 +401,7 @@ public class DiaryController {
             throw new RuntimeException("该日记不存在");
         }
 
-
-        QueryWrapper<ProductionStar> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id" , user.getId());
-        queryWrapper.eq("obj_id" , diary.getId());
-        queryWrapper.eq("type" , "放空日记");
-        ProductionStar productionStar = productionStarService.getOne(queryWrapper);
+        ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), diary.getId(), "放空日记");
 
         if (productionStar != null) {
 //            throw new RuntimeException("您未赞过");
@@ -465,12 +436,7 @@ public class DiaryController {
         }
 
 
-        QueryWrapper<ProductionCollection> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id" , user.getId());
-        queryWrapper.eq("obj_id" , diary.getId());
-        queryWrapper.eq("type" , "放空日记");
-        ProductionCollection productionCollection = productionCollectionService.getOne(queryWrapper);
-
+        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), diary.getId(), "放空日记");
         if (productionCollection != null) {
 //            throw new RuntimeException("您未赞过");
             return "collect";

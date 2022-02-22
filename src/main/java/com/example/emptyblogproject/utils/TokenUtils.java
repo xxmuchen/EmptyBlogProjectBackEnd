@@ -12,6 +12,7 @@ public class TokenUtils {
     public String getToken(User user) {
         Date start = new Date();
         long currentTime = System.currentTimeMillis() + 60* 60 * 1000;//一小时有效时间
+//        long currentTime = System.currentTimeMillis() +  1000;//一小时有效时间
         Date end = new Date(currentTime);
         String token = "";
 

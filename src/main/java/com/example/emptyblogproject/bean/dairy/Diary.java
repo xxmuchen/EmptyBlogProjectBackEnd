@@ -16,15 +16,12 @@ public class Diary implements Serializable {
     private String content;
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
     private String mood;
     private String weather;
     private String bgColor;
     private Long authorId;
-
-
     private String authorName;
     private boolean see;
     @TableLogic(value = "0" , delval = "1")

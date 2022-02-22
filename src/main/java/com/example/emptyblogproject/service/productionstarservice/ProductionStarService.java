@@ -13,4 +13,7 @@ public interface ProductionStarService extends IService<ProductionStar> {
 
     /*查询取消点赞的记录*/
     public ProductionStar getOneHasDelDiaryStar(Long userId , Long objId , String type);
+
+    /*查询点赞记录*/
+    public ProductionStar getOneDiaryStar(Long userId , Long objId , String type);
 }

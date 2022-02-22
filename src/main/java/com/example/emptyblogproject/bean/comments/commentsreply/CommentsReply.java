@@ -1,5 +1,10 @@
 package com.example.emptyblogproject.bean.comments.commentsreply;
 
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 王程翔
@@ -7,6 +12,127 @@ package com.example.emptyblogproject.bean.comments.commentsreply;
  * Time: 17:59
  * Description: 子评论记录
  */
+@Data
 public class CommentsReply {
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
+    private Long commentsParentId;
+    private Long userId;
+    private String userName;
+    private String userAvatar;
+    private Long BeReviewedUserId;
+    private String BeReviewedUserName;
+    private String BeReviewedUserAvatar;
+    private int likeNum;
+    private String content;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
+    @TableLogic(value = "0" , delval = "1")
+    private boolean del;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCommentsParentId() {
+        return commentsParentId;
+    }
+
+    public void setCommentsParentId(Long commentsParentId) {
+        this.commentsParentId = commentsParentId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+    }
+
+    public Long getBeReviewedUserId() {
+        return BeReviewedUserId;
+    }
+
+    public void setBeReviewedUserId(Long beReviewedUserId) {
+        BeReviewedUserId = beReviewedUserId;
+    }
+
+    public String getBeReviewedUserName() {
+        return BeReviewedUserName;
+    }
+
+    public void setBeReviewedUserName(String beReviewedUserName) {
+        BeReviewedUserName = beReviewedUserName;
+    }
+
+    public String getBeReviewedUserAvatar() {
+        return BeReviewedUserAvatar;
+    }
+
+    public void setBeReviewedUserAvatar(String beReviewedUserAvatar) {
+        BeReviewedUserAvatar = beReviewedUserAvatar;
+    }
+
+    public int getLikeNum() {
+        return likeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.likeNum = likeNum;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public boolean isDel() {
+        return del;
+    }
+
+    public void setDel(boolean del) {
+        this.del = del;
+    }
 }
