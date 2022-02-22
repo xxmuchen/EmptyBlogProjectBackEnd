@@ -6,12 +6,14 @@ import com.example.emptyblogproject.bean.homepage.HomePageInfo;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoExample;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoMedia;
+import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
 import com.example.emptyblogproject.mapper.UsersMapper.UserMapper;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMediaMapper;
+import com.example.emptyblogproject.mapper.observemapper.ObserveMapper;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,19 @@ class EmptyBlogProjectApplicationTests {
 
     @Autowired
     ProductionStarService productionStarService;
+
+    @Autowired
+    ObserveMapper observeMapper;
+
+    @Test
+    public void test4() {
+        List<ObserveNodeBO> observeNodeBOS = observeMapper.queryFirstObserveList("1", 1L);
+//        System.out.println(observeNodeBOS);
+
+        List<ObserveNodeBO> observeNodeBOS1 = observeMapper.querySecondObserveList("1", 1L);
+        System.out.println(observeNodeBOS1);
+    }
+
 
     @Test
     public void test3(){
@@ -124,8 +139,8 @@ class EmptyBlogProjectApplicationTests {
 
     @Test
     public void test1() {
-//        User user = new User();
-//        user.setUserName("王程翔");
+//        User usercontroller = new User();
+//        usercontroller.setUserName("王程翔");
 //        userMapper.update();
     }
 }

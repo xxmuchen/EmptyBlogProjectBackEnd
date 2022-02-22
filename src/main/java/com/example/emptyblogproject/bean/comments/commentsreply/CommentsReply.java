@@ -13,10 +13,11 @@ import java.util.Date;
  * Description: 子评论记录
  */
 @Data
+@Deprecated
 public class CommentsReply {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
-    private Long commentsParentId;
+
     private Long userId;
     private String userName;
     private String userAvatar;
@@ -29,8 +30,18 @@ public class CommentsReply {
     private Date createTime;
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+    private String commentsParentId;
+    private String commentsReplyId;
     @TableLogic(value = "0" , delval = "1")
     private boolean del;
+
+    public String getCommentsReplyId() {
+        return commentsReplyId;
+    }
+
+    public void setCommentsReplyId(String commentsReplyId) {
+        this.commentsReplyId = commentsReplyId;
+    }
 
     public Long getId() {
         return id;
@@ -40,11 +51,11 @@ public class CommentsReply {
         this.id = id;
     }
 
-    public Long getCommentsParentId() {
+    public String getCommentsParentId() {
         return commentsParentId;
     }
 
-    public void setCommentsParentId(Long commentsParentId) {
+    public void setCommentsParentId(String commentsParentId) {
         this.commentsParentId = commentsParentId;
     }
 

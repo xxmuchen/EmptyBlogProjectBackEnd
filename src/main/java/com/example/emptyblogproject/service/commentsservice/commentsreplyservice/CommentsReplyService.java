@@ -3,6 +3,8 @@ package com.example.emptyblogproject.service.commentsservice.commentsreplyservic
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.comments.commentsreply.CommentsReply;
+import com.example.emptyblogproject.bean.comments.commentsroot.CommentsRoot;
+import com.example.emptyblogproject.bean.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,5 +15,10 @@ import org.apache.ibatis.annotations.Mapper;
  * Description: 子评论记录service
  */
 public interface CommentsReplyService extends IService<CommentsReply> {
+
+//    public CommentsReply addCommentsReply(CommentsReply commentsReply , User user , User beReviewer);
+    /*添加子评论*/
+    public CommentsReply addCommentsReply(CommentsReply commentsReply , User user);
+
 
 }

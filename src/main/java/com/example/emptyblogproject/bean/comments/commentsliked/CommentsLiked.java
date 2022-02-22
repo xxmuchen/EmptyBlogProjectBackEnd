@@ -10,9 +10,10 @@ import java.util.Date;
  * User: 王程翔
  * Date: 2022/2/22
  * Time: 17:34
- * Description: 喜欢该条评论的记录
+ * Description: 喜欢该条评论的记录  已废弃
  */
 @Data
+@Deprecated
 public class CommentsLiked {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;

@@ -23,6 +23,7 @@ public class ProductionStarImpl extends ServiceImpl<ProductionStarMapper, Produc
     @Override
     public boolean reLikeDiary(Long id) {
         boolean flag = productionStarMapper.reLikeDiary(id);
+
         return flag;
     }
 

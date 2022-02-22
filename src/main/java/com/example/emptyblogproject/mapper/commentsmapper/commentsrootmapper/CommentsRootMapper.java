@@ -12,6 +12,9 @@ import org.apache.ibatis.annotations.Mapper;
  * Description: 父评论记录mapper
  */
 @Mapper
+@Deprecated
 public interface CommentsRootMapper extends BaseMapper<CommentsRoot> {
+
+
 
 }

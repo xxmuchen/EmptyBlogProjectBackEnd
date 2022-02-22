@@ -47,8 +47,8 @@ mybatis-plus:
 file:
   path: E:/upload/
   avatarPath: E:/upload/UserAvatar/
-  diaryImagePath: E:/upload/diary/diaryImage/
-  diaryVideoPath: E:/upload/diary/diaryVideo/
+  diaryImagePath: E:/upload/diarycontroller/diaryImage/
+  diaryVideoPath: E:/upload/diarycontroller/diaryVideo/
 
 #token:
 #  privateKey: 'fdasfgdsagaxgsregdfdjyghjfhebfdgwe45ygrfbsdfshfdsag'

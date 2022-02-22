@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Mapper;
  * Description: 评论喜欢记录的mapper
  */
 @Mapper
+@Deprecated
 public interface CommentsLikedMapper extends BaseMapper<CommentsLiked> {
 
 }

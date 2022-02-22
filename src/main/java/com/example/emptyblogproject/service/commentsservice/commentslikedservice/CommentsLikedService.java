@@ -14,4 +14,5 @@ import com.example.emptyblogproject.bean.comments.commentsliked.CommentsLiked;
 
 public interface CommentsLikedService extends IService<CommentsLiked> {
 
+
 }
