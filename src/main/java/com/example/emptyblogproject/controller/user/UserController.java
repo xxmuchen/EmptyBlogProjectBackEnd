@@ -112,7 +112,7 @@ public class UserController {
 //    用户登录
     @PostMapping("/userLogin")
     public String userLogin(@RequestBody String userData , HttpServletRequest request) {
-        System.out.println(userData);
+//        System.out.println(userData);
         JSONObject jsonObject = JSON.parseObject(userData);
         String userName = (String) jsonObject.get("userName");
         String password = (String) jsonObject.get("password");

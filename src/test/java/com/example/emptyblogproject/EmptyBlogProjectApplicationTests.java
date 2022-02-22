@@ -12,7 +12,7 @@ import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMap
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMediaMapper;
-import com.example.emptyblogproject.service.diary.diarystar.DiaryStarService;
+import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +36,11 @@ class EmptyBlogProjectApplicationTests {
     HomepageInfoService homepageInfoService;
 
     @Autowired
-    DiaryStarService diaryStarService;
+    ProductionStarService productionStarService;
 
     @Test
     public void test3(){
-        System.out.println(diaryStarService.reLikeDiary(10L));
+        System.out.println(productionStarService.reLikeDiary(10L));
     }
 
 
