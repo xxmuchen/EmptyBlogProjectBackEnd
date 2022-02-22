@@ -11,7 +11,7 @@ import com.example.emptyblogproject.bean.comments.commentsliked.CommentsLiked;
  * Time: 19:28
  * Description: 评论喜欢记录的service
  */
-
+@Deprecated
 public interface CommentsLikedService extends IService<CommentsLiked> {
 
 

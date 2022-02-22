@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Mapper;
  * Time: 19:32
  * Description: 子评论记录service
  */
+@Deprecated
 public interface CommentsReplyService extends IService<CommentsReply> {
 
 //    public CommentsReply addCommentsReply(CommentsReply commentsReply , User user , User beReviewer);

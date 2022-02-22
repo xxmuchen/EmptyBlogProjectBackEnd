@@ -23,6 +23,7 @@ import java.util.UUID;
  * Description: 子评论记录serviceImpl
  */
 @Service
+@Deprecated
 public class CommentsReplyServiceImpl extends ServiceImpl<CommentsReplyMapper, CommentsReply> implements CommentsReplyService {
 
     @Autowired

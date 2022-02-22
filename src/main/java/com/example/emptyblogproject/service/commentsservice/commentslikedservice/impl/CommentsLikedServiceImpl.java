@@ -14,5 +14,6 @@ import org.springframework.stereotype.Service;
  * Description: 评论喜欢记录serviceImpl
  */
 @Service
+@Deprecated
 public class CommentsLikedServiceImpl extends ServiceImpl<CommentsLikedMapper , CommentsLiked> implements CommentsLikedService {
 }

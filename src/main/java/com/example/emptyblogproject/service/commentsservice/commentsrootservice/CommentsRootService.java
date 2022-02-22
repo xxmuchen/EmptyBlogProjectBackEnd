@@ -15,6 +15,7 @@ import java.util.List;
  * Time: 19:30
  * Description: 父评论记录service
  */
+@Deprecated
 public interface CommentsRootService extends IService<CommentsRoot> {
 
     /*找出该文章或资源下的所有评论*/

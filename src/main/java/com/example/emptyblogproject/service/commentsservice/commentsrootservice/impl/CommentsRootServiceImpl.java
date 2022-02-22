@@ -22,6 +22,7 @@ import java.util.UUID;
  * Description: 父评论记录serviceImpl
  */
 @Service
+@Deprecated
 public class CommentsRootServiceImpl extends ServiceImpl<CommentsRootMapper, CommentsRoot> implements CommentsRootService {
 
     @Override
