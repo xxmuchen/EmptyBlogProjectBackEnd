@@ -418,12 +418,12 @@ public class DiaryController {
      * @param
      * @return 博客的评论信息
      */
-    @GetMapping("/{blogId}")
+    @GetMapping("/queryObserveByBlogId")
     public List<ObserveNodeBO> queryObserveByBlogId (@RequestParam(name = "objId") String objId) {
         long obj_id = Long.parseLong(objId);
 
         List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", obj_id);
-        System.out.println(observeNodeBOList);
+//        System.out.println(observeNodeBOList);
         return observeNodeBOList;
     }
     /**
