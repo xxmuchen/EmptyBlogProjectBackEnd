@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.List;
 @Service
 public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implements DiaryService {
 
+    @Autowired
+    DiaryMapper diaryMapper;
 
     @Override
     public List<Diary> getNewDiaryFourPieces() {
@@ -33,6 +36,20 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         queryWrapper.orderByDesc("create_time");
         Page<Diary> pageData = this.page(page, queryWrapper);
         return pageData;
+    }
+
+    @Override
+    public Page<Diary> getRecommendDiaryListPageing(int currentPage) {
+        Page<Diary> page = new Page<>(currentPage , 10);
+        Page<Diary> recommendDiaryListPageing = diaryMapper.getRecommendDiaryListPageing(page);
+        return recommendDiaryListPageing;
+    }
+
+    @Override
+    public Page<Diary> getTopGuestDiaryListPageing(int currentPage) {
+        Page<Diary> page = new Page<>(currentPage , 10);
+        Page<Diary> topGuestDiarylistPageing = diaryMapper.getTopGuestDiaryListPageing(page);
+        return topGuestDiarylistPageing;
     }
 
 

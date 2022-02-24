@@ -58,7 +58,7 @@ public class ObserveServiceImpl extends ServiceImpl<ObserveMapper , Observe> imp
         List<ObserveNodeBO> list = addAllNode(firstObserveList, secondObserveList);
 
         //控制台打印评论回复
-        show(list);
+//        show(list);
 
         //返回处理后的评论信息
         return list;

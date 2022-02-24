@@ -155,19 +155,68 @@ public class DiaryController {
     }
 
     /*日记页首页的最新日记四条数据*/
-    @GetMapping("/diaryHomePageNewDiaryDisplayThreePieces")
-    public List<Diary> diaryHomePageNewDiaryDisplayThreePieces() {
+    @GetMapping("/diaryHomePageNewDiaryDisplayFourPieces")
+    public List<Diary> diaryHomePageNewDiaryDisplayFourPieces() {
         List<Diary> diaryList = diaryService.getNewDiaryFourPieces();
         return diaryList;
     }
+    /*日记页首页的推荐日记数据*/
+    @GetMapping("/diaryHomePageRecommendDiaryDisplayOnePieces")
+    public Diary diaryHomePageRecommendDiaryDisplayOnePieces() {
+        Page<Diary> recommendDiaryListPageing = diaryService.getRecommendDiaryListPageing(1);
+        List<Diary> records = recommendDiaryListPageing.getRecords();
+        if (records == null) {
+            throw new RuntimeException("暂无日记");
+        }
+        return records.get(0);
+    }
+
+    /*日记页首页的顶客排行四条数据*/
+    @GetMapping("/diaryHomePageTopGuestDiaryDisplayFourPieces")
+    public List<Diary> diaryHomePageTopGuestDiaryDisplayFourPieces() {
+        Page<Diary> topGuestDiaryListPageing = diaryService.getTopGuestDiaryListPageing(1);
+        List<Diary> records = topGuestDiaryListPageing.getRecords();
+        if (records == null) {
+            throw new RuntimeException("暂无日记");
+        }
+        for (Diary diary : records.subList(0, 4)) {
+            System.out.println(diary);
+        }
+
+        return records.subList(0, 4);
+    }
+
 
     /*分页查询最新日记*/
     @GetMapping("/newDiaryListDisplay")
     public Page<Diary> newDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
+
         Page<Diary> diaryListPageing = diaryService.getNewDiaryListPageing(currentPage);
+        System.out.println("最新日记列表");
         return diaryListPageing;
     }
 
+    @GetMapping("/recommendDiaryListDisplay")
+    public Page<Diary> recommendDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
+//        Page<Diary> diaryListPageing = diaryService.getNewDiaryListPageing(currentPage);
+//        return diaryListPageing;
+        Page<Diary> recommendDiaryListPageing = diaryService.getRecommendDiaryListPageing(currentPage);
+
+        System.out.println("推荐日记列表");
+//        System.out.println(recommendDiaryListPageing.toString());
+        return recommendDiaryListPageing;
+    }
+
+    @GetMapping("topGuestDiaryListDisplay")
+    public Page<Diary> topGuestDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
+//        Page<Diary> diaryListPageing = diaryService.getNewDiaryListPageing(currentPage);
+//        return diaryListPageing;
+
+        Page<Diary> topGuestDiaryListPageing = diaryService.getTopGuestDiaryListPageing(currentPage);
+        System.out.println("顶客排行列表");
+//        System.out.println(recommendDiaryListPageing.toString());
+        return topGuestDiaryListPageing;
+    }
     /*根据日记id查询日记*/
     @GetMapping("/getDiaryByDiaryId")
     public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")Long diaryId , HttpServletRequest httpServletRequest) {
@@ -445,6 +494,7 @@ public class DiaryController {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = tokenUtils.parseTokenAndGetUser(authorization);
         observe.setObserverId(user.getId());
+        System.out.println(observe);
         boolean flag = observeService.save(observe);
 
         if (flag) {

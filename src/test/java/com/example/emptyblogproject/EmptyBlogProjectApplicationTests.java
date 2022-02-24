@@ -1,6 +1,7 @@
 package com.example.emptyblogproject;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.homepage.HomePageInfo;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
@@ -14,6 +15,7 @@ import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMap
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoMediaMapper;
 import com.example.emptyblogproject.mapper.observemapper.ObserveMapper;
+import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,16 @@ class EmptyBlogProjectApplicationTests {
 
     @Autowired
     ObserveMapper observeMapper;
+
+    @Autowired
+    DiaryService diaryService;
+    @Test
+    public void test5() {
+        Page<Diary> recommendDiaryListPageing = diaryService.getRecommendDiaryListPageing(1);
+        System.out.println(recommendDiaryListPageing.getRecords().size());
+    }
+
+
 
     @Test
     public void test4() {

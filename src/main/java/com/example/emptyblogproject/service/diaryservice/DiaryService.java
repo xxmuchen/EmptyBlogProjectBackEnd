@@ -13,4 +13,10 @@ public interface DiaryService extends IService<Diary> {
 
     /*分页查询最新日记*/
     public Page<Diary> getNewDiaryListPageing(int currentPage);
+
+    /*分页查询推荐日记——以收藏数量排序*/
+    public Page<Diary> getRecommendDiaryListPageing(int currentPage);
+
+    /*分页查询顶客排行——以点赞数量排序*/
+    public Page<Diary> getTopGuestDiaryListPageing(int currentPage);
 }
