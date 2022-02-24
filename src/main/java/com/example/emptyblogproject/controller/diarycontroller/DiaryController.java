@@ -170,14 +170,15 @@ public class DiaryController {
 
     /*根据日记id查询日记*/
     @GetMapping("/getDiaryByDiaryId")
-    public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")String diaryId , HttpServletRequest httpServletRequest) {
+    public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")Long diaryId , HttpServletRequest httpServletRequest) {
 //        System.out.println(diaryId);
         httpServletRequest.getHeader("token");
 
 
-        Long diary_Id = Long.parseLong(diaryId);
+//        Long diary_Id = Long.parseLong(diaryId);
 
-        Diary diary = diaryService.getById(diary_Id);
+//        Diary diary = diaryService.getById(diary_Id);
+        Diary diary = diaryService.getById(diaryId);
 //        System.out.println(diarycontroller);
 //        diaryService.getById()
 
@@ -419,23 +420,24 @@ public class DiaryController {
      * @return 博客的评论信息
      */
     @GetMapping("/queryObserveByBlogId")
-    public List<ObserveNodeBO> queryObserveByBlogId (@RequestParam(name = "objId") String objId) {
-        long obj_id = Long.parseLong(objId);
+    public List<ObserveNodeBO> queryObserveByBlogId (Long objId) {
+//        long obj_id = Long.parseLong(objId);
 
-        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", obj_id);
+//        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", obj_id);
+        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", objId);
 //        System.out.println(observeNodeBOList);
         return observeNodeBOList;
     }
     /**
      * 功能描述：根据评论id查询用户信息（评论信息，携带用户信息）
-     * @param observeId 评论id
+     * @param
      * @return 评论信息，携带用户信息
      */
-    @GetMapping("/user/{observeId}")
-    public ObserveUserBo queryObserveUserById (@RequestParam(name = "observeId") Long observeId) {
-        ObserveUserBo observeUserBo = observeService.queryObserveUserById(observeId);
-        return observeUserBo;
-    }
+//    @GetMapping("/user/{observeId}")
+//    public ObserveUserBo queryObserveUserById (@RequestParam(name = "observeId") Long observeId) {
+//        ObserveUserBo observeUserBo = observeService.queryObserveUserById(observeId);
+//        return observeUserBo;
+//    }
 
     @UserLoginToken
     @PostMapping("/addDiaryObserve")
