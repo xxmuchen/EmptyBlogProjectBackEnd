@@ -219,9 +219,8 @@ public class DiaryController {
     }
     /*根据日记id查询日记*/
     @GetMapping("/getDiaryByDiaryId")
-    public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")Long diaryId , HttpServletRequest httpServletRequest) {
-//        System.out.println(diaryId);
-        httpServletRequest.getHeader("token");
+    public Diary getDiaryByDiaryId(@RequestParam(name = "diaryId")Long diaryId) {
+
 
 
 //        Long diary_Id = Long.parseLong(diaryId);
