@@ -1,7 +1,6 @@
 package com.example.emptyblogproject.bean.sentence.sentencetag;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,8 +17,12 @@ public class SentenceTag {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     private String tagName;
-    private Long sentenceId;
+    private String sentenceId;
+
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
+    @TableLogic(value = "0" , delval = "1")
     private boolean del;
 }

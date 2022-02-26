@@ -26,6 +26,7 @@ public class Sentence {
     private String authorAvatar;
     private boolean see;
 
+    @TableField(exist = false)
     private List<SentenceTag> sentenceTagList;
 
     @TableField(fill = FieldFill.INSERT)
@@ -33,6 +34,7 @@ public class Sentence {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    private String sentenceId;
     @TableLogic(value = "0" , delval = "1")
     private boolean del;
 
