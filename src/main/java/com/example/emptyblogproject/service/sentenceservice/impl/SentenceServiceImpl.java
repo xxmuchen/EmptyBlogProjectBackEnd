@@ -1,10 +1,13 @@
 package com.example.emptyblogproject.service.sentenceservice.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.mapper.sentencemapper.SentenceMapper;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,4 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> implements SentenceService {
 
+    @Override
+    public List<Sentence> getAllSentence() {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        List<Sentence> sentenceList = this.list(queryWrapper);
+        return sentenceList;
+    }
 }

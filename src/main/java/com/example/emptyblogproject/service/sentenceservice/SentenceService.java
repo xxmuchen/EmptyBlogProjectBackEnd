@@ -6,6 +6,8 @@ import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.mapper.sentencemapper.SentenceMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 王程翔
@@ -15,4 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
  */
 
 public interface SentenceService extends IService<Sentence> {
+
+    public List<Sentence> getAllSentence();
+
 }

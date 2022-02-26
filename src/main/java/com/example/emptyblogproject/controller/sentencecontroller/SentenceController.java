@@ -4,17 +4,20 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.productioncollection.ProductionCollection;
+import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
+import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.sentenceservice.sentencetagservice.SentenceTagService;
 import com.example.emptyblogproject.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -35,6 +38,10 @@ public class SentenceController {
     SentenceTagService sentenceTagService;
     @Autowired
     TokenUtils tokenUtils;
+    @Autowired
+    ProductionStarService productionStarService;
+    @Autowired
+    ProductionCollectionService productionCollectionService;
 
     @PostMapping("/addSentence")
     @Transactional
@@ -78,6 +85,13 @@ public class SentenceController {
         }else {
             throw new RuntimeException("上传失败，请重试");
         }
+    }
+
+    @GetMapping("/getAllSentence")
+    public List<Sentence> getAllSentence() {
+        List<Sentence> allSentence = sentenceService.getAllSentence();
+
+        return allSentence;
     }
 
 
