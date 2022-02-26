@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implements DiaryService {
 
-    @Autowired
-    DiaryMapper diaryMapper;
+//    @Autowired
+//    DiaryMapper diaryMapper;
 
     @Override
     public List<Diary> getNewDiaryFourPieces() {
@@ -41,14 +41,14 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
     @Override
     public Page<Diary> getRecommendDiaryListPageing(int currentPage) {
         Page<Diary> page = new Page<>(currentPage , 10);
-        Page<Diary> recommendDiaryListPageing = diaryMapper.getRecommendDiaryListPageing(page);
+        Page<Diary> recommendDiaryListPageing = baseMapper.getRecommendDiaryListPageing(page);
         return recommendDiaryListPageing;
     }
 
     @Override
     public Page<Diary> getTopGuestDiaryListPageing(int currentPage) {
         Page<Diary> page = new Page<>(currentPage , 10);
-        Page<Diary> topGuestDiarylistPageing = diaryMapper.getTopGuestDiaryListPageing(page);
+        Page<Diary> topGuestDiarylistPageing = baseMapper.getTopGuestDiaryListPageing(page);
         return topGuestDiarylistPageing;
     }
 

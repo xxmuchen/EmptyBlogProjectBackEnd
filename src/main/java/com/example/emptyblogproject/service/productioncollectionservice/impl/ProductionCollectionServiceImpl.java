@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductionCollectionServiceImpl extends ServiceImpl<ProductionCollectionMapper, ProductionCollection> implements ProductionCollectionService {
 
-    @Autowired
-    ProductionCollectionMapper productionCollectionMapper;
+//    @Autowired
+//    ProductionCollectionMapper productionCollectionMapper;
 
     @Override
     public boolean reCollectDiary(Long id) {
-        boolean flag = productionCollectionMapper.reCollectDiary(id);
+        boolean flag = baseMapper.reCollectDiary(id);
         return flag;
     }
 
     @Override
     public ProductionCollection getOneHasDelDiaryCollection(Long userId , Long objId , String type) {
-        ProductionCollection productionCollection = productionCollectionMapper.getOneHasDelDiaryCollection(userId, objId , type);
+        ProductionCollection productionCollection = baseMapper.getOneHasDelDiaryCollection(userId, objId , type);
         return productionCollection;
     }
 

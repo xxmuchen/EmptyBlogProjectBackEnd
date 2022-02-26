@@ -3,6 +3,8 @@ package com.example.emptyblogproject.service.sentenceservice.sentencetagservice;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 王程翔
@@ -11,4 +13,7 @@ import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
  * Description:
  */
 public interface SentenceTagService extends IService<SentenceTag> {
+
+    public List<SentenceTag> getTagsOrderByCount();
+
 }

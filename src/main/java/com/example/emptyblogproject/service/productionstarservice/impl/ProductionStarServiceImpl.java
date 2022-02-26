@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductionStarImpl extends ServiceImpl<ProductionStarMapper, ProductionStar> implements ProductionStarService {
+public class ProductionStarServiceImpl extends ServiceImpl<ProductionStarMapper, ProductionStar> implements ProductionStarService {
 
-    @Autowired
-    ProductionStarMapper productionStarMapper;
+//    @Autowired
+//    ProductionStarMapper productionStarMapper;
 
 //    @Override
 //    public boolean cancelDiaryStar(Long userId, Long diaryId) {
@@ -22,14 +22,14 @@ public class ProductionStarImpl extends ServiceImpl<ProductionStarMapper, Produc
 
     @Override
     public boolean reLikeDiary(Long id) {
-        boolean flag = productionStarMapper.reLikeDiary(id);
+        boolean flag = baseMapper.reLikeDiary(id);
 
         return flag;
     }
 
     @Override
     public ProductionStar getOneHasDelDiaryStar(Long userId , Long objId , String type) {
-        ProductionStar productionStar = productionStarMapper.getOneHasDelDiaryStar(userId, objId , type);
+        ProductionStar productionStar = baseMapper.getOneHasDelDiaryStar(userId, objId , type);
         return productionStar;
     }
 

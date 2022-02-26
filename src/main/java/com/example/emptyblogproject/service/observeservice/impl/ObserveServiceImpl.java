@@ -23,8 +23,8 @@ import java.util.List;
 @Service
 public class ObserveServiceImpl extends ServiceImpl<ObserveMapper , Observe> implements ObserveService {
 
-    @Autowired
-    private ObserveMapper observeMapper;
+//    @Autowired
+//    private ObserveMapper observeMapper;
 
 //    @Autowired
 //    private UserMapper userMapper;
@@ -37,13 +37,13 @@ public class ObserveServiceImpl extends ServiceImpl<ObserveMapper , Observe> imp
 
     @Override
     public List<ObserveNodeBO> queryFirstObserveList(String type, Long objId) {
-        List<ObserveNodeBO> observeNodeBOList = observeMapper.queryFirstObserveList(type, objId);
+        List<ObserveNodeBO> observeNodeBOList = baseMapper.queryFirstObserveList(type, objId);
         return observeNodeBOList;
     }
 
     @Override
     public List<ObserveNodeBO> querySecondObserveList(String type, Long objId) {
-        List<ObserveNodeBO> observeNodeBOList = observeMapper.querySecondObserveList(type, objId);
+        List<ObserveNodeBO> observeNodeBOList = baseMapper.querySecondObserveList(type, objId);
         return observeNodeBOList;
     }
 

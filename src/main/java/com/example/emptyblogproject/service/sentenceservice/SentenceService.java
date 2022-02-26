@@ -20,4 +20,11 @@ public interface SentenceService extends IService<Sentence> {
 
     public List<Sentence> getAllSentence();
 
+    /*获取名人名言列表*/
+    public List<Sentence> quotesByFamousPeople();
+
+    public List<Sentence> getRecommendSentenceList();
+
+
+
 }

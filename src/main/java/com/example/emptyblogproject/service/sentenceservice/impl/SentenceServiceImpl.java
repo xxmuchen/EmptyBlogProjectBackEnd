@@ -26,4 +26,21 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         List<Sentence> sentenceList = this.list(queryWrapper);
         return sentenceList;
     }
+
+    @Override
+    public List<Sentence> quotesByFamousPeople() {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        queryWrapper.isNotNull("original_author");
+        queryWrapper.ne("original_author" , "");
+        List<Sentence> sentenceList = this.list(queryWrapper);
+        return sentenceList;
+    }
+
+    @Override
+    public List<Sentence> getRecommendSentenceList() {
+        List<Sentence> sentenceList = baseMapper.getRecommendSentenceList();
+        return sentenceList;
+    }
+
 }

@@ -16,4 +16,6 @@ public interface ProductionCollectionMapper extends BaseMapper<ProductionCollect
     @Select("select * from production_collection where user_id = #{userId} and obj_id = #{objId} and type = #{type} and del = 1")
     public ProductionCollection getOneHasDelDiaryCollection(Long userId , Long objId , String type);
 
+
+
 }

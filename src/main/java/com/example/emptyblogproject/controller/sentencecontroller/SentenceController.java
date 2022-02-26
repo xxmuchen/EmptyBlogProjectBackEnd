@@ -43,6 +43,7 @@ public class SentenceController {
     @Autowired
     ProductionCollectionService productionCollectionService;
 
+//    添加句子
     @PostMapping("/addSentence")
     @Transactional
     @UserLoginToken
@@ -53,7 +54,7 @@ public class SentenceController {
         if (user == null) {
             throw new RuntimeException("用户不存在，请重新登录");
         }
-        System.out.println(sentenceData);
+//        System.out.println(sentenceData);
         JSONObject jsonObject = JSON.parseObject(sentenceData);
         Sentence sentence = new Sentence();
         sentence.setContent((String) jsonObject.get("content"));
@@ -77,7 +78,7 @@ public class SentenceController {
         }
         sentence.setSentenceTagList(sentenceTagList);
 //        sentence.setSentenceTagList();
-        System.out.println(sentence);
+//        System.out.println(sentence);
 
         boolean flag = sentenceService.save(sentence);
         if (flag) {
@@ -90,9 +91,50 @@ public class SentenceController {
     @GetMapping("/getAllSentence")
     public List<Sentence> getAllSentence() {
         List<Sentence> allSentence = sentenceService.getAllSentence();
-
         return allSentence;
     }
 
+    /*获取首页九个标签*/
+    @GetMapping("/getNineTags")
+    public List<SentenceTag> getNineTags() {
+        List<SentenceTag> sentenceTags = sentenceTagService.getTagsOrderByCount();
+
+        if (sentenceTags.size() > 9) {
+            return sentenceTags.subList(0 , 9);
+        }
+
+        return sentenceTags;
+    }
+
+    /*获取偶遇佳句*/
+    @GetMapping("/encounterLoverSentence")
+    public Sentence encounterLoverSentence() {
+        List<Sentence> sentenceList = sentenceService.getAllSentence();
+        Random random = new Random();
+        int nextInt = random.nextInt(sentenceList.size());
+        return sentenceList.get(nextInt);
+    }
+
+    /*获取名人名言*/
+    @GetMapping("/quotesByFamousPeople")
+    public List<Sentence> quotesByFamousPeople() {
+        List<Sentence> sentenceList = sentenceService.quotesByFamousPeople();
+//        System.out.println(sentenceList);
+        return sentenceList;
+    }
+
+    /*获取精选句集*/
+    @GetMapping("/recommendSentenceList")
+    public List<Sentence> recommendSentenceList() {
+        List<Sentence> sentenceList = sentenceService.getRecommendSentenceList();
+        return sentenceList;
+    }
+
+    @GetMapping("/getOneSentenceById")
+    public Sentence getOneSentenceById(@RequestParam(name = "sentenceId") Long sentenceId) {
+        Sentence sentence = sentenceService.getById(sentenceId);
+
+        return sentence;
+    }
 
 }

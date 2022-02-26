@@ -45,12 +45,13 @@ public class ObserveController  {
      * @return 博客的评论信息
      */
     @GetMapping("/queryObserveByObjId")
-    public List<ObserveNodeBO> queryObserveByObjId (Long objId) {
+    public List<ObserveNodeBO> queryObserveByObjId
+                (@RequestParam(name = "objType")String objType , @RequestParam("objId") Long objId) {
 //        long obj_id = Long.parseLong(objId);
 
 //        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", obj_id);
-        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", objId);
-//        System.out.println(observeNodeBOList);
+        List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId(objType, objId);
+        System.out.println(observeNodeBOList);
         return observeNodeBOList;
     }
     /**
@@ -70,11 +71,11 @@ public class ObserveController  {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = tokenUtils.parseTokenAndGetUser(authorization);
         observe.setObserverId(user.getId());
-        System.out.println(observe);
+//        System.out.println(observe);
         boolean flag = observeService.save(observe);
 
         if (flag) {
-            List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId("放空日记", observe.getObjId());
+            List<ObserveNodeBO> observeNodeBOList = observeService.queryObserveByObjId(observe.getType(), observe.getObjId());
             for (Observe item : observeNodeBOList) {
                 System.out.println(item);
             }
@@ -82,8 +83,5 @@ public class ObserveController  {
         }else {
             throw new RuntimeException("评论失败,请重试");
         }
-
-//        System.out.println(observe);
-//        return null;
     }
 }

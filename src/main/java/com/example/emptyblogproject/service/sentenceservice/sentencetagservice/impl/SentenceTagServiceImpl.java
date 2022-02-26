@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import com.example.emptyblogproject.mapper.sentencemapper.sentencetagmapper.SentenceTagMapper;
 import com.example.emptyblogproject.service.sentenceservice.sentencetagservice.SentenceTagService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,4 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SentenceTagServiceImpl extends ServiceImpl<SentenceTagMapper , SentenceTag> implements SentenceTagService {
 
+//    @Autowired
+//    SentenceTagMapper sentenceTagMapper;
+
+    @Override
+    public List<SentenceTag> getTagsOrderByCount() {
+        List<SentenceTag> sentenceTagList = baseMapper.getTagsOrderByCount();
+        return sentenceTagList;
+    }
 }

@@ -3,6 +3,9 @@ package com.example.emptyblogproject.mapper.sentencemapper.sentencetagmapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,4 +16,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SentenceTagMapper extends BaseMapper<SentenceTag> {
+
+//    获取九个最热门的标签
+    @Select("select count(*) as count , tag_name from sentence_tag where del = 0 group by tag_name order by count DESC ")
+    public List<SentenceTag> getTagsOrderByCount();
+
+
 }

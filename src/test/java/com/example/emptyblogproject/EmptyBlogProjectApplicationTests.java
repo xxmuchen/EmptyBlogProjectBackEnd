@@ -47,6 +47,13 @@ class EmptyBlogProjectApplicationTests {
 
     @Autowired
     DiaryService diaryService;
+
+    @Test
+    public void test6() {
+        Random random = new Random();
+        System.out.println(random.nextInt(12));
+    }
+
     @Test
     public void test5() {
         Page<Diary> recommendDiaryListPageing = diaryService.getRecommendDiaryListPageing(1);

@@ -338,7 +338,7 @@ public class ProductionOperationController {
             productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), "放空句子");
 
         }else if (objType.equals("放空句子")) {
-            Diary object = diaryService.getById(obj_id);
+            Sentence object = sentenceService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("该句子不存在");
             }
