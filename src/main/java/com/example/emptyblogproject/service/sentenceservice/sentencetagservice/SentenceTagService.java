@@ -16,4 +16,6 @@ public interface SentenceTagService extends IService<SentenceTag> {
 
     public List<SentenceTag> getTagsOrderByCount();
 
+    public List<SentenceTag> getTagsBySentenceSentenceId(String SentenceSentenceId);
+
 }

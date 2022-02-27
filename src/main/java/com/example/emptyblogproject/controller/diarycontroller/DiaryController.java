@@ -63,7 +63,7 @@ public class DiaryController {
     ObserveService observeService;
 
 //    日记内容图片上传
-    @UserLoginToken
+//    @UserLoginToken
 //    日记图片文件上传并返回路径
     @PostMapping("/diaryImageFileUpLoadAndReturnUrl")
     public JSON diaryImageFileUpLoadAndReturnUrl(@RequestParam("myImageFileName") MultipartFile multipartFile) {
@@ -82,13 +82,16 @@ public class DiaryController {
         File dest = new File(absolutePath , imageFileName);
         try {
             multipartFile.transferTo(dest);
-//            return "http://localhost:8080/images/diaryImage/" + imageFileName;
+            String imageUrl = "http://localhost:8080/images/diary/diaryImage/" + imageFileName;
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("errno" , 0);
-//            jsonObject.put("data" , "http://localhost:8080/images/diaryImage/" + imageFileName);
             JSONArray jsonArray = new JSONArray();
-            jsonArray.add("http://localhost:8080/images/diary/diaryImage/" + imageFileName);
+            jsonArray.add(imageUrl);
+
             jsonObject.put("data" , jsonArray);
+
+
+            System.out.println(jsonObject);
             return jsonObject;
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,7 +100,7 @@ public class DiaryController {
     }
 
 //    日记内容视频上传
-    @UserLoginToken
+//    @UserLoginToken
     @PostMapping("/diaryVideoFileUpLoadAndReturnUrl")
     public JSON diaryVideoFileUpLoadAndReturnUrl(@RequestParam("myVideoFileName") MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {

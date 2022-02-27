@@ -43,7 +43,7 @@ public class SentenceController {
     @Autowired
     ProductionCollectionService productionCollectionService;
 
-//    添加句子
+    /*添加句子*/
     @PostMapping("/addSentence")
     @Transactional
     @UserLoginToken
@@ -54,15 +54,14 @@ public class SentenceController {
         if (user == null) {
             throw new RuntimeException("用户不存在，请重新登录");
         }
-//        System.out.println(sentenceData);
         JSONObject jsonObject = JSON.parseObject(sentenceData);
         Sentence sentence = new Sentence();
-        sentence.setContent((String) jsonObject.get("content"));
-        sentence.setSee((Boolean) jsonObject.get("see"));
-        sentence.setOriginalAuthor((String) jsonObject.get("originalAuthor"));
-        sentence.setBgColor((String) jsonObject.get("bgColor"));
-        String sentenceId = System.currentTimeMillis() + UUID.randomUUID().toString().replace("-", "");
-        sentence.setSentenceId(sentenceId);
+        sentence.setContent( jsonObject.getString("content"));
+        sentence.setSee( jsonObject.getBoolean("see"));
+        sentence.setOriginalAuthor( jsonObject.getString("originalAuthor"));
+        sentence.setBgColor( jsonObject.getString("bgColor"));
+        String sentenceSentenceId = System.currentTimeMillis() + UUID.randomUUID().toString().replace("-", "");
+        sentence.setSentenceId(sentenceSentenceId);
         sentence.setAuthorAvatar(user.getAvatar());
         sentence.setAuthorName(user.getUserName());
         sentence.setAuthorId(user.getId());
@@ -72,7 +71,7 @@ public class SentenceController {
             SentenceTag sentenceTag = null;
             sentenceTag = new SentenceTag();
             sentenceTag.setTagName(sentenceTagJsonArray.getString(i));
-            sentenceTag.setSentenceId(sentenceId);
+            sentenceTag.setSentenceId(sentenceSentenceId);
             boolean flag = sentenceTagService.save(sentenceTag);
             sentenceTagList.add(sentenceTag);
         }
@@ -133,6 +132,10 @@ public class SentenceController {
     @GetMapping("/getOneSentenceById")
     public Sentence getOneSentenceById(@RequestParam(name = "sentenceId") Long sentenceId) {
         Sentence sentence = sentenceService.getById(sentenceId);
+
+        List<SentenceTag> sentenceTagList = sentenceTagService.getTagsBySentenceSentenceId(sentence.getSentenceId());
+
+        sentence.setSentenceTagList(sentenceTagList);
 
         return sentence;
     }
