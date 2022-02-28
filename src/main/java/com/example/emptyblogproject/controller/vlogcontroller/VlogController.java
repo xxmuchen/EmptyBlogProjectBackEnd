@@ -8,12 +8,14 @@ import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
 import com.example.emptyblogproject.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -30,7 +32,8 @@ public class VlogController {
     VlogService vlogService;
     @Autowired
     TokenUtils tokenUtils;
-
+    @Value("${file.vlogVideoPath}")
+    private String uploadVideoAbsolutePath;
 
     @PostMapping("/addVlog")
     @UserLoginToken
@@ -59,9 +62,36 @@ public class VlogController {
         }
     }
 
-    @PostMapping("/uploadVlogVideo")
-    public String uploadVlogVideo(MultipartFile multipartFile) {
+    @RequestMapping("/uploadVlogVideo")
+    public String uploadVlogVideo(@RequestParam("vlogVideoFile") MultipartFile multipartFile) {
+        if (multipartFile.isEmpty()) {
+            throw new RuntimeException("文件不能为空");
+        }
+        String originalFilename = multipartFile.getOriginalFilename();
 
-        return null;
+        File absolutePath = new File(uploadVideoAbsolutePath);
+        if (!absolutePath.exists()) {
+            absolutePath.mkdirs();
+        }
+
+        String imageFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() + originalFilename.substring(originalFilename.lastIndexOf("."));
+
+        File dest = new File(absolutePath , imageFileName);
+        try {
+            multipartFile.transferTo(dest);
+
+            return "http://localhost:8080/images/vlog/vlogVideo/" + imageFileName;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("上传失败，请重试");
+        }
+    }
+
+//    获取所有可见视频
+    @GetMapping("getAllVlog")
+    public List<Vlog> getAllVlog() {
+        List<Vlog> vlogList = vlogService.getAllVlogBySee();
+        return vlogList;
     }
 }

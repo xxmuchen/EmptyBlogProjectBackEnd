@@ -49,7 +49,7 @@ file:
   avatarPath: E:/upload/User/UserAvatar
   diaryImagePath: E:/upload/diary/diaryImage/
   diaryVideoPath: E:/upload/diary/diaryVideo/
-
+  vlogVideoPath: E:/upload/vlog/vlogVideo/
 #token:
 #  privateKey: 'fdasfgdsagaxgsregdfdjyghjfhebfdgwe45ygrfbsdfshfdsag'
 #  yangToken: 1000000
