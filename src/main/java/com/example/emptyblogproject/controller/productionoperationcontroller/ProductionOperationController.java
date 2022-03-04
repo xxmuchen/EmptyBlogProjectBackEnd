@@ -8,10 +8,12 @@ import com.example.emptyblogproject.bean.productioncollection.ProductionCollecti
 import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
+import com.example.emptyblogproject.service.vlogservice.VlogService;
 import com.example.emptyblogproject.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +40,8 @@ public class ProductionOperationController {
     ProductionStarService productionStarService;
     @Autowired
     TokenUtils tokenUtils;
-
+    @Autowired
+    VlogService vlogService;
 
     @UserLoginToken
     @PostMapping("/saveObjStar")
@@ -92,6 +95,23 @@ public class ProductionOperationController {
             }else {
                 flag = productionStarService.reLikeDiary(productionStar.getId());
             }
+        }else if (objType.equals("放空Vlog")){
+            Vlog object = vlogService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("点赞失败，该Vlog不存在");
+            }
+            productionStar = productionStarService.
+                    getOneHasDelDiaryStar(user.getId() , object.getId() , objType);
+            if (productionStar == null) {
+                productionStar = new ProductionStar();
+                productionStar.setUserId(user.getId());
+                productionStar.setObjId(object.getId());
+                productionStar.setType(objType);
+//            System.out.println(diaryStar);
+                flag = productionStarService.save(productionStar);
+            }else {
+                flag = productionStarService.reLikeDiary(productionStar.getId());
+            }
         }else {
             throw new RuntimeException("数据错误，请重试");
         }
@@ -119,35 +139,35 @@ public class ProductionOperationController {
         long obj_id = Long.parseLong(jsonObject.getString("objId"));
         String objType = jsonObject.getString("objType");
         boolean flag = false;
+
+        ProductionStar productionStar = null;
+
         if (objType.equals("放空日记")) {
             Diary object = diaryService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("取消点赞失败，该日记不存在");
             }
-
-            ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
-
-            if (productionStar == null) {
-                throw new RuntimeException("取消点赞失败，您未赞过");
-            }
-            flag = productionStarService.removeById(productionStar.getId());
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
         }else if (objType.equals("放空句子")) {
             Sentence object = sentenceService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("取消点赞失败，该句子不存在");
             }
-
-            ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
-
-            if (productionStar == null) {
-                throw new RuntimeException("取消点赞失败，您未赞过");
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
+        }else if (objType.equals("放空Vlog")) {
+            Vlog object = vlogService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("取消点赞失败，该句子不存在");
             }
-
-            flag = productionStarService.removeById(productionStar.getId());
-
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
         }else {
             throw new RuntimeException("取消点赞失败，数据错误");
         }
+
+        if (productionStar == null) {
+            throw new RuntimeException("取消点赞失败，您未赞过");
+        }
+        flag = productionStarService.removeById(productionStar.getId());
         if (flag) {
             return "取消点赞成功";
         }else {
@@ -191,6 +211,22 @@ public class ProductionOperationController {
 
             if (object == null) {
                 throw new RuntimeException("收藏失败，该句子不存在");
+            }
+            ProductionCollection productionCollection = productionCollectionService.getOneHasDelDiaryCollection(user.getId(), object.getId() , objType);
+            if (productionCollection == null) {
+                productionCollection = new ProductionCollection();
+                productionCollection.setUserId(user.getId());
+                productionCollection.setObjId(object.getId());
+                productionCollection.setType(objType);
+                flag = productionCollectionService.save(productionCollection);
+            }else {
+                flag = productionCollectionService.reCollectDiary(productionCollection.getId());
+            }
+        }else if(objType.equals("放空Vlog")) {
+            Vlog object = vlogService.getById(obj_id);
+
+            if (object == null) {
+                throw new RuntimeException("收藏失败，该Vlog不存在");
             }
             ProductionCollection productionCollection = productionCollectionService.getOneHasDelDiaryCollection(user.getId(), object.getId() , objType);
             if (productionCollection == null) {
@@ -254,6 +290,18 @@ public class ProductionOperationController {
                 throw new RuntimeException("取消收藏失败，您未赞过");
             }
             flag = productionCollectionService.removeById(productionCollection.getId());
+        }else if(objType.equals("放空Vlog")) {
+            Vlog object = vlogService.getById(obj_id);
+
+            if (object == null) {
+                throw new RuntimeException("取消收藏失败，该Vlog不存在");
+            }
+
+            ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
+            if (productionCollection == null) {
+                throw new RuntimeException("取消收藏失败，您未赞过");
+            }
+            flag = productionCollectionService.removeById(productionCollection.getId());
         }else {
             throw new RuntimeException("取消收藏失败，数据错误");
         }
@@ -303,6 +351,14 @@ public class ProductionOperationController {
 
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
 
+        } else if(objType.equals("放空Vlog")) {
+            Vlog object = vlogService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("该Vlog不存在");
+            }
+
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
+
         }else {
             throw new RuntimeException("数据错误，请重试");
         }
@@ -335,15 +391,25 @@ public class ProductionOperationController {
             if (object == null) {
                 throw new RuntimeException("该日记不存在");
             }
-            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), "放空句子");
+            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
 
         }else if (objType.equals("放空句子")) {
             Sentence object = sentenceService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("该句子不存在");
             }
-            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), "放空句子");
+            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
 
+        } else if(objType.equals("放空Vlog")) {
+            Vlog object = vlogService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("该Vlog不存在");
+            }
+
+            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
+
+        }else {
+            throw new RuntimeException("数据错误，请重试");
         }
         if (productionCollection != null) {
 //            throw new RuntimeException("您未赞过");
