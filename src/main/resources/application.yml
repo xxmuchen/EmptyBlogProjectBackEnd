@@ -6,7 +6,7 @@ spring:
 #    url: jdbc:p6spy://110.42.182.222:3306/EmptyBlog?serverTimezone=UTC
     url: jdbc:p6spy:mysql://110.42.182.222:3306/EmptyBlog?serverTime=UTC
     hikari:
-      max-lifetime: 6000
+      max-lifetime: 300000
   devtools:
     remote:
       restart:
@@ -50,6 +50,7 @@ file:
   diaryImagePath: E:/upload/diary/diaryImage/
   diaryVideoPath: E:/upload/diary/diaryVideo/
   vlogVideoPath: E:/upload/vlog/vlogVideo/
+  GriphicImagePath: E:/upload/griphic/griphicImage/
 #token:
 #  privateKey: 'fdasfgdsagaxgsregdfdjyghjfhebfdgwe45ygrfbsdfshfdsag'
 #  yangToken: 1000000

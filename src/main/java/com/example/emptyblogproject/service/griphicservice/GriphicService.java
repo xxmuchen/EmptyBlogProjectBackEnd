@@ -3,6 +3,8 @@ package com.example.emptyblogproject.service.griphicservice;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 王程翔
@@ -11,5 +13,13 @@ import com.example.emptyblogproject.bean.griphic.Griphic;
  * Description:
  */
 public interface GriphicService extends IService<Griphic> {
+
+    public List<Griphic> getAllGriphicBySee();
+
+    public List<Griphic> getBuiltifulImageAndSentence();
+
+    public List<Griphic> getHandWriteBeautifulSentence();
+
+    public List<Griphic> getClassicDialogue();
 
 }

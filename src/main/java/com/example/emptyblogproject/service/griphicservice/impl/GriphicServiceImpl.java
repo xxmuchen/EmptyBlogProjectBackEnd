@@ -1,10 +1,13 @@
 package com.example.emptyblogproject.service.griphicservice.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.mapper.griphicmapper.GriphicMapper;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,4 +19,38 @@ import org.springframework.stereotype.Service;
 @Service
 public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> implements GriphicService {
 
+    @Override
+    public List<Griphic> getAllGriphicBySee() {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getBuiltifulImageAndSentence() {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        queryWrapper.eq("type" , "美图美句");
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getHandWriteBeautifulSentence() {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        queryWrapper.eq("type" , "手写美句");
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getClassicDialogue() {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("see" , true);
+        queryWrapper.eq("type" , "经典对白");
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
 }

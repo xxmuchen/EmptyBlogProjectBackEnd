@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.bean.productioncollection.ProductionCollection;
 import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
+import com.example.emptyblogproject.service.griphicservice.GriphicService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
@@ -42,12 +44,15 @@ public class ProductionOperationController {
     TokenUtils tokenUtils;
     @Autowired
     VlogService vlogService;
+    @Autowired
+    GriphicService griphicService;
+
 
     @UserLoginToken
     @PostMapping("/saveObjStar")
     /*句子点赞功能*/
     public String saveObjStar(@RequestBody String objData , HttpServletRequest httpServletRequest) {
-        String authorization = httpServletRequest.getHeader("Authorization");
+            String authorization = httpServletRequest.getHeader("Authorization");
         User user = tokenUtils.parseTokenAndGetUser(authorization);
         if (user == null) {
             throw new RuntimeException("点赞失败，用户不存在，请退出重新登陆");
@@ -112,14 +117,32 @@ public class ProductionOperationController {
             }else {
                 flag = productionStarService.reLikeDiary(productionStar.getId());
             }
+        } else if (objType.equals("放空图文")){
+            Griphic object = griphicService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("点赞失败，该图文不存在");
+            }
+            productionStar = productionStarService.
+                    getOneHasDelDiaryStar(user.getId() , object.getId() , objType);
+            if (productionStar == null) {
+                productionStar = new ProductionStar();
+                productionStar.setUserId(user.getId());
+                productionStar.setObjId(object.getId());
+                productionStar.setType(objType);
+//            System.out.println(diaryStar);
+                flag = productionStarService.save(productionStar);
+            }else {
+                flag = productionStarService.reLikeDiary(productionStar.getId());
+            }
         }else {
             throw new RuntimeException("数据错误，请重试");
         }
         if (flag) {
             return "点赞成功";
-        }else {
-            throw new RuntimeException("点赞失败，请重试");
+        } else {
+            throw new RuntimeException("数据错误，请重试");
         }
+
     }
 
     /*取消日记点赞*/
@@ -157,7 +180,13 @@ public class ProductionOperationController {
         }else if (objType.equals("放空Vlog")) {
             Vlog object = vlogService.getById(obj_id);
             if (object == null) {
-                throw new RuntimeException("取消点赞失败，该句子不存在");
+                throw new RuntimeException("取消点赞失败，该Vlog不存在");
+            }
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
+        }else if (objType.equals("放空图文")) {
+            Griphic object = griphicService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("取消点赞失败，该图文不存在");
             }
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
         }else {
@@ -238,6 +267,22 @@ public class ProductionOperationController {
             }else {
                 flag = productionCollectionService.reCollectDiary(productionCollection.getId());
             }
+        }else if(objType.equals("放空图文")) {
+            Griphic object = griphicService.getById(obj_id);
+
+            if (object == null) {
+                throw new RuntimeException("收藏失败，该图文不存在");
+            }
+            ProductionCollection productionCollection = productionCollectionService.getOneHasDelDiaryCollection(user.getId(), object.getId() , objType);
+            if (productionCollection == null) {
+                productionCollection = new ProductionCollection();
+                productionCollection.setUserId(user.getId());
+                productionCollection.setObjId(object.getId());
+                productionCollection.setType(objType);
+                flag = productionCollectionService.save(productionCollection);
+            }else {
+                flag = productionCollectionService.reCollectDiary(productionCollection.getId());
+            }
         }else {
             throw new RuntimeException("收藏失败，数据错误");
         }
@@ -302,6 +347,18 @@ public class ProductionOperationController {
                 throw new RuntimeException("取消收藏失败，您未赞过");
             }
             flag = productionCollectionService.removeById(productionCollection.getId());
+        }else if(objType.equals("放空图文")) {
+            Griphic object = griphicService.getById(obj_id);
+
+            if (object == null) {
+                throw new RuntimeException("取消收藏失败，该图文不存在");
+            }
+
+            ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
+            if (productionCollection == null) {
+                throw new RuntimeException("取消收藏失败，您未赞过");
+            }
+            flag = productionCollectionService.removeById(productionCollection.getId());
         }else {
             throw new RuntimeException("取消收藏失败，数据错误");
         }
@@ -359,6 +416,14 @@ public class ProductionOperationController {
 
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
 
+        } else if(objType.equals("放空图文")) {
+            Griphic object = griphicService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("该图文不存在");
+            }
+
+            productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
+
         }else {
             throw new RuntimeException("数据错误，请重试");
         }
@@ -408,7 +473,15 @@ public class ProductionOperationController {
 
             productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
 
-        }else {
+        } else if(objType.equals("放空图文")) {
+            Griphic object = griphicService.getById(obj_id);
+            if (object == null) {
+                throw new RuntimeException("该Vlog不存在");
+            }
+
+            productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), object.getId(), objType);
+
+        } else {
             throw new RuntimeException("数据错误，请重试");
         }
         if (productionCollection != null) {

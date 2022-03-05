@@ -19,7 +19,7 @@ public class Griphic {
     private String imageUrl;
     private String description;
     private String bgColor;
-
+    private String type;
     private Long authorId;
     private String authorName;
     private String authorAvatar;
