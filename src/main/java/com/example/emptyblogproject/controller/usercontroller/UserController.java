@@ -47,7 +47,7 @@ public class UserController {
     @PostMapping("/registUser")
     public String saveUser(@RequestBody User user) {
 //        System.out.println(usercontroller);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>(   );
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_name", user.getUserName());
         List<User> list = userService.list(queryWrapper);
         if (list != null && list.size() != 0) {
@@ -99,7 +99,7 @@ public class UserController {
         File dest = new File(absolutePath , avatarFileName);
         try {
             multipartFile.transferTo(dest);
-            return "http://localhost:8080/images/UserAvatar/" + avatarFileName;
+            return "http://localhost:8080/images/User/UserAvatar/" + avatarFileName;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("上传失败，请重试");
@@ -137,14 +137,17 @@ public class UserController {
     @PostMapping("/getAvatarAndUserName")
     public Map<String , String> getAvatorAndUserName(HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        String userId = null;
-        try {
-            userId = JWT.decode(authorization).getAudience().get(0);
-        } catch (JWTDecodeException j) {
-            throw new RuntimeException("401");
-        }
-        Long user_id = Long.parseLong(userId);
-        User user = userService.getById(user_id);
+//        String userId = null;
+//        try {
+//            userId = JWT.decode(authorization).getAudience().get(0);
+//        } catch (JWTDecodeException j) {
+//            throw new RuntimeException("401");
+//        }
+//        Long user_id = Long.parseLong(userId);
+
+        User user = tokenUtils.parseTokenAndGetUser(authorization);
+
+//        User user = userService.getById(user_id);
         if (user == null) {
             throw new RuntimeException("token出错，请用户重新登陆");
         }
@@ -158,5 +161,49 @@ public class UserController {
     @GetMapping("/getMessage")
     public String getMessage(){
         return "你已通过验证";
+    }
+
+    @PostMapping("/getUserByToken")
+    public User getUserById(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        return user;
+    }
+    @PostMapping("updateUserInfo")
+    public User updateUserInfoByToken(@RequestBody User user , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        User userData = tokenUtils.parseTokenAndGetUser(authorization);
+        if (userData == null) {
+            throw new RuntimeException("该用户未注册");
+        }
+
+        if (userData.getId().equals(user.getId())) {
+            throw new RuntimeException("请勿攻击该系统");
+        }
+
+        if (user == null || user.getUserName() == null || user.getUserName().equals("")) {
+            throw new RuntimeException("您的昵称输入错误，请重试");
+        }
+
+        if (user == null || user.getPassword() == null || user.getPassword().equals("") ||user.getPassword().length() < 6 || user.getPassword().length() > 20) {
+            throw new RuntimeException("您的密码输入错误，请重试");
+        }
+
+        if (user == null || user.getSex() == null || user.getSex().equals("")) {
+            throw new RuntimeException("您的性别选择错误，请重试");
+        }
+        if (user == null || user.getEmail() == null || user.getEmail().equals("") || !user.getEmail().contains("@")) {
+            throw new RuntimeException("您的邮箱输入错误，请重试");
+        }
+
+        user.setId(userData.getId());
+
+        boolean flag = userService.updateById(user);
+
+        if (flag) {
+            return userService.getById(user.getId());
+        }else {
+            throw new RuntimeException("更新失败，请重试");
+        }
     }
 }
