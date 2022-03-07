@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
+import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
+import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,10 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
 
 //    @Autowired
 //    DiaryMapper diaryMapper;
+    @Autowired
+    ProductionStarService productionStarService;
+    @Autowired
+    ProductionCollectionService productionCollectionService;
 
     @Override
     public List<Diary> getNewDiaryFourPieces() {
@@ -50,6 +57,29 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         Page<Diary> page = new Page<>(currentPage , 10);
         Page<Diary> topGuestDiarylistPageing = baseMapper.getTopGuestDiaryListPageing(page);
         return topGuestDiarylistPageing;
+    }
+
+    @Override
+    public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage) {
+        Page<Diary> page = new Page<>(currentPage , 7);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<Diary> diaryPage = this.page(page, queryWrapper);
+        return diaryPage;
+    }
+
+    @Override
+    public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(int currentPage , Long userId) {
+        Page<Diary> page = new Page<>(currentPage , 7);
+        Page<Diary> userSpaceDiaryUserStarOrderByCreateTime = baseMapper.getUserSpaceDiaryUserStarOrderByCreateTime(page, userId);
+        return userSpaceDiaryUserStarOrderByCreateTime;
+    }
+
+    @Override
+    public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(int currentPage, Long userId) {
+        Page<Diary> page = new Page<>(currentPage , 7);
+        Page<Diary> userSpaceDiaryUserCollectionOrderByCreateTime = baseMapper.getUserSpaceDiaryUserCollectionOrderByCreateTime(page, userId);
+        return userSpaceDiaryUserCollectionOrderByCreateTime;
     }
 
 

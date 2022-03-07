@@ -36,4 +36,17 @@ public interface DiaryMapper extends BaseMapper<Diary> {
             "        on  ps.obj_id  = diary.id and ps.del = 0 and diary.del = 0 " +
             "        order by ps.count DESC , diary.create_time DESC\n")
     public Page<Diary> getTopGuestDiaryListPageing(Page<Diary> pagination);
+
+
+    @Select("select diary.* from user , diary , production_star where user.id = production_star.user_id\n" +
+            "                and production_star.obj_id = diary.id and user.id = #{userId} \n" +
+            "                and user.del = false and diary.del = false and production_star.del = false\n" +
+            "                order by production_star.create_time DESC")
+    public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(Page<Diary> pagination , Long userId);
+
+    @Select("select diary.* from user , diary , production_collection where user.id = production_collection.user_id\n" +
+            "                and production_collection.obj_id = diary.id and user.id = #{userId} \n" +
+            "                and user.del = false and diary.del = false and production_collection.del = false\n" +
+            "                order by production_collection.create_time DESC")
+    public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(Page<Diary> pagination , Long userId);
 }
