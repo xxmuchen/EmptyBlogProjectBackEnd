@@ -1,7 +1,9 @@
 package com.example.emptyblogproject.service.sentenceservice;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.mapper.sentencemapper.SentenceMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,12 +20,20 @@ import java.util.List;
 
 public interface SentenceService extends IService<Sentence> {
 
-    public List<Sentence> getAllSentence();
+    public List<Sentence> getAllSentenceBySee();
 
     /*获取名人名言列表*/
-    public List<Sentence> quotesByFamousPeople();
+    public List<Sentence> quotesByFamousPeopleBySee();
 
-    public List<Sentence> getRecommendSentenceList();
+    public List<Sentence> getRecommendSentenceListBySee();
+
+    /*分页查询用户个人空间所有日记*/
+    public Page<Sentence> getUserSpaceSentenceOrderCreateTime(int currentPage , Long userId);
+
+    /*获取用户点赞的日记  按点赞时间排序*/
+    public Page<Sentence> getUserSpaceSentenceUserStarOrderByCreateTime(int currentPage , Long userId);
+
+    public Page<Sentence> getUserSpaceSentenceUserCollectionOrderByCreateTime(int currentPage , Long userId);
 
 
 

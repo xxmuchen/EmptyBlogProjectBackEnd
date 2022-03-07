@@ -21,7 +21,7 @@ public interface DiaryService extends IService<Diary> {
     public Page<Diary> getTopGuestDiaryListPageing(int currentPage);
 
     /*分页查询用户个人空间所有日记*/
-    public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage);
+    public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage , Long userId);
 
     /*获取用户点赞的日记  按点赞时间排序*/
     public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(int currentPage , Long userId);

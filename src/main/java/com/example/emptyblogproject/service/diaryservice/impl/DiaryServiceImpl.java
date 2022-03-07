@@ -59,10 +59,12 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         return topGuestDiarylistPageing;
     }
 
+
     @Override
-    public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage) {
+    public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage  , Long userId) {
         Page<Diary> page = new Page<>(currentPage , 7);
         QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
         queryWrapper.orderByDesc("create_time");
         Page<Diary> diaryPage = this.page(page, queryWrapper);
         return diaryPage;

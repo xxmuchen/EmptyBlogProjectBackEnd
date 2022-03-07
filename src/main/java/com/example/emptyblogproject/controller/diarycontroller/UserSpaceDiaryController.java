@@ -29,8 +29,10 @@ public class UserSpaceDiaryController {
     DiaryService diaryService;
 
     @GetMapping("/getUserSpaceDiaryOrderCreateTime")
-    public Page<Diary> getUserSpaceDiaryOrderByCreateTime(@RequestParam("currentIndex") int currentPage) {
-        Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryOrderCreateTime(currentPage);
+    public Page<Diary> getUserSpaceDiaryOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryOrderCreateTime(currentPage , user.getId());
         return diaryPageOrderCreateTime;
     }
 
@@ -52,7 +54,7 @@ public class UserSpaceDiaryController {
         }
         boolean flag = diaryService.removeById(diary.getId());
         if (flag) {
-            return diaryService.getUserSpaceDiaryOrderCreateTime(1);
+            return diaryService.getUserSpaceDiaryOrderCreateTime(1 , user.getId());
         }else {
             throw new RuntimeException("删除错误,请重试");
         }

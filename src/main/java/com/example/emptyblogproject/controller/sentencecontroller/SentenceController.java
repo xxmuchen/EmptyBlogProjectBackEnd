@@ -89,7 +89,7 @@ public class SentenceController {
 
     @GetMapping("/getAllSentence")
     public List<Sentence> getAllSentence() {
-        List<Sentence> allSentence = sentenceService.getAllSentence();
+        List<Sentence> allSentence = sentenceService.getAllSentenceBySee();
         return allSentence;
     }
 
@@ -108,7 +108,7 @@ public class SentenceController {
     /*获取偶遇佳句*/
     @GetMapping("/encounterLoverSentence")
     public Sentence encounterLoverSentence() {
-        List<Sentence> sentenceList = sentenceService.getAllSentence();
+        List<Sentence> sentenceList = sentenceService.getAllSentenceBySee();
         Random random = new Random();
         int nextInt = random.nextInt(sentenceList.size());
         return sentenceList.get(nextInt);
@@ -117,7 +117,7 @@ public class SentenceController {
     /*获取名人名言*/
     @GetMapping("/quotesByFamousPeople")
     public List<Sentence> quotesByFamousPeople() {
-        List<Sentence> sentenceList = sentenceService.quotesByFamousPeople();
+        List<Sentence> sentenceList = sentenceService.quotesByFamousPeopleBySee();
 //        System.out.println(sentenceList);
         return sentenceList;
     }
@@ -125,7 +125,7 @@ public class SentenceController {
     /*获取精选句集*/
     @GetMapping("/recommendSentenceList")
     public List<Sentence> recommendSentenceList() {
-        List<Sentence> sentenceList = sentenceService.getRecommendSentenceList();
+        List<Sentence> sentenceList = sentenceService.getRecommendSentenceListBySee();
         return sentenceList;
     }
 
