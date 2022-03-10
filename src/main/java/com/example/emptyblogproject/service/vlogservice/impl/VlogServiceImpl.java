@@ -1,7 +1,9 @@
 package com.example.emptyblogproject.service.vlogservice.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.mapper.vlogmapper.VlogMapper;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
@@ -25,5 +27,29 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
         queryWrapper.eq("see" , 1);
         List<Vlog> vlogList = this.list(queryWrapper);
         return vlogList;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogOrderCreateTime(int currentPage, Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 7);
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.orderByDesc("create_time");
+        Page<Vlog> vlogPage = this.page(page, queryWrapper);
+        return vlogPage;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogUserStarOrderByCreateTime(int currentPage , Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 7);
+        Page<Vlog> userSpaceVlogUserStarOrderByCreateTime = baseMapper.getUserSpaceVlogUserStarOrderByCreateTime(page, userId);
+        return userSpaceVlogUserStarOrderByCreateTime;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogUserCollectionOrderByCreateTime(int currentPage, Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 7);
+        Page<Vlog> userSpaceVlogUserCollectionOrderByCreateTime = baseMapper.getUserSpaceVlogUserCollectionOrderByCreateTime(page, userId);
+        return userSpaceVlogUserCollectionOrderByCreateTime;
     }
 }
