@@ -49,6 +49,7 @@ public class VlogController {
         vlog.setAuthorName(user.getUserName());
         vlog.setVlogId(System.currentTimeMillis() + UUID.randomUUID().toString().replace("-" , ""));
 
+        vlog.setTitle(jsonObject.getString("title"));
         vlog.setSee(jsonObject.getBoolean("see"));
         vlog.setVideoUrl(jsonObject.getString("videoUrl"));
         vlog.setDescription(jsonObject.getString("description"));
@@ -89,9 +90,16 @@ public class VlogController {
     }
 
 //    获取所有可见视频
-    @GetMapping("getAllVlog")
+    @GetMapping("/getAllVlog")
     public List<Vlog> getAllVlog() {
         List<Vlog> vlogList = vlogService.getAllVlogBySee();
         return vlogList;
+    }
+
+    @GetMapping("/getVlogById")
+    public Vlog getVlogById(@RequestParam(name = "vlogId") Long vlogId) {
+        Vlog vlog = vlogService.getById(vlogId);
+        System.out.println(vlog);
+        return vlog;
     }
 }
