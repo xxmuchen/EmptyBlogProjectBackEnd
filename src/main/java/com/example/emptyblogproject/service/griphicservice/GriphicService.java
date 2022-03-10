@@ -1,6 +1,9 @@
 package com.example.emptyblogproject.service.griphicservice;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 
 import java.util.List;
@@ -21,5 +24,13 @@ public interface GriphicService extends IService<Griphic> {
     public List<Griphic> getHandWriteBeautifulSentence();
 
     public List<Griphic> getClassicDialogue();
+
+    public List<Griphic> getUserSpaceGriphicOrderCreateTime(Long userId);
+
+
+    public List<Griphic> getUserSpaceGriphicUserStarOrderByCreateTime(Long userId);
+
+
+    public List<Griphic> getUserSpaceGriphicUserCollectionOrderByCreateTime(Long userId);
 
 }

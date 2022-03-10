@@ -1,7 +1,9 @@
 package com.example.emptyblogproject.service.griphicservice.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.mapper.griphicmapper.GriphicMapper;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
@@ -52,5 +54,29 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
         queryWrapper.eq("type" , "经典对白");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicOrderCreateTime(Long userId) {
+//        Page<Griphic> page = new Page<>(currentPage , 7);
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.orderByDesc("create_time");
+//        Page<Griphic> diaryPage = this.page(page, queryWrapper);
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicUserStarOrderByCreateTime(Long userId) {
+//        Page<Griphic> page = new Page<>(currentPage , 7);
+        List<Griphic> userSpaceGriphicUserStarOrderByCreateTime = baseMapper.getUserSpaceGriphicUserStarOrderByCreateTime(userId);
+        return userSpaceGriphicUserStarOrderByCreateTime;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicUserCollectionOrderByCreateTime(Long userId) {
+        List<Griphic> userSpaceGriphicUserCollectionOrderByCreateTime = baseMapper.getUserSpaceGriphicUserCollectionOrderByCreateTime(userId);
+        return userSpaceGriphicUserCollectionOrderByCreateTime;
     }
 }
