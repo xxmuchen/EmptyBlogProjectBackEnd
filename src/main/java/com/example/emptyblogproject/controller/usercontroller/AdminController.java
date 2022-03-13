@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created with IntelliJ IDEA.
  * User: 王程翔
@@ -29,7 +31,7 @@ public class AdminController {
     @Autowired
     UserTokenUtils userTokenUtils;
 
-    @PostMapping("adminLogin")
+    @PostMapping("/adminLogin")
     public String adminLogin(@RequestBody String loginData) {
         JSONObject jsonObject = JSON.parseObject(loginData);
         String adminEmail = jsonObject.getString("adminEmail");
@@ -52,5 +54,11 @@ public class AdminController {
             throw new RuntimeException("登录失败，您的权限不足");
         }
 
+    }
+    @PostMapping("/getAdminOwnInfo")
+    public User getAdminOwnInfo(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        return user;
     }
 }
