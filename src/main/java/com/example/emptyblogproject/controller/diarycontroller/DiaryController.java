@@ -3,26 +3,20 @@ package com.example.emptyblogproject.controller.diarycontroller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.observe.Observe;
 import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
-import com.example.emptyblogproject.bean.observe.observeBo.ObserveUserBo;
-import com.example.emptyblogproject.bean.productioncollection.ProductionCollection;
-import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.observeservice.ObserveService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.user.UserService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 //@Controller
 //@ResponseBody
@@ -39,7 +32,7 @@ import java.util.function.Consumer;
 public class DiaryController {
 
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
     @Value("${file.diaryImagePath}")
     private String uploadImageAbsolutePath;
@@ -140,7 +133,7 @@ public class DiaryController {
     @PostMapping("/diaryInfoUpload")
     public String diaryInfoUpload(@RequestBody Diary diary , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("日记上传失败，用户不存在，请退出重新登陆");
@@ -271,7 +264,7 @@ public class DiaryController {
     @PostMapping("/addDiaryObserve")
     public List<ObserveNodeBO> addDiaryObserve(@RequestBody Observe observe , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         observe.setObserverId(user.getId());
         System.out.println(observe);
         boolean flag = observeService.save(observe);

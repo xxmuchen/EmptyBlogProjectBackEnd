@@ -1,8 +1,6 @@
 package com.example.emptyblogproject.controller.commentscontroller;
 
 import com.alibaba.fastjson.JSON;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.comments.commentsreply.CommentsReply;
 import com.example.emptyblogproject.bean.comments.commentsroot.CommentsRoot;
@@ -10,7 +8,7 @@ import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.commentsservice.commentsreplyservice.CommentsReplyService;
 import com.example.emptyblogproject.service.commentsservice.commentsrootservice.CommentsRootService;
 import com.example.emptyblogproject.service.user.UserService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +27,7 @@ import java.util.List;
 public class CommentsController {
 
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
     @Autowired
     UserService userService;
@@ -47,7 +45,7 @@ public class CommentsController {
     public CommentsRoot addRootComments(@RequestBody CommentsRoot commentsRoot , HttpServletRequest httpServletRequest) {
 
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
@@ -74,7 +72,7 @@ public class CommentsController {
     @PostMapping("addReplyComments")
     public CommentsReply addReplyComments(@RequestBody CommentsReply commentsReply , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
         }

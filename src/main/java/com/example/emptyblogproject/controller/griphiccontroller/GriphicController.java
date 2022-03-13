@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,7 @@ public class GriphicController {
     @Autowired
     GriphicService griphicService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
     @Value("${file.GriphicImagePath}")
     String uploadVideoAbsolutePath;
@@ -69,7 +68,7 @@ public class GriphicController {
     @PostMapping("addGriphic")
     public String addGriphic(@RequestBody String griphicData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         JSONObject jsonObject = JSON.parseObject(griphicData);
 

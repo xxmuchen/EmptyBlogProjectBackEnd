@@ -1,5 +1,6 @@
 package com.example.emptyblogproject.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.mapper.UsersMapper.UserMapper;
@@ -9,4 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper , User> implements UserService {
 
+    @Override
+    public User getUserByEmail(String email) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email" , email);
+        User user = this.getOne(queryWrapper);
+        return user;
+    }
 }

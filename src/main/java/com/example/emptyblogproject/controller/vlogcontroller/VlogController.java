@@ -6,7 +6,7 @@ import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +31,7 @@ public class VlogController {
     @Autowired
     VlogService vlogService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Value("${file.vlogVideoPath}")
     private String uploadVideoAbsolutePath;
 
@@ -39,7 +39,7 @@ public class VlogController {
     @UserLoginToken
     public String addVlog(@RequestBody String vlogData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         JSONObject jsonObject = JSON.parseObject(vlogData);
 

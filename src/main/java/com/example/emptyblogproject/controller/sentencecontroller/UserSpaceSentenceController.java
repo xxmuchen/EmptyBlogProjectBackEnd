@@ -1,12 +1,11 @@
 package com.example.emptyblogproject.controller.sentencecontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.user.UserService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,12 +29,12 @@ public class UserSpaceSentenceController {
     @Autowired
     SentenceService sentenceService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
     @GetMapping("/getUserSpaceSentenceOrderCreateTime")
     public Page<Sentence> getUserSpaceSentenceOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Sentence> userSpaceSentenceOrderCreateTime = sentenceService.getUserSpaceSentenceOrderCreateTime(currentPage, user.getId());
         return userSpaceSentenceOrderCreateTime;
     }
@@ -43,7 +42,7 @@ public class UserSpaceSentenceController {
     @DeleteMapping("/delUserSpaceSentenceBySentenceId")
     public Page<Sentence> delUserSpaceSentenceBySentenceId(@RequestParam("sentenceId") Long sentenceId , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Sentence sentence = sentenceService.getById(sentenceId);
         if (user == null) {
             throw new RuntimeException("用户不存在");
@@ -68,7 +67,7 @@ public class UserSpaceSentenceController {
     @GetMapping("/getUserSpaceSentenceUserStarOrderByCreateTime")
     public Page<Sentence> getUserSpaceSentenceUserStarOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Sentence> userSpaceSentenceUserStarOrderByCreateTime = sentenceService.getUserSpaceSentenceUserStarOrderByCreateTime(currentPage, user.getId());
         return userSpaceSentenceUserStarOrderByCreateTime;
     }
@@ -77,7 +76,7 @@ public class UserSpaceSentenceController {
     @GetMapping("/getUserSpaceSentenceUserCollectionOrderByCreateTime")
     public Page<Sentence> getUserSpaceSentenceUserCollectionOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Sentence> userSpaceSentenceUserCollectionOrderByCreateTime = sentenceService.getUserSpaceSentenceUserCollectionOrderByCreateTime(currentPage, user.getId());
         return userSpaceSentenceUserCollectionOrderByCreateTime;
     }

@@ -4,9 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
-import com.example.emptyblogproject.bean.dairy.Diary;
-import com.example.emptyblogproject.bean.productioncollection.ProductionCollection;
-import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import com.example.emptyblogproject.bean.user.User;
@@ -14,7 +11,7 @@ import com.example.emptyblogproject.service.productioncollectionservice.Producti
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.sentenceservice.sentencetagservice.SentenceTagService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +34,7 @@ public class SentenceController {
     @Autowired
     SentenceTagService sentenceTagService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Autowired
     ProductionStarService productionStarService;
     @Autowired
@@ -49,7 +46,7 @@ public class SentenceController {
     @UserLoginToken
     public String addSentence(@RequestBody String sentenceData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("用户不存在，请重新登录");

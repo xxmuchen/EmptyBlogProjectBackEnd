@@ -1,7 +1,9 @@
 package com.example.emptyblogproject.bean.user;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -17,6 +19,8 @@ public class User implements Serializable {
     private String sex;
     private String synopsis;
     private String email;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String avatar;
     private String location;

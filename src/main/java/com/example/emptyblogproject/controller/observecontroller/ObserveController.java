@@ -1,24 +1,12 @@
 package com.example.emptyblogproject.controller.observecontroller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
-import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.observe.Observe;
 import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
-import com.example.emptyblogproject.bean.observe.observeBo.ObserveUserBo;
-import com.example.emptyblogproject.bean.productioncollection.ProductionCollection;
-import com.example.emptyblogproject.bean.productionstar.ProductionStar;
-import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.observeservice.ObserveService;
-import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
-import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
-import com.example.emptyblogproject.service.sentenceservice.SentenceService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +25,7 @@ public class ObserveController  {
     @Autowired
     ObserveService observeService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
     /**
      * 功能描述：根据博客id，查询此博客的所有评论信息（链表类型的数据）
@@ -69,7 +57,7 @@ public class ObserveController  {
     @PostMapping("/addObjObserve")
     public List<ObserveNodeBO> addObjObserve(@RequestBody Observe observe , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         observe.setObserverId(user.getId());
 //        System.out.println(observe);
         boolean flag = observeService.save(observe);

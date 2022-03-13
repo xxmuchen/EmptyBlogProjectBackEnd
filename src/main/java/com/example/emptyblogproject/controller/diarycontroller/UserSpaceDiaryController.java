@@ -5,7 +5,7 @@ import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.user.UserService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserSpaceDiaryController {
 
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Autowired
     UserService userService;
     @Autowired
@@ -31,7 +31,7 @@ public class UserSpaceDiaryController {
     @GetMapping("/getUserSpaceDiaryOrderCreateTime")
     public Page<Diary> getUserSpaceDiaryOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryOrderCreateTime(currentPage , user.getId());
         return diaryPageOrderCreateTime;
     }
@@ -39,7 +39,7 @@ public class UserSpaceDiaryController {
     @DeleteMapping("/delUserSpaceDiaryByDiaryId")
     public Page<Diary> delUserSpaceDiaryByDiaryId(@RequestParam("diaryId") Long diaryId , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Diary diary = diaryService.getById(diaryId);
         if (user == null) {
             throw new RuntimeException("用户不存在");
@@ -64,7 +64,7 @@ public class UserSpaceDiaryController {
     @GetMapping("/getUserSpaceDiaryUserStarOrderByCreateTime")
     public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Diary> userSpaceDiaryUserStarOrderByCreateTime = diaryService.getUserSpaceDiaryUserStarOrderByCreateTime(currentPage, user.getId());
         return userSpaceDiaryUserStarOrderByCreateTime;
     }
@@ -73,7 +73,7 @@ public class UserSpaceDiaryController {
     @GetMapping("/getUserSpaceDiaryUserCollectionOrderByCreateTime")
     public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Diary> userSpaceDiaryUserCollectionOrderByCreateTime = diaryService.getUserSpaceDiaryUserCollectionOrderByCreateTime(currentPage, user.getId());
         return userSpaceDiaryUserCollectionOrderByCreateTime;
     }

@@ -16,7 +16,7 @@ import com.example.emptyblogproject.service.productioncollectionservice.Producti
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +41,7 @@ public class ProductionOperationController {
     @Autowired
     ProductionStarService productionStarService;
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Autowired
     VlogService vlogService;
     @Autowired
@@ -53,7 +53,7 @@ public class ProductionOperationController {
     /*句子点赞功能*/
     public String saveObjStar(@RequestBody String objData , HttpServletRequest httpServletRequest) {
             String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         if (user == null) {
             throw new RuntimeException("点赞失败，用户不存在，请退出重新登陆");
         }
@@ -151,7 +151,7 @@ public class ProductionOperationController {
     public String cancelObjStar(@RequestBody String objData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
 
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("取消点赞失败，用户不存在，请退出重新登陆");
@@ -209,7 +209,7 @@ public class ProductionOperationController {
     /* 日记收藏功能 */
     public String saveObjCollection(@RequestBody String objData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         if (user == null) {
             throw new RuntimeException("收藏失败，用户不存在，请退出重新登陆");
         }
@@ -299,7 +299,7 @@ public class ProductionOperationController {
     @PostMapping("/cancelObjCollection")
     public String cancelObjCollection(@RequestBody String objData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
 
         if (user == null) {
@@ -378,7 +378,7 @@ public class ProductionOperationController {
                                 @RequestParam("objType") String objType,
                                 HttpServletRequest httpServletRequest){
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
@@ -441,7 +441,7 @@ public class ProductionOperationController {
                                    @RequestParam(name = "objType") String objType,
                                    HttpServletRequest httpServletRequest){
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");

@@ -1,13 +1,11 @@
 package com.example.emptyblogproject.controller.vlogcontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
-import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.user.UserService;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class UserSpaceVlogController {
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Autowired
     UserService userService;
     @Autowired
@@ -36,7 +34,7 @@ public class UserSpaceVlogController {
     @GetMapping("/getUserSpaceVlogOrderCreateTime")
     public Page<Vlog> getUserSpaceVlogOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Vlog> userSpaceVlogOrderCreateTime = vlogService.getUserSpaceVlogOrderCreateTime(currentPage, user.getId());
         return userSpaceVlogOrderCreateTime;
     }
@@ -44,7 +42,7 @@ public class UserSpaceVlogController {
     @DeleteMapping("/delUserSpaceVlogByVlogId")
     public Page<Vlog> delUserSpaceVlogByVlogId(@RequestParam("vlogId") Long vlogId , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Vlog vlog = vlogService.getById(vlogId);
         if (user == null) {
             throw new RuntimeException("用户不存在");
@@ -69,7 +67,7 @@ public class UserSpaceVlogController {
     @GetMapping("/getUserSpaceVlogUserStarOrderByCreateTime")
     public Page<Vlog> getUserSpaceVlogUserStarOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Vlog> userSpaceVlogUserStarOrderByCreateTime = vlogService.getUserSpaceVlogUserStarOrderByCreateTime(currentPage, user.getId());
         return userSpaceVlogUserStarOrderByCreateTime;
     }
@@ -78,7 +76,7 @@ public class UserSpaceVlogController {
     @GetMapping("/getUserSpaceVlogUserCollectionOrderByCreateTime")
     public Page<Vlog> getUserSpaceVlogUserCollectionOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Vlog> userSpaceVlogUserCollectionOrderByCreateTime = vlogService.getUserSpaceVlogUserCollectionOrderByCreateTime(currentPage, user.getId());
         return userSpaceVlogUserCollectionOrderByCreateTime;
     }

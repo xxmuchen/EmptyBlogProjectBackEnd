@@ -2,14 +2,14 @@ package com.example.emptyblogproject.controller.usercontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
 import com.example.emptyblogproject.service.user.UserService;
 
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
+    @Autowired
+    PermissionsService permissionsService;
 
     @Value("${file.avatarPath}")
     private String uploadAbsolutePath;
@@ -41,7 +42,7 @@ public class UserController {
 //    TokenService tokenService;
 
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
 
 //    注册用户
     @PostMapping("/registUser")
@@ -69,16 +70,31 @@ public class UserController {
             throw new RuntimeException("您的邮箱输入错误，请重试");
         }
 
-        System.out.println(user);
+//        System.out.println(user);
         boolean flag = userService.save(user);
-        System.out.println(user.getAvatar());
+
+
+
+//        System.out.println(user.getAvatar());
         if (flag) {
+            User userByEmail = userService.getUserByEmail(user.getEmail());
+            if (userByEmail == null) {
+                throw new RuntimeException("注册失败，请联系后台管理员QQ邮箱：2879257224@qq.com");
+            }
+            Permissions permissions = new Permissions();
+            permissions.setUserPermission(0);
+            permissions.setUserId(user.getId());
+            boolean save = permissionsService.save(permissions);
+            if (save) {
+                return "注册成功,马上为您转到登录界面";
+            }else {
+                throw new RuntimeException("注册失败，请联系后台管理员QQ邮箱：2879257224@qq.com");
+            }
 
-            return "注册成功,马上为您转到登录界面";
+        }else {
+            throw new RuntimeException("注册失败，请联系后台管理员QQ邮箱：2879257224@qq.com");
         }
-//        System.out.println(usercontroller);
 
-        return "注册失败，请联系后台管理员QQ邮箱：2879257224@qq.com";
     }
 
 //    上传头像
@@ -124,7 +140,7 @@ public class UserController {
         if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
 //            String token = tokenService.getToken(usercontroller);
 //            return token;
-            String token = tokenUtils.getToken(user);
+            String token = userTokenUtils.getToken(user);
             System.out.println(token);
             return token;
         }else {
@@ -145,7 +161,7 @@ public class UserController {
 //        }
 //        Long user_id = Long.parseLong(userId);
 
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
 //        User user = userService.getById(user_id);
         if (user == null) {

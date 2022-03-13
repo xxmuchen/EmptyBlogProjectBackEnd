@@ -1,11 +1,9 @@
 package com.example.emptyblogproject.controller.usercontroller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.user.UserService;
-import com.example.emptyblogproject.utils.TokenUtils;
+import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,20 +21,20 @@ import javax.servlet.http.HttpServletRequest;
 public class UserSpaceController {
 
     @Autowired
-    TokenUtils tokenUtils;
+    UserTokenUtils userTokenUtils;
     @Autowired
     UserService userService;
 
     @PostMapping("/getUserByToken")
     public User getUserById(HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User user = tokenUtils.parseTokenAndGetUser(authorization);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
         return user;
     }
     @PostMapping("updateUserInfo")
     public User updateUserInfoByToken(@RequestBody User user , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-        User userData = tokenUtils.parseTokenAndGetUser(authorization);
+        User userData = userTokenUtils.parseTokenAndGetUser(authorization);
         if (userData == null) {
             throw new RuntimeException("该用户未注册");
         }
