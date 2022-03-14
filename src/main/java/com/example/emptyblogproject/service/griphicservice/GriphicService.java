@@ -33,4 +33,5 @@ public interface GriphicService extends IService<Griphic> {
 
     public List<Griphic> getUserSpaceGriphicUserCollectionOrderByCreateTime(Long userId);
 
+    public List<Griphic> adminGetAllGriphicByPageAndCreateTime();
 }

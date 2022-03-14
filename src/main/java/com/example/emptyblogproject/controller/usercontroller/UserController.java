@@ -6,9 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.bean.user.UserLogin;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
+import com.example.emptyblogproject.service.user.UserLoginService;
 import com.example.emptyblogproject.service.user.UserService;
 
+import com.example.emptyblogproject.utils.IpUtils;
+import com.example.emptyblogproject.utils.UserLoginUtils;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +41,7 @@ public class UserController {
 
     @Value("${file.avatarPath}")
     private String uploadAbsolutePath;
+
 
 //    @Autowired
 //    TokenService tokenService;
@@ -127,19 +132,24 @@ public class UserController {
     public String userLogin(@RequestBody String userData , HttpServletRequest request) {
 //        System.out.println(userData);
         JSONObject jsonObject = JSON.parseObject(userData);
-        String userName = (String) jsonObject.get("userName");
+        String email = (String) jsonObject.get("email");
         String password = (String) jsonObject.get("password");
 //        System.out.println(userName + " " + password);
 
-        User user = userService.getOne(new QueryWrapper<User>().eq("user_name", userName));
+        User user = userService.getOne(new QueryWrapper<User>().eq("email", email));
 
         if (user == null) {
             throw new RuntimeException("该用户不存在");
         }
 
-        if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
+        if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
 //            String token = tokenService.getToken(usercontroller);
 //            return token;
+            String ipAddr = IpUtils.getIpAddr(request);
+//            System.out.println(ipAddr);
+            UserLoginUtils.saveUserLoginInfo(user , "用户" , ipAddr);
+
+
             String token = userTokenUtils.getToken(user);
             System.out.println(token);
             return token;

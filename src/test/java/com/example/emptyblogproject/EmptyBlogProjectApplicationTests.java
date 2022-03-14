@@ -8,7 +8,7 @@ import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoExample;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoMedia;
 import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
-import com.example.emptyblogproject.mapper.UsersMapper.UserMapper;
+import com.example.emptyblogproject.mapper.UserMapper.UserMapper;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoExampleMapper;

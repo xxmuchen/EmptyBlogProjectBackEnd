@@ -92,6 +92,16 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         return userSpaceSentenceUserCollectionOrderByCreateTime;
     }
 
+    @Override
+    public Page<Sentence> adminGetAllSentenceByPageAndCreateTime(int currentPage) {
+        Page<Sentence> page = new Page<>(currentPage , 6);
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<Sentence> sentencePage = this.page(page, queryWrapper);
+        this.addTagsToSentencePage(sentencePage);
+        return sentencePage;
+    }
+
 
     /*为句子列表添加标签*/
     public void addTagsToSentenceList(List<Sentence> sentenceList) {

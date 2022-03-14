@@ -79,4 +79,12 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
         List<Griphic> userSpaceGriphicUserCollectionOrderByCreateTime = baseMapper.getUserSpaceGriphicUserCollectionOrderByCreateTime(userId);
         return userSpaceGriphicUserCollectionOrderByCreateTime;
     }
+
+    @Override
+    public List<Griphic> adminGetAllGriphicByPageAndCreateTime() {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
 }

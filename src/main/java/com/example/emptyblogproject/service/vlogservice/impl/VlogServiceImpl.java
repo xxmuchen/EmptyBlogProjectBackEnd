@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.mapper.vlogmapper.VlogMapper;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
@@ -51,5 +52,14 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
         Page<Vlog> page = new Page<>(currentPage , 7);
         Page<Vlog> userSpaceVlogUserCollectionOrderByCreateTime = baseMapper.getUserSpaceVlogUserCollectionOrderByCreateTime(page, userId);
         return userSpaceVlogUserCollectionOrderByCreateTime;
+    }
+
+    @Override
+    public Page<Vlog> adminGetAllVlogByPageAndCreateTime(int currentPage) {
+        Page<Vlog> page = new Page<>(currentPage , 6);
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<Vlog> vlogPage = this.page(page, queryWrapper);
+        return vlogPage;
     }
 }

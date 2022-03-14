@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.bean.user.UserLogin;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
+import com.example.emptyblogproject.service.user.UserLoginService;
 import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.utils.IpUtils;
+import com.example.emptyblogproject.utils.UserLoginUtils;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +35,9 @@ public class AdminController {
     @Autowired
     UserTokenUtils userTokenUtils;
 
+
     @PostMapping("/adminLogin")
-    public String adminLogin(@RequestBody String loginData) {
+    public String adminLogin(@RequestBody String loginData , HttpServletRequest httpServletRequest) {
         JSONObject jsonObject = JSON.parseObject(loginData);
         String adminEmail = jsonObject.getString("adminEmail");
         String adminPassword = jsonObject.getString("adminPassword");
@@ -46,6 +51,10 @@ public class AdminController {
 
         Permissions permissions = permissionsService.getPermissionByUserId(user.getId());
         if (permissions.getUserPermission() > 0) {
+            String ipAddr = IpUtils.getIpAddr(httpServletRequest);
+//            System.out.println(ipAddr);
+            UserLoginUtils.saveUserLoginInfo(user , permissions.getUserPermission() + "级管理员" , ipAddr);
+
             String token = userTokenUtils.getToken(user);
 //            System.out.println(token);
             return token;

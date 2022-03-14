@@ -35,6 +35,6 @@ public interface SentenceService extends IService<Sentence> {
 
     public Page<Sentence> getUserSpaceSentenceUserCollectionOrderByCreateTime(int currentPage , Long userId);
 
-
-
+    /*管理员获取所有句子*/
+    public Page<Sentence> adminGetAllSentenceByPageAndCreateTime(int currentPage);
 }
