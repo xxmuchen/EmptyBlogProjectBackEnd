@@ -61,4 +61,9 @@ public class AdminController {
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
         return user;
     }
+
+//    /*管理员添加用户*/
+//    @PostMapping("/adminAddUser")
+//    public
+
 }

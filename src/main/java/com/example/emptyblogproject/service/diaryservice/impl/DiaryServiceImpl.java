@@ -84,5 +84,14 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         return userSpaceDiaryUserCollectionOrderByCreateTime;
     }
 
+    @Override
+    public Page<Diary> adminGetAllDiaryByPageAndCreateTime(int currentPage) {
+        Page<Diary> page = new Page<>(currentPage , 9);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<Diary> diaryPage = this.page(page, queryWrapper);
+        return diaryPage;
+    }
+
 
 }

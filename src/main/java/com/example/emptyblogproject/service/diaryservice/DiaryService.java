@@ -27,4 +27,7 @@ public interface DiaryService extends IService<Diary> {
     public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(int currentPage , Long userId);
 
     public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(int currentPage , Long userId);
+
+    /*管理员获取所有日记*/
+    public Page<Diary> adminGetAllDiaryByPageAndCreateTime(int currentPage);
 }
