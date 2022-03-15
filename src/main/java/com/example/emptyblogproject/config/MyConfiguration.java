@@ -27,20 +27,20 @@ import java.util.stream.Collectors;
 public class MyConfiguration {
 
     /*解决跨域问题*/
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/*")
-//                        .allowedOriginPatterns("*")
-//                        .allowCredentials(true)
-//                        .allowedMethods("GET", "POST", "DELETE", "PUT","PATCH")
-//                        .maxAge(3600);
-//            }
-//        };
-//    }
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/*")
+                        .allowedOriginPatterns("*")
+                        .allowCredentials(true)
+                        .allowedMethods("GET", "POST", "DELETE", "PUT","PATCH")
+                        .maxAge(3600);
+            }
+        };
+    }
     @Bean
     public WebMvcConfigurer webMvcConfigurer(){
         return new WebMvcConfigurer() {

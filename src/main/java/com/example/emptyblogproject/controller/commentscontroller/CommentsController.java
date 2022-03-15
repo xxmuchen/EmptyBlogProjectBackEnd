@@ -7,7 +7,7 @@ import com.example.emptyblogproject.bean.comments.commentsroot.CommentsRoot;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.commentsservice.commentsreplyservice.CommentsReplyService;
 import com.example.emptyblogproject.service.commentsservice.commentsrootservice.CommentsRootService;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

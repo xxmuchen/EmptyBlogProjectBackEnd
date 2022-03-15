@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

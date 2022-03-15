@@ -30,13 +30,13 @@ public class CommentsReplyServiceImpl extends ServiceImpl<CommentsReplyMapper, C
     CommentsRootService commentsRootService;
 
     /*@Override
-    public CommentsReply addCommentsReply(CommentsReply commentsReply, User user , User beReviewer) {
+    public CommentsReply addCommentsReply(CommentsReply commentsReply, User userservice , User beReviewer) {
 
         CommentsRoot commentsRoot = commentsRootService.getCommentsRootByCommentsRootId(commentsReply.getCommentsParentId());
 
-        commentsReply.setUserId(user.getId());
-        commentsReply.setUserAvatar(user.getAvatar());
-        commentsReply.setUserName(user.getUserName());
+        commentsReply.setUserId(userservice.getId());
+        commentsReply.setUserAvatar(userservice.getAvatar());
+        commentsReply.setUserName(userservice.getUserName());
 
         commentsReply.setBeReviewedUserAvatar(beReviewer.getAvatar());
         commentsReply.setBeReviewedUserId(beReviewer.getId());

@@ -4,9 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.example.emptyblogproject.bean.admin.Admin;
-import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.adminservice.AdminService;
-import com.example.emptyblogproject.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

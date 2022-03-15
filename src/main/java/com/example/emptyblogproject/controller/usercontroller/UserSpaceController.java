@@ -1,7 +1,7 @@
 package com.example.emptyblogproject.controller.usercontroller;
 
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

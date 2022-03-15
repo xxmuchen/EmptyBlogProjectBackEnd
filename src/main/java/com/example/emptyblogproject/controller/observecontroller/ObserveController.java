@@ -47,7 +47,7 @@ public class ObserveController  {
      * @param
      * @return 评论信息，携带用户信息
      */
-//    @GetMapping("/user/{observeId}")
+//    @GetMapping("/userservice/{observeId}")
 //    public ObserveUserBo queryObserveUserById (@RequestParam(name = "observeId") Long observeId) {
 //        ObserveUserBo observeUserBo = observeService.queryObserveUserById(observeId);
 //        return observeUserBo;

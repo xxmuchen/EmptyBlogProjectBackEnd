@@ -1,10 +1,8 @@
 package com.example.emptyblogproject.utils;
 
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.bean.user.UserLogin;
 import com.example.emptyblogproject.bean.user.UserOperation;
-import com.example.emptyblogproject.service.user.UserLoginService;
-import com.example.emptyblogproject.service.user.UserOperationService;
+import com.example.emptyblogproject.service.userservice.UserOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

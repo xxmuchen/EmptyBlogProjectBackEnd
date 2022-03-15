@@ -2,8 +2,9 @@ package com.example.emptyblogproject.utils;
 
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.user.UserLogin;
-import com.example.emptyblogproject.service.user.UserLoginService;
+import com.example.emptyblogproject.service.userservice.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Time: 2:12
  * Description:
  */
+@Component
 public class UserLoginUtils {
-    @Autowired
-    private static UserLoginService userLoginService;
 
-    public static void saveUserLoginInfo(User user , String identity , String ipAddr) {
+    @Autowired
+    private UserLoginService userLoginService;
+
+    public void saveUserLoginInfo(User user , String identity , String ipAddr) {
         UserLogin userLogin = new UserLogin();
         userLogin.setUserId(user.getId());
         userLogin.setUserName(user.getUserName());

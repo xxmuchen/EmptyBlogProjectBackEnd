@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Deprecated
 public interface CommentsReplyService extends IService<CommentsReply> {
 
-//    public CommentsReply addCommentsReply(CommentsReply commentsReply , User user , User beReviewer);
+//    public CommentsReply addCommentsReply(CommentsReply commentsReply , User userservice , User beReviewer);
     /*添加子评论*/
     public CommentsReply addCommentsReply(CommentsReply commentsReply , User user);
 

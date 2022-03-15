@@ -2,12 +2,9 @@ package com.example.emptyblogproject.controller.usercontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.service.user.UserService;
-import org.apache.ibatis.annotations.Update;
+import com.example.emptyblogproject.service.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

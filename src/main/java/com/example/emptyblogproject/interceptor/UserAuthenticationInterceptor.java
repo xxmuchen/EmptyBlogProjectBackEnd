@@ -8,7 +8,7 @@ import com.example.emptyblogproject.annotation.UserPassToken;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;

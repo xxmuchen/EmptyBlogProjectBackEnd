@@ -17,15 +17,15 @@ import java.util.List;
  */
 public interface GriphicMapper extends BaseMapper<Griphic> {
 
-    @Select("select griphic.* from user , griphic , production_star where user.id = production_star.user_id\n" +
-            "                and production_star.obj_id = griphic.id and user.id = #{userId} \n" +
-            "                and user.del = false and griphic.del = false and production_star.del = false\n" +
+    @Select("select griphic.* from userservice , griphic , production_star where userservice.id = production_star.user_id\n" +
+            "                and production_star.obj_id = griphic.id and userservice.id = #{userId} \n" +
+            "                and userservice.del = false and griphic.del = false and production_star.del = false\n" +
             "                order by production_star.create_time DESC")
     public List<Griphic> getUserSpaceGriphicUserStarOrderByCreateTime(Long userId);
 
-    @Select("select griphic.* from user , griphic , production_collection where user.id = production_collection.user_id\n" +
-            "                and production_collection.obj_id = griphic.id and user.id = #{userId} \n" +
-            "                and user.del = false and griphic.del = false and production_collection.del = false\n" +
+    @Select("select griphic.* from userservice , griphic , production_collection where userservice.id = production_collection.user_id\n" +
+            "                and production_collection.obj_id = griphic.id and userservice.id = #{userId} \n" +
+            "                and userservice.del = false and griphic.del = false and production_collection.del = false\n" +
             "                order by production_collection.create_time DESC")
     public List<Griphic> getUserSpaceGriphicUserCollectionOrderByCreateTime(Long userId);
 

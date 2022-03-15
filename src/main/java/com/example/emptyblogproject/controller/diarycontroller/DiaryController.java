@@ -13,7 +13,7 @@ import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.observeservice.ObserveService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -254,7 +254,7 @@ public class DiaryController {
      * @param
      * @return 评论信息，携带用户信息
      */
-//    @GetMapping("/user/{observeId}")
+//    @GetMapping("/userservice/{observeId}")
 //    public ObserveUserBo queryObserveUserById (@RequestParam(name = "observeId") Long observeId) {
 //        ObserveUserBo observeUserBo = observeService.queryObserveUserById(observeId);
 //        return observeUserBo;
@@ -307,8 +307,8 @@ public class DiaryController {
 //    /*日记点赞功能*/
 //    public String saveDiaryStar(@RequestBody String diaryId , HttpServletRequest httpServletRequest) {
 //        String authorization = httpServletRequest.getHeader("Authorization");
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
-//        if (user == null) {
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
+//        if (userservice == null) {
 //            throw new RuntimeException("点赞失败，用户不存在，请退出重新登陆");
 //        }
 //
@@ -324,13 +324,13 @@ public class DiaryController {
 ////        System.out.println(diarycontroller);
 ////        查询取消点赞的记录
 //
-//        ProductionStar productionStar = productionStarService.getOneHasDelDiaryStar(user.getId() , diary.getId() , "放空日记");
+//        ProductionStar productionStar = productionStarService.getOneHasDelDiaryStar(userservice.getId() , diary.getId() , "放空日记");
 //        System.out.println(productionStar);
 //        boolean flag = false;
 //
 //        if (productionStar == null) {
 //            productionStar = new ProductionStar();
-//            productionStar.setUserId(user.getId());
+//            productionStar.setUserId(userservice.getId());
 //            productionStar.setObjId(diary.getId());
 //            productionStar.setType("放空日记");
 ////            System.out.println(diaryStar);
@@ -354,9 +354,9 @@ public class DiaryController {
 //    public String cancelDiaryStar(@RequestBody String diaryId , HttpServletRequest httpServletRequest) {
 //        String authorization = httpServletRequest.getHeader("Authorization");
 //
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
 //
-//        if (user == null) {
+//        if (userservice == null) {
 //            throw new RuntimeException("取消点赞失败，用户不存在，请退出重新登陆");
 //        }
 //
@@ -370,7 +370,7 @@ public class DiaryController {
 //            throw new RuntimeException("取消点赞失败，该日记不存在");
 //        }
 //
-//        ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), diary.getId(), "放空日记");
+//        ProductionStar productionStar = productionStarService.getOneDiaryStar(userservice.getId(), diary.getId(), "放空日记");
 //
 //        if (productionStar == null) {
 //            throw new RuntimeException("取消点赞失败，您未赞过");
@@ -390,8 +390,8 @@ public class DiaryController {
 //    /* 日记收藏功能 */
 //    public String saveDiaryCollection(@RequestBody String diaryId , HttpServletRequest httpServletRequest) {
 //        String authorization = httpServletRequest.getHeader("Authorization");
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
-//        if (user == null) {
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
+//        if (userservice == null) {
 //            throw new RuntimeException("收藏失败，用户不存在，请退出重新登陆");
 //        }
 //        JSONObject jsonObject = JSON.parseObject(diaryId);
@@ -406,13 +406,13 @@ public class DiaryController {
 ////        System.out.println(diarycontroller);
 ////        查询取消点赞的记录
 //
-//        ProductionCollection productionCollection = productionCollectionService.getOneHasDelDiaryCollection(user.getId(), diary.getId() , "放空日记");
+//        ProductionCollection productionCollection = productionCollectionService.getOneHasDelDiaryCollection(userservice.getId(), diary.getId() , "放空日记");
 //
 //        boolean flag = false;
 //
 //        if (productionCollection == null) {
 //            productionCollection = new ProductionCollection();
-//            productionCollection.setUserId(user.getId());
+//            productionCollection.setUserId(userservice.getId());
 //            productionCollection.setObjId(diary.getId());
 //            productionCollection.setType("放空日记");
 //
@@ -434,10 +434,10 @@ public class DiaryController {
 //    @PostMapping("/cancelDiaryCollection")
 //    public String cancelDiaryCollection(@RequestBody String diaryId , HttpServletRequest httpServletRequest) {
 //        String authorization = httpServletRequest.getHeader("Authorization");
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
 //
 //
-//        if (user == null) {
+//        if (userservice == null) {
 //            throw new RuntimeException("取消收藏失败，该用户不存在，请退出重新登陆");
 //        }
 //
@@ -451,7 +451,7 @@ public class DiaryController {
 //            throw new RuntimeException("取消收藏失败，该日记不存在");
 //        }
 //
-//        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), diary.getId(), "放空日记");
+//        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(userservice.getId(), diary.getId(), "放空日记");
 //        if (productionCollection == null) {
 //            throw new RuntimeException("取消收藏失败，您未赞过");
 //        }
@@ -472,9 +472,9 @@ public class DiaryController {
 //    @UserLoginToken
 //    public String hasAlreadLike(@RequestParam(name = "diaryId")String diaryId , HttpServletRequest httpServletRequest){
 //        String authorization = httpServletRequest.getHeader("Authorization");
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
 //
-//        if (user == null) {
+//        if (userservice == null) {
 //            throw new RuntimeException("用户不存在，请退出重新登陆");
 //        }
 //
@@ -489,7 +489,7 @@ public class DiaryController {
 //            throw new RuntimeException("该日记不存在");
 //        }
 //
-//        ProductionStar productionStar = productionStarService.getOneDiaryStar(user.getId(), diary.getId(), "放空日记");
+//        ProductionStar productionStar = productionStarService.getOneDiaryStar(userservice.getId(), diary.getId(), "放空日记");
 //
 //        if (productionStar != null) {
 ////            throw new RuntimeException("您未赞过");
@@ -504,9 +504,9 @@ public class DiaryController {
 //    @UserLoginToken
 //    public String hasAlreadCollect(@RequestParam(name = "diaryId")String diaryId , HttpServletRequest httpServletRequest){
 //        String authorization = httpServletRequest.getHeader("Authorization");
-//        User user = tokenUtils.parseTokenAndGetUser(authorization);
+//        User userservice = tokenUtils.parseTokenAndGetUser(authorization);
 //
-//        if (user == null) {
+//        if (userservice == null) {
 //            throw new RuntimeException("用户不存在，请退出重新登陆");
 //        }
 //        long diary_id = Long.parseLong(diaryId);
@@ -517,7 +517,7 @@ public class DiaryController {
 //        }
 //
 //
-//        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(user.getId(), diary.getId(), "放空日记");
+//        ProductionCollection productionCollection = productionCollectionService.getOneDiaryCollection(userservice.getId(), diary.getId(), "放空日记");
 //        if (productionCollection != null) {
 ////            throw new RuntimeException("您未赞过");
 //            return "collect";

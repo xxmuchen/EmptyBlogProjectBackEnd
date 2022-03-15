@@ -4,10 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.bean.user.UserLogin;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
-import com.example.emptyblogproject.service.user.UserLoginService;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.IpUtils;
 import com.example.emptyblogproject.utils.UserLoginUtils;
 import com.example.emptyblogproject.utils.UserTokenUtils;
@@ -34,7 +32,8 @@ public class AdminController {
     PermissionsService permissionsService;
     @Autowired
     UserTokenUtils userTokenUtils;
-
+    @Autowired
+    UserLoginUtils userLoginUtils;
 
     @PostMapping("/adminLogin")
     public String adminLogin(@RequestBody String loginData , HttpServletRequest httpServletRequest) {
@@ -53,7 +52,7 @@ public class AdminController {
         if (permissions.getUserPermission() > 0) {
             String ipAddr = IpUtils.getIpAddr(httpServletRequest);
 //            System.out.println(ipAddr);
-            UserLoginUtils.saveUserLoginInfo(user , permissions.getUserPermission() + "级管理员" , ipAddr);
+            userLoginUtils.saveUserLoginInfo(user , permissions.getUserPermission() + "级管理员" , ipAddr);
 
             String token = userTokenUtils.getToken(user);
 //            System.out.println(token);

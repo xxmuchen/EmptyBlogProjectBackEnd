@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
-import com.example.emptyblogproject.bean.user.UserLogin;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
-import com.example.emptyblogproject.service.user.UserLoginService;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 
 import com.example.emptyblogproject.utils.IpUtils;
 import com.example.emptyblogproject.utils.UserLoginUtils;
@@ -49,6 +47,9 @@ public class UserController {
     @Autowired
     UserTokenUtils userTokenUtils;
 
+    @Autowired
+    UserLoginUtils userLoginUtils;
+
 //    注册用户
     @PostMapping("/registUser")
     public String saveUser(@RequestBody User user) {
@@ -58,29 +59,30 @@ public class UserController {
         List<User> list = userService.list(queryWrapper);
         if (list != null && list.size() != 0) {
             throw new RuntimeException("该昵称已被占用，请重新更换昵称");
-        }
-
-        if (user == null || user.getUserName() == null || user.getUserName().equals("")) {
+        }else if (user == null || user.getUserName() == null || user.getUserName().equals("")) {
             throw new RuntimeException("您的昵称输入错误，请重试");
-        }
-
-        if (user == null || user.getPassword() == null || user.getPassword().equals("") ||user.getPassword().length() < 6 || user.getPassword().length() > 20) {
+        }else if (user == null || user.getPassword() == null || user.getPassword().equals("") ||user.getPassword().length() < 6 || user.getPassword().length() > 20) {
             throw new RuntimeException("您的密码输入错误，请重试");
-        }
-
-        if (user == null || user.getSex() == null || user.getSex().equals("")) {
+        }else if (user == null || user.getSex() == null || user.getSex().equals("")) {
             throw new RuntimeException("您的性别选择错误，请重试");
-        }
-        if (user == null || user.getEmail() == null || user.getEmail().equals("") || !user.getEmail().contains("@")) {
+        }else if (user == null || user.getEmail() == null || user.getEmail().equals("") || !user.getEmail().contains("@")) {
             throw new RuntimeException("您的邮箱输入错误，请重试");
+        }else if (user != null && user.getSynopsis().equals("")) {
+            user.setSynopsis(null);
+        }else if (user != null && user.getBirthday().equals("")) {
+            user.setBirthday(null);
+        }else if (user != null && user.getAvatar().equals("")) {
+            user.setAvatar(null);
+        }else if (user != null && user.getLocation().equals("")) {
+            user.setLocation(null);
         }
 
-//        System.out.println(user);
+//        System.out.println(userservice);
         boolean flag = userService.save(user);
 
 
 
-//        System.out.println(user.getAvatar());
+//        System.out.println(userservice.getAvatar());
         if (flag) {
             User userByEmail = userService.getUserByEmail(user.getEmail());
             if (userByEmail == null) {
@@ -147,7 +149,7 @@ public class UserController {
 //            return token;
             String ipAddr = IpUtils.getIpAddr(request);
 //            System.out.println(ipAddr);
-            UserLoginUtils.saveUserLoginInfo(user , "用户" , ipAddr);
+            userLoginUtils.saveUserLoginInfo(user , "用户" , ipAddr);
 
 
             String token = userTokenUtils.getToken(user);
@@ -173,7 +175,7 @@ public class UserController {
 
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
-//        User user = userService.getById(user_id);
+//        User userservice = userService.getById(user_id);
         if (user == null) {
             throw new RuntimeException("token出错，请用户重新登陆");
         }

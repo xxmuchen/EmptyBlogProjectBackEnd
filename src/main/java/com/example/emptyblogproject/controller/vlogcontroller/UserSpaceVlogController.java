@@ -3,7 +3,7 @@ package com.example.emptyblogproject.controller.vlogcontroller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
-import com.example.emptyblogproject.service.user.UserService;
+import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
