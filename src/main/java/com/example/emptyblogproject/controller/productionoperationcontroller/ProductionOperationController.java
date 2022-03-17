@@ -379,16 +379,13 @@ public class ProductionOperationController {
                                 HttpServletRequest httpServletRequest){
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
-
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
         }
-
         long obj_id = Long.parseLong(objId);
         ProductionStar productionStar = null;
         if (objType.equals("放空日记")) {
             Diary object = diaryService.getById(obj_id);
-
             if (object == null) {
                 throw new RuntimeException("该日记不存在");
             }
@@ -400,33 +397,25 @@ public class ProductionOperationController {
             }
         }else if (objType.equals("放空句子")) {
             Sentence object = sentenceService.getById(obj_id);
-
             if (object == null) {
                 throw new RuntimeException("该句子不存在");
             }
-
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
-
         } else if(objType.equals("放空Vlog")) {
             Vlog object = vlogService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("该Vlog不存在");
             }
-
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
-
         } else if(objType.equals("放空图文")) {
             Griphic object = griphicService.getById(obj_id);
             if (object == null) {
                 throw new RuntimeException("该图文不存在");
             }
-
             productionStar = productionStarService.getOneDiaryStar(user.getId(), object.getId(), objType);
-
         }else {
             throw new RuntimeException("数据错误，请重试");
         }
-
         if (productionStar != null) {
             return "like";
         }else {

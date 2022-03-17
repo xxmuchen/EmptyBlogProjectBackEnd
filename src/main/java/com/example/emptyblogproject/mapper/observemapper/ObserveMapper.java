@@ -25,8 +25,8 @@ public interface ObserveMapper extends BaseMapper<Observe> {
      * @author 王程翔
      * Date: 2020/4/16 10:37
      */
-    @Select("SELECT * FROM observe LEFT JOIN userservice " +
-            "ON observe.observer_id = userservice.id " +
+    @Select("SELECT * FROM observe LEFT JOIN user " +
+            "ON observe.observer_id = user.id " +
             "WHERE observe.type = #{type} AND observe.obj_id = #{objId} AND observe.del = 0 AND observe.last_id is null")
     @Results({
             @Result(id = true, column = "id", property = "id"),
@@ -34,7 +34,7 @@ public interface ObserveMapper extends BaseMapper<Observe> {
             @Result(column = "obj_id", property = "objId"),
             @Result(column = "observer_id", property = "observerId"),
             @Result(column = "observe_content", property = "observeContent"),
-            @Result(column = "observer_id", property = "userservice",
+            @Result(column = "observer_id", property = "user",
                     one = @One(select = "com.example.emptyblogproject.mapper.UserMapper.UserMapper.selectById",
                             fetchType = FetchType.EAGER)),
             @Result(column = "last_id", property = "lastId"),
@@ -52,8 +52,8 @@ public interface ObserveMapper extends BaseMapper<Observe> {
      * @author RenShiWei
      * Date: 2020/4/16 10:37
      */
-    @Select("SELECT * FROM observe LEFT JOIN userservice " +
-            "ON observe.observer_id=userservice.id " +
+    @Select("SELECT * FROM observe LEFT JOIN user " +
+            "ON observe.observer_id=user.id " +
             "WHERE observe.type = #{type} AND observe.obj_id=#{objId} AND observe.del = 0 AND observe.last_id is not null")
     @Results({
             @Result(id = true, column = "id", property = "id"),
@@ -61,7 +61,7 @@ public interface ObserveMapper extends BaseMapper<Observe> {
             @Result(column = "obj_id", property = "objId"),
             @Result(column = "observer_id", property = "observerId"),
             @Result(column = "observe_content", property = "observeContent"),
-            @Result(column = "observer_id", property = "userservice",
+            @Result(column = "observer_id", property = "user",
                     one = @One(select = "com.example.emptyblogproject.mapper.UserMapper.UserMapper.selectById",
                             fetchType = FetchType.EAGER)),
             @Result(column = "last_id", property = "lastId"),
