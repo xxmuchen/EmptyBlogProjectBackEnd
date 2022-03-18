@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.productionstar.ProductionStar;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
@@ -12,6 +14,8 @@ import com.example.emptyblogproject.service.productionstarservice.ProductionStar
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -92,6 +96,67 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         Page<Diary> diaryPage = this.page(page, queryWrapper);
         return diaryPage;
     }
+
+    @Override
+    public DataVisualizationBO getDiaryWriteAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> diaryWriteAWeekDataVisualization = baseMapper.getDiaryWriteAWeekDataVisualization();
+        System.out.println(diaryWriteAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: diaryWriteAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getDiaryObserveAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> diaryObserveAWeekDataVisualization = baseMapper.getDiaryObserveAWeekDataVisualization();
+        System.out.println(diaryObserveAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: diaryObserveAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getDiaryStarAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> diaryStarAWeekDataVisualization = baseMapper.getDiaryStarAWeekDataVisualization();
+        System.out.println(diaryStarAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: diaryStarAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getDiaryCollectAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> diaryCollectAWeekDataVisualization = baseMapper.getDiaryCollectAWeekDataVisualization();
+        System.out.println(diaryCollectAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: diaryCollectAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
 
 
 }

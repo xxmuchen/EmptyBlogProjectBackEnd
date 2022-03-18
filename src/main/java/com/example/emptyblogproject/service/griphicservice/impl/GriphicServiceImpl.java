@@ -4,11 +4,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.mapper.griphicmapper.GriphicMapper;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -86,5 +90,65 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
         queryWrapper.orderByDesc("create_time");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
+    }
+
+    @Override
+    public DataVisualizationBO getGriphicWriteAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> griphicWriteAWeekDataVisualization = baseMapper.getGriphicWriteAWeekDataVisualization();
+        System.out.println(griphicWriteAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: griphicWriteAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getGriphicStarAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> griphicStarAWeekDataVisualization = baseMapper.getGriphicStarAWeekDataVisualization();
+        System.out.println(griphicStarAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: griphicStarAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getGriphicCollectAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> griphicCollectAWeekDataVisualization = baseMapper.getGriphicCollectAWeekDataVisualization();
+        System.out.println(griphicCollectAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: griphicCollectAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getGriphicObserveAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> griphicObserveAWeekDataVisualization = baseMapper.getGriphicObserveAWeekDataVisualization();
+        System.out.println(griphicObserveAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: griphicObserveAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
     }
 }

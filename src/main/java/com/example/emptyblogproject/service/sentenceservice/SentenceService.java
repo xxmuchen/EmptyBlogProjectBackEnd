@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.mapper.sentencemapper.SentenceMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,4 +38,12 @@ public interface SentenceService extends IService<Sentence> {
 
     /*管理员获取所有句子*/
     public Page<Sentence> adminGetAllSentenceByPageAndCreateTime(int currentPage);
+
+    public DataVisualizationBO getSentenceWriteAWeekDataVisualization();
+
+    public DataVisualizationBO getSentenceStarAWeekDataVisualization();
+
+    public DataVisualizationBO getSentenceCollectAWeekDataVisualization();
+
+    public DataVisualizationBO getSentenceObserveAWeekDataVisualization();
 }

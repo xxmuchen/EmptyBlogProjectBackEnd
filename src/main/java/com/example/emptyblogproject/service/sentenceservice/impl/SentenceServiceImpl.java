@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import com.example.emptyblogproject.mapper.sentencemapper.SentenceMapper;
@@ -12,6 +14,8 @@ import com.example.emptyblogproject.service.sentenceservice.sentencetagservice.S
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -100,6 +104,66 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         Page<Sentence> sentencePage = this.page(page, queryWrapper);
         this.addTagsToSentencePage(sentencePage);
         return sentencePage;
+    }
+
+    @Override
+    public DataVisualizationBO getSentenceWriteAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> sentenceWriteAWeekDataVisualization = baseMapper.getSentenceWriteAWeekDataVisualization();
+        System.out.println(sentenceWriteAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: sentenceWriteAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getSentenceStarAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> sentenceStarAWeekDataVisualization = baseMapper.getSentenceStarAWeekDataVisualization();
+        System.out.println(sentenceStarAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: sentenceStarAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getSentenceCollectAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> sentenceCollectAWeekDataVisualization = baseMapper.getSentenceCollectAWeekDataVisualization();
+        System.out.println(sentenceCollectAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: sentenceCollectAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
+    }
+
+    @Override
+    public DataVisualizationBO getSentenceObserveAWeekDataVisualization() {
+        List<DataVisualizationDateAndInteger> sentenceObserveAWeekDataVisualization = baseMapper.getSentenceObserveAWeekDataVisualization();
+        System.out.println(sentenceObserveAWeekDataVisualization);
+        DataVisualizationBO dataVisualizationBO = new DataVisualizationBO();
+        String strDateFormat = "yyyy-MM-dd";
+        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+        for (DataVisualizationDateAndInteger dataVisualizationDateAndInteger: sentenceObserveAWeekDataVisualization) {
+            String format = dateFormat.format(dataVisualizationDateAndInteger.getTime());
+            dataVisualizationBO.getXAxis().add(format);
+            dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
+        }
+        return dataVisualizationBO;
     }
 
 

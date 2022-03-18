@@ -3,6 +3,7 @@ package com.example.emptyblogproject.service.vlogservice;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.vlog.Vlog;
 
@@ -26,4 +27,12 @@ public interface VlogService extends IService<Vlog> {
     public Page<Vlog> getUserSpaceVlogUserCollectionOrderByCreateTime(int currentPage, Long userId);
     /*管理员获取所有句子*/
     public Page<Vlog> adminGetAllVlogByPageAndCreateTime(int currentPage);
+
+    DataVisualizationBO getVlogWriteAWeekDataVisualization();
+
+    DataVisualizationBO getVlogStarAWeekDataVisualization();
+
+    DataVisualizationBO getVlogCollectAWeekDataVisualization();
+
+    DataVisualizationBO getVlogObserveAWeekDataVisualization();
 }

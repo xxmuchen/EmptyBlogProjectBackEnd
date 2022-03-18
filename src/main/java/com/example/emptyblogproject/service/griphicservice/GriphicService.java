@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 
 import java.util.List;
@@ -34,4 +35,12 @@ public interface GriphicService extends IService<Griphic> {
     public List<Griphic> getUserSpaceGriphicUserCollectionOrderByCreateTime(Long userId);
 
     public List<Griphic> adminGetAllGriphicByPageAndCreateTime();
+
+    public DataVisualizationBO getGriphicWriteAWeekDataVisualization();
+
+    public DataVisualizationBO getGriphicStarAWeekDataVisualization();
+
+    public DataVisualizationBO getGriphicCollectAWeekDataVisualization();
+
+    public DataVisualizationBO getGriphicObserveAWeekDataVisualization();
 }

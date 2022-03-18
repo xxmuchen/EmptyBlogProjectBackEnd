@@ -3,6 +3,7 @@ package com.example.emptyblogproject.service.diaryservice;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
+import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 
 import java.util.List;
 
@@ -30,4 +31,14 @@ public interface DiaryService extends IService<Diary> {
 
     /*管理员获取所有日记*/
     public Page<Diary> adminGetAllDiaryByPageAndCreateTime(int currentPage);
+
+    public DataVisualizationBO getDiaryWriteAWeekDataVisualization();
+
+    public DataVisualizationBO getDiaryObserveAWeekDataVisualization();
+
+    public DataVisualizationBO getDiaryStarAWeekDataVisualization();
+
+    public DataVisualizationBO getDiaryCollectAWeekDataVisualization();
+
+
 }
