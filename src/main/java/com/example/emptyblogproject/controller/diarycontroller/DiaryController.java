@@ -8,11 +8,13 @@ import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.observe.Observe;
 import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
+import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.observeservice.ObserveService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
+import com.example.emptyblogproject.service.sensitivewordsservice.SensitiveWordsService;
 import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,8 @@ public class DiaryController {
     @Autowired
     ObserveService observeService;
 
+    @Autowired
+    SensitiveWordsService sensitiveWordsService;
 //    日记内容图片上传
 //    @UserLoginToken
 //    日记图片文件上传并返回路径
@@ -139,8 +143,19 @@ public class DiaryController {
             throw new RuntimeException("日记上传失败，用户不存在，请退出重新登陆");
         }
 
+        List<SensitiveWords> sensitiveWordsList = sensitiveWordsService.list();
+
+        for (SensitiveWords sensitiveWords : sensitiveWordsList) {
+            if (diary.getTitle().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该日记标题中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }else if (diary.getContent().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该日记内容中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }
+        }
+
         diary.setAuthorId(user.getId());
         diary.setAuthorName(user.getUserName());
+        diary.setState("待审批");
 //        System.out.println(diarycontroller);
         boolean flag = diaryService.save(diary);
         if (flag) {
@@ -223,8 +238,7 @@ public class DiaryController {
 
 //        Diary diary = diaryService.getById(diary_Id);
         Diary diary = diaryService.getById(diaryId);
-//        System.out.println(diarycontroller);
-//        diaryService.getById()
+
 
         if (diary != null) {
             return diary;

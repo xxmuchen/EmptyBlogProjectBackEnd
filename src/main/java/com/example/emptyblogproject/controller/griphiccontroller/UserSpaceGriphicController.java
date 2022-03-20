@@ -40,6 +40,33 @@ public class UserSpaceGriphicController {
         return userSpaceGriphicOrderCreateTime;
     }
 
+    @GetMapping("/getUserSpaceGriphicStateSuccessOrderCreateTime")
+    public List<Griphic> getUserSpaceGriphicStateSuccessOrderCreateTime(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        List<Griphic> userSpaceGriphicOrderCreateTime = griphicService.getUserSpaceGriphicStateSuccessOrderCreateTime(user.getId());
+
+        return userSpaceGriphicOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceGriphicStateWaitOrderCreateTime")
+    public List<Griphic> getUserSpaceGriphicStateWaitOrderCreateTime(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        List<Griphic> userSpaceGriphicOrderCreateTime = griphicService.getUserSpaceGriphicStateWaitOrderCreateTime(user.getId());
+
+        return userSpaceGriphicOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceGriphicStateFailOrderCreateTime")
+    public List<Griphic> getUserSpaceGriphicStateFailOrderCreateTime(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        List<Griphic> userSpaceGriphicOrderCreateTime = griphicService.getUserSpaceGriphicStateFailOrderCreateTime(user.getId());
+
+        return userSpaceGriphicOrderCreateTime;
+    }
+
     @DeleteMapping("/delUserSpaceGriphicBygriphicId")
     public List<Griphic> delUserSpaceGriphicBygriphicId(@RequestParam("griphicId") Long griphicId , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");

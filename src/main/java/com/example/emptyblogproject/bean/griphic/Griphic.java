@@ -23,6 +23,9 @@ public class Griphic {
     private Long authorId;
     private String authorName;
     private String authorAvatar;
+    private String errorReason;
+    @TableField(fill = FieldFill.INSERT)
+    private String state;
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
     @TableField(fill = FieldFill.INSERT_UPDATE)

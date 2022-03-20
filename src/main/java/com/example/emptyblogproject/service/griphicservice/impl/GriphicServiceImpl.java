@@ -29,6 +29,7 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getAllGriphicBySee() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审核通过");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
     }
@@ -37,6 +38,7 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getBuiltifulImageAndSentence() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.eq("type" , "美图美句");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
@@ -46,6 +48,7 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getHandWriteBeautifulSentence() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.eq("type" , "手写美句");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
@@ -55,6 +58,8 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getClassicDialogue() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.eq("type" , "经典对白");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
@@ -150,5 +155,38 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
             dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
         }
         return dataVisualizationBO;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicStateSuccessOrderCreateTime(Long userId) {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.orderByDesc("create_time");
+//        Page<Griphic> diaryPage = this.page(page, queryWrapper);
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicStateWaitOrderCreateTime(Long userId) {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "待审批");
+        queryWrapper.orderByDesc("create_time");
+//        Page<Griphic> diaryPage = this.page(page, queryWrapper);
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getUserSpaceGriphicStateFailOrderCreateTime(Long userId) {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批不通过");
+        queryWrapper.orderByDesc("create_time");
+//        Page<Griphic> diaryPage = this.page(page, queryWrapper);
+        List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
     }
 }

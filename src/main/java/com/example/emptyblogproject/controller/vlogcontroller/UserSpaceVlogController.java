@@ -39,6 +39,30 @@ public class UserSpaceVlogController {
         return userSpaceVlogOrderCreateTime;
     }
 
+    @GetMapping("/getUserSpaceVlogStateSuccessOrderCreateTime")
+    public Page<Vlog> getUserSpaceVlogStateSuccessOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Vlog> userSpaceVlogOrderCreateTime = vlogService.getUserSpaceVlogStateSuccessOrderCreateTime(currentPage, user.getId());
+        return userSpaceVlogOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceVlogStateWaitOrderCreateTime")
+    public Page<Vlog> getUserSpaceVlogStateWaitOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Vlog> userSpaceVlogOrderCreateTime = vlogService.getUserSpaceVlogStateWaitOrderCreateTime(currentPage, user.getId());
+        return userSpaceVlogOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceVlogStateFailOrderCreateTime")
+    public Page<Vlog> getUserSpaceVlogStateFailOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Vlog> userSpaceVlogOrderCreateTime = vlogService.getUserSpaceVlogStateFailOrderCreateTime(currentPage, user.getId());
+        return userSpaceVlogOrderCreateTime;
+    }
+
     @DeleteMapping("/delUserSpaceVlogByVlogId")
     public Page<Vlog> delUserSpaceVlogByVlogId(@RequestParam("vlogId") Long vlogId , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");

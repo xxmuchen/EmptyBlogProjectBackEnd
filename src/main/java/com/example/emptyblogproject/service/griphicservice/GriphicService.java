@@ -43,4 +43,10 @@ public interface GriphicService extends IService<Griphic> {
     public DataVisualizationBO getGriphicCollectAWeekDataVisualization();
 
     public DataVisualizationBO getGriphicObserveAWeekDataVisualization();
+
+    public List<Griphic> getUserSpaceGriphicStateSuccessOrderCreateTime(Long userId);
+
+    public List<Griphic> getUserSpaceGriphicStateWaitOrderCreateTime(Long userId);
+
+    public List<Griphic> getUserSpaceGriphicStateFailOrderCreateTime(Long userId);
 }

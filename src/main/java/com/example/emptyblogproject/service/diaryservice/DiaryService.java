@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface DiaryService extends IService<Diary> {
@@ -24,7 +27,16 @@ public interface DiaryService extends IService<Diary> {
     /*分页查询用户个人空间所有日记*/
     public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage , Long userId);
 
-    /*获取用户点赞的日记  按点赞时间排序*/
+    /*获取审核通过的日记*/
+    public Page<Diary> getUserSpaceDiaryStateSuccessOrderCreateTime(int currentPage , Long userId);
+
+    /*获取待审核日记*/
+    public Page<Diary> getUserSpaceDiaryStateWaitOrderCreateTime(int currentPage , Long userId);
+
+    /*获取审核失败日记*/
+    public Page<Diary> getUserSpaceDiaryStateFailOrderCreateTime(int currentPage , Long userId);
+
+        /*获取用户点赞的日记  按点赞时间排序*/
     public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(int currentPage , Long userId);
 
     public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(int currentPage , Long userId);

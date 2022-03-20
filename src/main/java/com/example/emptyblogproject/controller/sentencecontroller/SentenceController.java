@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
 import com.example.emptyblogproject.service.productionstarservice.ProductionStarService;
+import com.example.emptyblogproject.service.sensitivewordsservice.SensitiveWordsService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.sentenceservice.sentencetagservice.SentenceTagService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
@@ -39,7 +41,8 @@ public class SentenceController {
     ProductionStarService productionStarService;
     @Autowired
     ProductionCollectionService productionCollectionService;
-
+    @Autowired
+    SensitiveWordsService sensitiveWordsService;
     /*添加句子*/
     @PostMapping("/addSentence")
     @Transactional
@@ -64,18 +67,31 @@ public class SentenceController {
         sentence.setAuthorId(user.getId());
         JSONArray sentenceTagJsonArray = jsonObject.getJSONArray("sentenceTagList");
         List<SentenceTag> sentenceTagList = new ArrayList<>();
+        List<SensitiveWords> sensitiveWordsList = sensitiveWordsService.list();
         for (int i = 0 ; i < sentenceTagJsonArray.size() ; i++) {
             SentenceTag sentenceTag = null;
             sentenceTag = new SentenceTag();
             sentenceTag.setTagName(sentenceTagJsonArray.getString(i));
             sentenceTag.setSentenceId(sentenceSentenceId);
+            for (SensitiveWords sensitiveWords : sensitiveWordsList) {
+                if (sentenceTag.getTagName().contains(sensitiveWords.getSensitiveWord())) {
+                    throw new RuntimeException("该标签中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+                }
+            }
             boolean flag = sentenceTagService.save(sentenceTag);
             sentenceTagList.add(sentenceTag);
         }
         sentence.setSentenceTagList(sentenceTagList);
-//        sentence.setSentenceTagList();
-//        System.out.println(sentence);
 
+        for (SensitiveWords sensitiveWords : sensitiveWordsList) {
+            if (sentence.getContent().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该句子内容中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            } else if (sentence.getOriginalAuthor().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该原作者名字中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }
+        }
+
+        sentence.setState("待审批");
         boolean flag = sentenceService.save(sentence);
         if (flag) {
             return "上传成功";

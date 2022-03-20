@@ -63,6 +63,7 @@ public class MyConfiguration {
             public void insertFill(MetaObject metaObject) {
                 this.setFieldValByName("createTime", new Date(), metaObject);
                 this.setFieldValByName("updateTime", new Date(), metaObject);
+                this.setFieldValByName("state", "待审批", metaObject);
             }
 
             @Override

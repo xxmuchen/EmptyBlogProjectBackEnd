@@ -31,11 +31,36 @@ public class UserSpaceSentenceController {
     @Autowired
     UserTokenUtils userTokenUtils;
 
+//    获取所有句子
     @GetMapping("/getUserSpaceSentenceOrderCreateTime")
     public Page<Sentence> getUserSpaceSentenceOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Sentence> userSpaceSentenceOrderCreateTime = sentenceService.getUserSpaceSentenceOrderCreateTime(currentPage, user.getId());
+        return userSpaceSentenceOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceSentenceStateSuccessOrderCreateTime")
+    public Page<Sentence> getUserSpaceSentenceStateSuccessOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Sentence> userSpaceSentenceOrderCreateTime = sentenceService.getUserSpaceSentenceStateSuccessOrderCreateTime(currentPage, user.getId());
+        return userSpaceSentenceOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceSentenceStateWaitOrderCreateTime")
+    public Page<Sentence> getUserSpaceSentenceStateWaitOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Sentence> userSpaceSentenceOrderCreateTime = sentenceService.getUserSpaceSentenceStateWaitOrderCreateTime(currentPage, user.getId());
+        return userSpaceSentenceOrderCreateTime;
+    }
+
+    @GetMapping("/getUserSpaceSentenceStateFailOrderCreateTime")
+    public Page<Sentence> getUserSpaceSentenceStateFailOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Sentence> userSpaceSentenceOrderCreateTime = sentenceService.getUserSpaceSentenceStateFailOrderCreateTime(currentPage, user.getId());
         return userSpaceSentenceOrderCreateTime;
     }
 

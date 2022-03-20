@@ -46,4 +46,10 @@ public interface SentenceService extends IService<Sentence> {
     public DataVisualizationBO getSentenceCollectAWeekDataVisualization();
 
     public DataVisualizationBO getSentenceObserveAWeekDataVisualization();
+
+    public Page<Sentence> getUserSpaceSentenceStateSuccessOrderCreateTime(int currentPage, Long userId);
+
+    public Page<Sentence> getUserSpaceSentenceStateWaitOrderCreateTime(int currentPage, Long userId);
+
+    public Page<Sentence> getUserSpaceSentenceStateFailOrderCreateTime(int currentPage, Long userId);
 }

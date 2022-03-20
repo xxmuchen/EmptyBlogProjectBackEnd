@@ -25,7 +25,9 @@ public class Sentence {
     private String authorName;
     private String authorAvatar;
     private boolean see;
-
+    private String errorReason;
+    @TableField(fill = FieldFill.INSERT)
+    private String state;
     @TableField(exist = false)
     private List<SentenceTag> sentenceTagList;
 

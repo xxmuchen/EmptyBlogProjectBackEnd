@@ -30,13 +30,14 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
     public List<Vlog> getAllVlogBySee() {
         QueryWrapper<Vlog> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , 1);
+        queryWrapper.eq("state" , "审批成功");
         List<Vlog> vlogList = this.list(queryWrapper);
         return vlogList;
     }
 
     @Override
     public Page<Vlog> getUserSpaceVlogOrderCreateTime(int currentPage, Long userId) {
-        Page<Vlog> page = new Page<>(currentPage , 7);
+        Page<Vlog> page = new Page<>(currentPage , 6);
         QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("author_id" , userId);
         queryWrapper.orderByDesc("create_time");
@@ -125,5 +126,38 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
             dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
         }
         return dataVisualizationBO;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogStateFailOrderCreateTime(int currentPage, Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 6);
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批不通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Vlog> vlogPage = this.page(page, queryWrapper);
+        return vlogPage;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogStateWaitOrderCreateTime(int currentPage, Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 6);
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "待审批");
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.orderByDesc("create_time");
+        Page<Vlog> vlogPage = this.page(page, queryWrapper);
+        return vlogPage;
+    }
+
+    @Override
+    public Page<Vlog> getUserSpaceVlogStateSuccessOrderCreateTime(int currentPage, Long userId) {
+        Page<Vlog> page = new Page<>(currentPage , 6);
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Vlog> vlogPage = this.page(page, queryWrapper);
+        return vlogPage;
     }
 }

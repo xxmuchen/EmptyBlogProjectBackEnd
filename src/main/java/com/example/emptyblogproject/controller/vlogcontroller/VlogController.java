@@ -3,8 +3,10 @@ package com.example.emptyblogproject.controller.vlogcontroller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
+import com.example.emptyblogproject.service.sensitivewordsservice.SensitiveWordsService;
 import com.example.emptyblogproject.service.vlogservice.VlogService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,9 @@ public class VlogController {
     UserTokenUtils userTokenUtils;
     @Value("${file.vlogVideoPath}")
     private String uploadVideoAbsolutePath;
+    @Autowired
+    SensitiveWordsService sensitiveWordsService;
+
 
     @PostMapping("/addVlog")
     @UserLoginToken
@@ -54,6 +59,16 @@ public class VlogController {
         vlog.setVideoUrl(jsonObject.getString("videoUrl"));
         vlog.setDescription(jsonObject.getString("description"));
 
+        List<SensitiveWords> sensitiveWordsList = sensitiveWordsService.list();
+        for (SensitiveWords sensitiveWords : sensitiveWordsList) {
+            if (vlog.getTitle().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该Vlog标题中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }else if (vlog.getDescription().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该Vlog描述中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }
+        }
+
+        vlog.setState("待审批");
         boolean flag = vlogService.save(vlog);
 
         if (flag) {
@@ -99,7 +114,6 @@ public class VlogController {
     @GetMapping("/getVlogById")
     public Vlog getVlogById(@RequestParam(name = "vlogId") Long vlogId) {
         Vlog vlog = vlogService.getById(vlogId);
-        System.out.println(vlog);
         return vlog;
     }
 }

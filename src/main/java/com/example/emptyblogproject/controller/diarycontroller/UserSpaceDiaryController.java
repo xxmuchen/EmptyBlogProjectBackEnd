@@ -28,11 +28,38 @@ public class UserSpaceDiaryController {
     @Autowired
     DiaryService diaryService;
 
+//    获取所有日记
     @GetMapping("/getUserSpaceDiaryOrderCreateTime")
     public Page<Diary> getUserSpaceDiaryOrderByCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
         Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryOrderCreateTime(currentPage , user.getId());
+        return diaryPageOrderCreateTime;
+    }
+
+    /*获取审核通过的日记*/
+    @GetMapping("/getUserSpaceDiaryStateSuccessOrderCreateTime")
+    public Page<Diary> getUserSpaceDiaryStateSuccessOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryStateSuccessOrderCreateTime(currentPage , user.getId());
+        return diaryPageOrderCreateTime;
+    }
+
+    /*获取待审核日记*/
+    @GetMapping("/getUserSpaceDiaryStateWaitOrderCreateTime")
+    public Page<Diary> getUserSpaceDiaryStateWaitOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryStateWaitOrderCreateTime(currentPage , user.getId());
+        return diaryPageOrderCreateTime;
+    }
+    /*获取审核失败日记*/
+    @GetMapping("/getUserSpaceDiaryStateFailOrderCreateTime")
+    public Page<Diary> getUserSpaceDiaryStateFailOrderCreateTime(@RequestParam("currentIndex") int currentPage , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Page<Diary> diaryPageOrderCreateTime = diaryService.getUserSpaceDiaryStateFailOrderCreateTime(currentPage , user.getId());
         return diaryPageOrderCreateTime;
     }
 

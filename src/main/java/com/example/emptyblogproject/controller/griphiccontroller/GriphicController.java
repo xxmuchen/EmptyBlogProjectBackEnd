@@ -3,8 +3,10 @@ package com.example.emptyblogproject.controller.griphiccontroller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.bean.griphic.Griphic;
+import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
+import com.example.emptyblogproject.service.sensitivewordsservice.SensitiveWordsService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +33,8 @@ public class GriphicController {
     GriphicService griphicService;
     @Autowired
     UserTokenUtils userTokenUtils;
-
+    @Autowired
+    SensitiveWordsService sensitiveWordsService;
     @Value("${file.GriphicImagePath}")
     String uploadVideoAbsolutePath;
     @GetMapping("getAllGriphicBySee")
@@ -86,6 +89,14 @@ public class GriphicController {
         }
         griphic.setDescription(description);
 
+        List<SensitiveWords> sensitiveWordsList = sensitiveWordsService.list();
+        for (SensitiveWords sensitiveWords : sensitiveWordsList) {
+            if (griphic.getDescription().contains(sensitiveWords.getSensitiveWord())) {
+                throw new RuntimeException("该图文描述中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+            }
+        }
+
+        griphic.setState("待审批");
         boolean flag = griphicService.save(griphic);
 
         if (flag) {

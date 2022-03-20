@@ -28,11 +28,17 @@ public interface VlogService extends IService<Vlog> {
     /*管理员获取所有句子*/
     public Page<Vlog> adminGetAllVlogByPageAndCreateTime(int currentPage);
 
-    DataVisualizationBO getVlogWriteAWeekDataVisualization();
+    public DataVisualizationBO getVlogWriteAWeekDataVisualization();
 
-    DataVisualizationBO getVlogStarAWeekDataVisualization();
+    public DataVisualizationBO getVlogStarAWeekDataVisualization();
 
-    DataVisualizationBO getVlogCollectAWeekDataVisualization();
+    public DataVisualizationBO getVlogCollectAWeekDataVisualization();
 
-    DataVisualizationBO getVlogObserveAWeekDataVisualization();
+    public DataVisualizationBO getVlogObserveAWeekDataVisualization();
+
+    public Page<Vlog> getUserSpaceVlogStateFailOrderCreateTime(int currentPage, Long userId);
+
+    public Page<Vlog> getUserSpaceVlogStateWaitOrderCreateTime(int currentPage, Long userId);
+
+    public Page<Vlog> getUserSpaceVlogStateSuccessOrderCreateTime(int currentPage, Long userId);
 }

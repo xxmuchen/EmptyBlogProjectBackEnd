@@ -35,12 +35,9 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
     public List<Sentence> getAllSentenceBySee() {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         List<Sentence> sentenceList = this.list(queryWrapper);
 
-//        for (Sentence sentence: sentenceList) {
-//            List<SentenceTag> sentenceTagList = sentenceTagService.getTagsBySentenceSentenceId(sentence.getSentenceId());
-//            sentence.setSentenceTagList(sentenceTagList);
-//        }
         this.addTagsToSentenceList(sentenceList);
 
         return sentenceList;
@@ -50,7 +47,10 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
     public List<Sentence> quotesByFamousPeopleBySee() {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.isNotNull("original_author");
+
         queryWrapper.ne("original_author" , "");
         List<Sentence> sentenceList = this.list(queryWrapper);
 
@@ -71,9 +71,10 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
 
     @Override
     public Page<Sentence> getUserSpaceSentenceOrderCreateTime(int currentPage, Long userId) {
-        Page<Sentence> page = new Page<>(currentPage , 7);
+        Page<Sentence> page = new Page<>(currentPage , 6);
         QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("author_id" , userId);
+//        queryWrapper.eq("state" , "审批通过");
         queryWrapper.orderByDesc("create_time");
         Page<Sentence> sentencePage = this.page(page, queryWrapper);
         this.addTagsToSentencePage(sentencePage);
@@ -164,6 +165,42 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
             dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
         }
         return dataVisualizationBO;
+    }
+
+    @Override
+    public Page<Sentence> getUserSpaceSentenceStateSuccessOrderCreateTime(int currentPage, Long userId) {
+        Page<Sentence> page = new Page<>(currentPage , 6);
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Sentence> sentencePage = this.page(page, queryWrapper);
+        this.addTagsToSentencePage(sentencePage);
+        return sentencePage;
+    }
+
+    @Override
+    public Page<Sentence> getUserSpaceSentenceStateWaitOrderCreateTime(int currentPage, Long userId) {
+        Page<Sentence> page = new Page<>(currentPage , 6);
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "待审批");
+        queryWrapper.orderByDesc("create_time");
+        Page<Sentence> sentencePage = this.page(page, queryWrapper);
+        this.addTagsToSentencePage(sentencePage);
+        return sentencePage;
+    }
+
+    @Override
+    public Page<Sentence> getUserSpaceSentenceStateFailOrderCreateTime(int currentPage, Long userId) {
+        Page<Sentence> page = new Page<>(currentPage , 6);
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批不通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Sentence> sentencePage = this.page(page, queryWrapper);
+        this.addTagsToSentencePage(sentencePage);
+        return sentencePage;
     }
 
 

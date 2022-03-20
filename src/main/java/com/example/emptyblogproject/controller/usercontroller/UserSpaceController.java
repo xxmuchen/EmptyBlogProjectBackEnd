@@ -1,5 +1,7 @@
 package com.example.emptyblogproject.controller.usercontroller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
@@ -31,7 +33,7 @@ public class UserSpaceController {
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
         return user;
     }
-    @PostMapping("updateUserInfo")
+    @PostMapping("/updateUserInfo")
     public User updateUserInfoByToken(@RequestBody User user , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
         User userData = userTokenUtils.parseTokenAndGetUser(authorization);
@@ -66,6 +68,21 @@ public class UserSpaceController {
             return userService.getById(user.getId());
         }else {
             throw new RuntimeException("更新失败，请重试");
+        }
+    }
+
+    @PostMapping("/updateUserAvatar")
+    public String updateUserAvatar(@RequestBody String avatarData , HttpServletRequest httpServletRequest) {
+        JSONObject jsonObject = JSON.parseObject(avatarData);
+        String avatar = jsonObject.getString("avatar");
+        String authorization = httpServletRequest.getHeader("Authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        user.setAvatar(avatar);
+        boolean flag = userService.updateById(user);
+        if (flag) {
+            return "头像更新成功";
+        }else {
+            throw new RuntimeException("头像更新失败");
         }
     }
 }

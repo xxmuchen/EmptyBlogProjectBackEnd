@@ -14,6 +14,7 @@ import com.example.emptyblogproject.service.productionstarservice.ProductionStar
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -32,8 +33,10 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
     public List<Diary> getNewDiaryFourPieces() {
         QueryWrapper<Diary> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.orderByDesc("create_time");
         queryWrapper.last("limit 0,4");
+
         List<Diary> diaryList = this.list(queryWrapper);
 
         return diaryList;
@@ -44,6 +47,7 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         Page<Diary> page = new Page<>(currentPage , 10);
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         queryWrapper.orderByDesc("create_time");
         Page<Diary> pageData = this.page(page, queryWrapper);
         return pageData;
@@ -52,6 +56,9 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
     @Override
     public Page<Diary> getRecommendDiaryListPageing(int currentPage) {
         Page<Diary> page = new Page<>(currentPage , 10);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("see" , true);
+//        queryWrapper.eq("state" , "审批通过");
         Page<Diary> recommendDiaryListPageing = baseMapper.getRecommendDiaryListPageing(page);
         return recommendDiaryListPageing;
     }
@@ -66,7 +73,7 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
 
     @Override
     public Page<Diary> getUserSpaceDiaryOrderCreateTime(int currentPage  , Long userId) {
-        Page<Diary> page = new Page<>(currentPage , 7);
+        Page<Diary> page = new Page<>(currentPage , 6);
         QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("author_id" , userId);
         queryWrapper.orderByDesc("create_time");
@@ -75,15 +82,48 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
     }
 
     @Override
+    public Page<Diary> getUserSpaceDiaryStateSuccessOrderCreateTime(int currentPage, Long userId) {
+        Page<Diary> page = new Page<>(currentPage , 6);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Diary> diaryPage = this.page(page, queryWrapper);
+        return diaryPage;
+    }
+
+    @Override
+    public Page<Diary> getUserSpaceDiaryStateWaitOrderCreateTime(int currentPage  , Long userId) {
+        Page<Diary> page = new Page<>(currentPage , 6);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "待审批");
+        queryWrapper.orderByDesc("create_time");
+        Page<Diary> diaryPage = this.page(page, queryWrapper);
+        return diaryPage;
+    }
+
+    @Override
+    public Page<Diary> getUserSpaceDiaryStateFailOrderCreateTime(int currentPage  , Long userId) {
+        Page<Diary> page = new Page<>(currentPage , 6);
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("author_id" , userId);
+        queryWrapper.eq("state" , "审批不通过");
+        queryWrapper.orderByDesc("create_time");
+        Page<Diary> diaryPage = this.page(page, queryWrapper);
+        return diaryPage;
+    }
+
+    @Override
     public Page<Diary> getUserSpaceDiaryUserStarOrderByCreateTime(int currentPage , Long userId) {
-        Page<Diary> page = new Page<>(currentPage , 7);
+        Page<Diary> page = new Page<>(currentPage , 6);
         Page<Diary> userSpaceDiaryUserStarOrderByCreateTime = baseMapper.getUserSpaceDiaryUserStarOrderByCreateTime(page, userId);
         return userSpaceDiaryUserStarOrderByCreateTime;
     }
 
     @Override
     public Page<Diary> getUserSpaceDiaryUserCollectionOrderByCreateTime(int currentPage, Long userId) {
-        Page<Diary> page = new Page<>(currentPage , 7);
+        Page<Diary> page = new Page<>(currentPage , 6);
         Page<Diary> userSpaceDiaryUserCollectionOrderByCreateTime = baseMapper.getUserSpaceDiaryUserCollectionOrderByCreateTime(page, userId);
         return userSpaceDiaryUserCollectionOrderByCreateTime;
     }
