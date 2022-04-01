@@ -8,6 +8,7 @@ import com.example.emptyblogproject.bean.homepage.HomePageInfoContent;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoExample;
 import com.example.emptyblogproject.bean.homepage.HomePageInfoMedia;
 import com.example.emptyblogproject.bean.observe.observeBo.ObserveNodeBO;
+import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.mapper.UserMapper.UserMapper;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.mapper.homepagemapper.HomePageInfoContentMapper;
@@ -21,6 +22,8 @@ import com.example.emptyblogproject.service.homepage.HomepageInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.*;
 
@@ -47,6 +50,30 @@ class EmptyBlogProjectApplicationTests {
 
     @Autowired
     DiaryService diaryService;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    RedisTemplate<Object, User> userRedisTemplate;
+
+    @Test
+    public void userRedisTest() {
+        User user = new User();
+        user.setAvatar("头像");
+        user.setUserName("名字");
+        user.setEmail("邮箱");
+        userRedisTemplate.opsForValue().set("user" , user);
+    }
+
+    @Test
+    public void test7() {
+        stringRedisTemplate.opsForValue().append("123" , "456");
+//        stringRedisTemplate.delete("123");
+        String s = stringRedisTemplate.opsForValue().get("123");
+        System.out.println(s);
+    }
+
 
     @Test
     public void test6() {
@@ -80,7 +107,7 @@ class EmptyBlogProjectApplicationTests {
 
 
     @Test
-    public void test2() {
+    public void getHomepageInfo() {
         QueryWrapper<HomePageInfo> homePageInfoQueryWrapper = new QueryWrapper<>();
         homePageInfoQueryWrapper.select("id");
         List<Object> list = homepageInfoService.listObjs(homePageInfoQueryWrapper);
@@ -98,15 +125,11 @@ class EmptyBlogProjectApplicationTests {
     /*首页数据提取*/
     void contextLoads() {
         QueryWrapper<HomePageInfo> homePageInfoQueryWrapper = new QueryWrapper<>();
-
         QueryWrapper<HomePageInfoContent> homePageInfoContentQueryWrapper = new QueryWrapper<>();
         QueryWrapper<HomePageInfoExample> homePageInfoExampleQueryWrapper = new QueryWrapper<>();
         QueryWrapper<HomePageInfoMedia> homePageInfoMediaQueryWrapper = new QueryWrapper<>();
-
         homePageInfoQueryWrapper.select("id");
         List<Object> idList = homePageInfoMapper.selectObjs(homePageInfoQueryWrapper);
-
-
         List<HomePageInfo> homePageInfoList = new ArrayList<>();
 
         HomePageInfo homePageInfo = null;

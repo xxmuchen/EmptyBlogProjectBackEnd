@@ -2,6 +2,7 @@ package com.example.emptyblogproject.controller.usercontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
@@ -64,9 +65,13 @@ public class AdminController {
 
     }
     @PostMapping("/getAdminOwnInfo")
+    @UserLoginToken
     public User getAdminOwnInfo(HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        if (user == null) {
+            throw new RuntimeException("token出错，请用户重新登陆");
+        }
         return user;
     }
 

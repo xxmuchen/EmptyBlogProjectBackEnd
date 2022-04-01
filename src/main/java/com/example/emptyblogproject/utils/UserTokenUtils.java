@@ -16,9 +16,11 @@ public class UserTokenUtils {
     @Autowired
     UserService userService;
 
+//    加密用户信息获取Token
     public String getToken(User user) {
         Date start = new Date();
-        long currentTime = System.currentTimeMillis() + 60* 60 * 1000;//一小时有效时间
+//        long currentTime = System.currentTimeMillis() + 60* 60 * 1000;//一小时有效时间
+        long currentTime = System.currentTimeMillis() +  60 * 60 *60 * 1000;//一小时有效时间
 //        long currentTime = System.currentTimeMillis() +  1000;//一小时有效时间
         Date end = new Date(currentTime);
         String token = "";

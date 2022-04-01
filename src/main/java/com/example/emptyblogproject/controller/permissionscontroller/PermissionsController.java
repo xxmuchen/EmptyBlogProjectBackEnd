@@ -1,11 +1,54 @@
 package com.example.emptyblogproject.controller.permissionscontroller;
 
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.emptyblogproject.bean.permissions.Permissions;
+import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
+import com.example.emptyblogproject.service.userservice.UserService;
+import com.example.emptyblogproject.utils.UserTokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created with IntelliJ IDEA.
- * User: 王程翔
- * Date: 2022/3/13
- * Time: 18:21
- * Description:
- */
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+public class PermissionsController {
+
+    @Autowired
+    PermissionsService permissionsService;
+    @Autowired
+    UserTokenUtils userTokenUtils;
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/getUserPermissionByUserId")
+    public Permissions getUserPermissionByUserId (HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        Permissions permission = permissionsService.getPermissionByUserId(user.getId());
+        return permission;
+    }
+    @PostMapping("/setManagerByUserId")
+    public Page<User> setManagerByUserId(@RequestBody String userData) {
+        JSONObject jsonObject = JSON.parseObject(userData);
+        Permissions permission = permissionsService.getPermissionByUserId(jsonObject.getLong("userId"));
+        permission.setUserPermission(1);
+        permissionsService.updateById(permission);
+        Page<User> userPage = userService.adminGetAllUserByPageAndCreateTime(1);
+        return userPage;
+    }
+    @PostMapping("/setSuperManagerByUserId")
+    public Page<User> setSuperManagerByUserId(@RequestBody String userData) {
+        JSONObject jsonObject = JSON.parseObject(userData);
+        Permissions permission = permissionsService.getPermissionByUserId(jsonObject.getLong("userId"));
+        permission.setUserPermission(2);
+        permissionsService.updateById(permission);
+        Page<User> userPage = userService.adminGetAllUserByPageAndCreateTime(1);
+        return userPage;
+    }
+}

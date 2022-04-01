@@ -122,6 +122,9 @@ public class SentenceController {
     @GetMapping("/encounterLoverSentence")
     public Sentence encounterLoverSentence() {
         List<Sentence> sentenceList = sentenceService.getAllSentenceBySee();
+        if (sentenceList.size() <= 0) {
+            return null;
+        }
         Random random = new Random();
         int nextInt = random.nextInt(sentenceList.size());
         return sentenceList.get(nextInt);
@@ -153,4 +156,9 @@ public class SentenceController {
         return sentence;
     }
 
+    @GetMapping("/getAllTagsStateSuccess")
+    public List<SentenceTag> getAllTagsStateSuccess() {
+        List<SentenceTag> sentenceTagList = sentenceTagService.getAllTagsStateSuccess();
+        return sentenceTagList;
+    }
 }

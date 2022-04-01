@@ -28,6 +28,8 @@ spring:
     atomikos:
       connectionfactory:
         max-idle-time: 10
+  redis:
+    host: localhost
 
 mybatis-plus:
   global-config:
@@ -51,8 +53,5 @@ file:
   diaryVideoPath: E:/upload/diary/diaryVideo/
   vlogVideoPath: E:/upload/vlog/vlogVideo/
   GriphicImagePath: E:/upload/griphic/griphicImage/
-#token:
-#  privateKey: 'fdasfgdsagaxgsregdfdjyghjfhebfdgwe45ygrfbsdfshfdsag'
-#  yangToken: 1000000
-#  oldToken: 3000000000
+
 

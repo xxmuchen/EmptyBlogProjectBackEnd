@@ -1,5 +1,7 @@
 package com.example.emptyblogproject.controller.diarycontroller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
@@ -43,5 +45,30 @@ public class AdminDiaryController {
         }else {
             throw new RuntimeException("删除错误，请重试");
         }
+    }
+
+//    查找所有待审批的日记
+
+    /*审批通过*/
+    @PutMapping("/adminDiaryApproveSuccess")
+    public Page<Diary> adminDiaryApproveSuccess(@RequestBody String diaryData) {
+        JSONObject jsonObject = JSON.parseObject(diaryData);
+        Diary diary = diaryService.getById(jsonObject.getLong("diaryId"));
+        diary.setState("审批通过");
+        diary.setErrorReason(null);
+        diaryService.updateById(diary);
+        Page<Diary> diaryPage = diaryService.adminGetAllDiaryByPageAndCreateTime(1);
+        return diaryPage;
+    }
+//    审批不通过
+    @PutMapping("/adminDiaryApproveFail")
+    public Page<Diary> adminDiaryApproveFail(@RequestBody String diaryData) {
+        JSONObject jsonObject = JSON.parseObject(diaryData);
+        Diary diary = diaryService.getById(jsonObject.getLong("diaryId"));
+        diary.setState("审批不通过");
+        diary.setErrorReason(jsonObject.getString("errorReason"));
+        diaryService.updateById(diary);
+        Page<Diary> diaryPage = diaryService.adminGetAllDiaryByPageAndCreateTime(1);
+        return diaryPage;
     }
 }

@@ -36,4 +36,9 @@ public class SentenceTagServiceImpl extends ServiceImpl<SentenceTagMapper , Sent
         List<SentenceTag> sentenceTagList = this.list(queryWrapper);
         return sentenceTagList;
     }
+
+    @Override
+    public List<SentenceTag> getAllTagsStateSuccess() {
+        return baseMapper.getAllTagsStateSuccess();
+    }
 }

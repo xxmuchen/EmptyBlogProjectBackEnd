@@ -18,4 +18,5 @@ public interface SentenceTagService extends IService<SentenceTag> {
 
     public List<SentenceTag> getTagsBySentenceSentenceId(String SentenceSentenceId);
 
+    public List<SentenceTag> getAllTagsStateSuccess();
 }

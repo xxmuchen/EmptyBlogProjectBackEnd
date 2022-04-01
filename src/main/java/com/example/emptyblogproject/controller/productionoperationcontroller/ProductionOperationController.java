@@ -48,9 +48,9 @@ public class ProductionOperationController {
     GriphicService griphicService;
 
 
+//    用户博客点赞
     @UserLoginToken
     @PostMapping("/saveObjStar")
-    /*句子点赞功能*/
     public String saveObjStar(@RequestBody String objData , HttpServletRequest httpServletRequest) {
             String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
@@ -150,21 +150,15 @@ public class ProductionOperationController {
     @PostMapping("/cancelObjStar")
     public String cancelObjStar(@RequestBody String objData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
-
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
-
         if (user == null) {
             throw new RuntimeException("取消点赞失败，用户不存在，请退出重新登陆");
         }
-
         JSONObject jsonObject = JSON.parseObject(objData);
-
         long obj_id = Long.parseLong(jsonObject.getString("objId"));
         String objType = jsonObject.getString("objType");
         boolean flag = false;
-
         ProductionStar productionStar = null;
-
         if (objType.equals("放空日记")) {
             Diary object = diaryService.getById(obj_id);
             if (object == null) {
@@ -382,6 +376,9 @@ public class ProductionOperationController {
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
         }
+        if (objId.equals("undefined")) {
+            throw new RuntimeException("暂无资源");
+        }
         long obj_id = Long.parseLong(objId);
         ProductionStar productionStar = null;
         if (objType.equals("放空日记")) {
@@ -435,7 +432,9 @@ public class ProductionOperationController {
         if (user == null) {
             throw new RuntimeException("用户不存在，请退出重新登陆");
         }
-
+        if (objId.equals("undefined")) {
+            throw new RuntimeException("暂无资源");
+        }
         long obj_id = Long.parseLong(objId);
 
         ProductionCollection productionCollection = null;

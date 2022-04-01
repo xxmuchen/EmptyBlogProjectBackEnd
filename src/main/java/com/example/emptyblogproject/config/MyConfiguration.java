@@ -48,11 +48,14 @@ public class MyConfiguration {
 //            映射虚拟路径到磁盘路径
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/images/**").addResourceLocations("file:E:/upload/");
+                registry.addResourceHandler("/images/**").
+                        addResourceLocations("file:E:/upload/");
             }
 
         };
     }
+
+
 
 
     /* mybatis plus自动注入*/

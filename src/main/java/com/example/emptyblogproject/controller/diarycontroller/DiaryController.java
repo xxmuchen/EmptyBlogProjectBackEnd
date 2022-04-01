@@ -99,19 +99,18 @@ public class DiaryController {
 //    日记内容视频上传
 //    @UserLoginToken
     @PostMapping("/diaryVideoFileUpLoadAndReturnUrl")
-    public JSON diaryVideoFileUpLoadAndReturnUrl(@RequestParam("myVideoFileName") MultipartFile multipartFile) {
+    public JSON diaryVideoFileUpLoadAndReturnUrl(@RequestParam("myVideoFileName")
+                                                             MultipartFile multipartFile) {
         if (multipartFile.isEmpty()) {
             throw new RuntimeException("文件不能为空");
         }
         String originalFilename = multipartFile.getOriginalFilename();
-
         File absolutePath = new File(uploadVideoAbsolutePath);
         if (!absolutePath.exists()) {
             absolutePath.mkdirs();
         }
-
-        String imageFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() + originalFilename.substring(originalFilename.lastIndexOf("."));
-
+        String imageFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() +
+                originalFilename.substring(originalFilename.lastIndexOf("."));
         File dest = new File(absolutePath , imageFileName);
         try {
             multipartFile.transferTo(dest);
@@ -138,25 +137,22 @@ public class DiaryController {
     public String diaryInfoUpload(@RequestBody Diary diary , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
-
         if (user == null) {
             throw new RuntimeException("日记上传失败，用户不存在，请退出重新登陆");
         }
-
         List<SensitiveWords> sensitiveWordsList = sensitiveWordsService.list();
-
         for (SensitiveWords sensitiveWords : sensitiveWordsList) {
             if (diary.getTitle().contains(sensitiveWords.getSensitiveWord())) {
-                throw new RuntimeException("该日记标题中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+                throw new RuntimeException("该日记标题中含有敏感词:" +
+                        sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
             }else if (diary.getContent().contains(sensitiveWords.getSensitiveWord())) {
-                throw new RuntimeException("该日记内容中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
+                throw new RuntimeException("该日记内容中含有敏感词:" +
+                        sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
             }
         }
-
         diary.setAuthorId(user.getId());
         diary.setAuthorName(user.getUserName());
         diary.setState("待审批");
-//        System.out.println(diarycontroller);
         boolean flag = diaryService.save(diary);
         if (flag) {
             return "日记上传成功";
@@ -179,7 +175,11 @@ public class DiaryController {
         if (records == null) {
             throw new RuntimeException("暂无日记");
         }
-        return records.get(0);
+        if (records.size() >= 1) {
+            return records.get(0);
+        }else {
+            return null;
+        }
     }
 
     /*日记页首页的顶客排行四条数据*/
@@ -190,20 +190,19 @@ public class DiaryController {
         if (records == null) {
             throw new RuntimeException("暂无日记");
         }
-        for (Diary diary : records.subList(0, 4)) {
-            System.out.println(diary);
+        if (records.size() >= 4) {
+            return records.subList(0, 4);
+        }else {
+            return records;
         }
-
-        return records.subList(0, 4);
     }
 
 
     /*分页查询最新日记*/
     @GetMapping("/newDiaryListDisplay")
     public Page<Diary> newDiaryListDisplay(@RequestParam("currentIndex") int currentPage) {
-
         Page<Diary> diaryListPageing = diaryService.getNewDiaryListPageing(currentPage);
-        System.out.println("最新日记列表");
+//        System.out.println("最新日记列表");
         return diaryListPageing;
     }
 
@@ -213,7 +212,7 @@ public class DiaryController {
 //        return diaryListPageing;
         Page<Diary> recommendDiaryListPageing = diaryService.getRecommendDiaryListPageing(currentPage);
 
-        System.out.println("推荐日记列表");
+//        System.out.println("推荐日记列表");
 //        System.out.println(recommendDiaryListPageing.toString());
         return recommendDiaryListPageing;
     }
@@ -224,7 +223,7 @@ public class DiaryController {
 //        return diaryListPageing;
 
         Page<Diary> topGuestDiaryListPageing = diaryService.getTopGuestDiaryListPageing(currentPage);
-        System.out.println("顶客排行列表");
+//        System.out.println("顶客排行列表");
 //        System.out.println(recommendDiaryListPageing.toString());
         return topGuestDiaryListPageing;
     }
@@ -296,7 +295,10 @@ public class DiaryController {
 //        System.out.println(observe);
 //        return null;
     }
+
+    
 }
+
 
 
 

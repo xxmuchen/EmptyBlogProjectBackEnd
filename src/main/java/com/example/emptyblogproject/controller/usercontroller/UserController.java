@@ -132,26 +132,16 @@ public class UserController {
 //    用户登录
     @PostMapping("/userLogin")
     public String userLogin(@RequestBody String userData , HttpServletRequest request) {
-//        System.out.println(userData);
         JSONObject jsonObject = JSON.parseObject(userData);
         String email = (String) jsonObject.get("email");
         String password = (String) jsonObject.get("password");
-//        System.out.println(userName + " " + password);
-
         User user = userService.getOne(new QueryWrapper<User>().eq("email", email));
-
         if (user == null) {
             throw new RuntimeException("该用户不存在");
         }
-
         if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
-//            String token = tokenService.getToken(usercontroller);
-//            return token;
             String ipAddr = IpUtils.getIpAddr(request);
-//            System.out.println(ipAddr);
             userLoginUtils.saveUserLoginInfo(user , "用户" , ipAddr);
-
-
             String token = userTokenUtils.getToken(user);
             System.out.println(token);
             return token;
