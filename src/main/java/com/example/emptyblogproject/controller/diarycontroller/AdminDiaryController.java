@@ -48,7 +48,34 @@ public class AdminDiaryController {
     }
 
 //    查找所有待审批的日记
-
+//    @GetMapping("/adminGetAllStateWaitDiary")
+//    public Page<Diary> adminGetAllStateWait(@RequestParam("currentPage") int currentPage) {
+//        Page<Diary> allStateWaitDiary = diaryService.getAllStateWaitDiary(currentPage);
+//        return allStateWaitDiary;
+//    }
+////    查找所有审批通过的日记
+//    @GetMapping("/adminGetAllStateSuccessDiary")
+//    public Page<Diary> adminGetAllStateSuccessDiary(@RequestParam("currentPage") int currentPage) {
+//        Page<Diary> allStateWaitDiary = diaryService.getAllStateSuccessDiary(currentPage);
+//        return allStateWaitDiary;
+//    }
+////    查找所有审批失败的日记
+//    @GetMapping("/adminGetAllStateFail")
+//    public Page<Diary> adminGetAllStateFail(@RequestParam("currentPage") int currentPage) {
+//        Page<Diary> allStateWaitDiary = diaryService.getAllStateFailDiary(currentPage);
+//        return allStateWaitDiary;
+//    }
+    /*待审批*/
+    @PutMapping("/adminDiaryApproveWait")
+    public Page<Diary> adminDiaryApproveWait (@RequestBody String diaryData) {
+        JSONObject jsonObject = JSON.parseObject(diaryData);
+        Diary diary = diaryService.getById(jsonObject.getLong("diaryId"));
+        diary.setState("待审批");
+        diary.setErrorReason(null);
+        diaryService.updateById(diary);
+        Page<Diary> diaryPage = diaryService.adminGetAllDiaryByPageAndCreateTime(1);
+        return diaryPage;
+    }
     /*审批通过*/
     @PutMapping("/adminDiaryApproveSuccess")
     public Page<Diary> adminDiaryApproveSuccess(@RequestBody String diaryData) {

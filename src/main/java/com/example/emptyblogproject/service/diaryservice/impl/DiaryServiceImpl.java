@@ -132,6 +132,7 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
     public Page<Diary> adminGetAllDiaryByPageAndCreateTime(int currentPage) {
         Page<Diary> page = new Page<>(currentPage , 9);
         QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("state");
         queryWrapper.orderByDesc("create_time");
         Page<Diary> diaryPage = this.page(page, queryWrapper);
         return diaryPage;
@@ -197,6 +198,32 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         return dataVisualizationBO;
     }
 
+//    @Override
+//    public Page<Diary> getAllStateWaitDiary(int currentPage) {
+//        Page<Diary> page = new Page<>(currentPage , 9);
+//        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("state" , "待审批");
+//        queryWrapper.eq("del" , 0);
+//        return this.page(page, queryWrapper);
+//    }
+//
+//    @Override
+//    public Page<Diary> getAllStateSuccessDiary(int currentPage) {
+//        Page<Diary> page = new Page<>(currentPage , 9);
+//        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("state" , "审批通过");
+//        queryWrapper.eq("del" , 0);
+//        return this.page(page, queryWrapper);
+//    }
+//
+//    @Override
+//    public Page<Diary> getAllStateFailDiary(int currentPage) {
+//        Page<Diary> page = new Page<>(currentPage , 9);
+//        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("state" , "审批不通过");
+//        queryWrapper.eq("del" , 0);
+//        return this.page(page, queryWrapper);
+//    }
 
 
 }

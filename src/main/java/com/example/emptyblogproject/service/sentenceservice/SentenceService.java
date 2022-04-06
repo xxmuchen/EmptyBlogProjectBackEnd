@@ -52,4 +52,6 @@ public interface SentenceService extends IService<Sentence> {
     public Page<Sentence> getUserSpaceSentenceStateWaitOrderCreateTime(int currentPage, Long userId);
 
     public Page<Sentence> getUserSpaceSentenceStateFailOrderCreateTime(int currentPage, Long userId);
+
+    public List<Sentence> getAllSentenceByTag(String tag);
 }

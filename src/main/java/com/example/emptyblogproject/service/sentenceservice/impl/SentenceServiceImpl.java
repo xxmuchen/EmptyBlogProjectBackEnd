@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -101,6 +102,7 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
     public Page<Sentence> adminGetAllSentenceByPageAndCreateTime(int currentPage) {
         Page<Sentence> page = new Page<>(currentPage , 6);
         QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("state");
         queryWrapper.orderByDesc("create_time");
         Page<Sentence> sentencePage = this.page(page, queryWrapper);
         this.addTagsToSentencePage(sentencePage);
@@ -201,6 +203,26 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         Page<Sentence> sentencePage = this.page(page, queryWrapper);
         this.addTagsToSentencePage(sentencePage);
         return sentencePage;
+    }
+
+    @Override
+    public List<Sentence> getAllSentenceByTag(String tag) {
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("see" , true);
+        List<Sentence> sentences = this.list(queryWrapper);
+        List<Sentence> sentenceList = new ArrayList<>();
+        this.addTagsToSentenceList(sentences);
+        for (Sentence sentence : sentences) {
+            List<SentenceTag> sentenceTagList = sentence.getSentenceTagList();
+            for (SentenceTag sentenceTag : sentenceTagList) {
+                if (sentenceTag.getTagName().equals(tag)) {
+                    sentenceList.add(sentence);
+                    break;
+                }
+            }
+        }
+        return sentenceList;
     }
 
 

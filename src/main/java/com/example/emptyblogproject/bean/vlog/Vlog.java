@@ -25,6 +25,7 @@ public class Vlog {
     private String authorAvatar;
     private String vlogId;
     private boolean see;
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String errorReason;
     @TableField(fill = FieldFill.INSERT)
     private String state;

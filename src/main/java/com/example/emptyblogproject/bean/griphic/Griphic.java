@@ -23,6 +23,7 @@ public class Griphic {
     private Long authorId;
     private String authorName;
     private String authorAvatar;
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String errorReason;
     @TableField(fill = FieldFill.INSERT)
     private String state;

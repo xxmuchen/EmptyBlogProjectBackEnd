@@ -63,6 +63,7 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
     public Page<Vlog> adminGetAllVlogByPageAndCreateTime(int currentPage) {
         Page<Vlog> page = new Page<>(currentPage , 6);
         QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("state");
         queryWrapper.orderByDesc("create_time");
         Page<Vlog> vlogPage = this.page(page, queryWrapper);
         return vlogPage;

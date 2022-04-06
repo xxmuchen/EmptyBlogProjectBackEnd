@@ -37,7 +37,7 @@ public class GriphicController {
     SensitiveWordsService sensitiveWordsService;
     @Value("${file.GriphicImagePath}")
     String uploadVideoAbsolutePath;
-    @GetMapping("getAllGriphicBySee")
+    @GetMapping("/getAllGriphicBySee")
     public List<Griphic> getAllGriphicBySee() {
         List<Griphic> griphicList = griphicService.getAllGriphicBySee();
         return griphicList;
@@ -68,7 +68,7 @@ public class GriphicController {
         }
     }
 
-    @PostMapping("addGriphic")
+    @PostMapping("/addGriphic")
     public String addGriphic(@RequestBody String griphicData , HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
@@ -106,25 +106,28 @@ public class GriphicController {
         }
     }
 
-    @GetMapping("getGriphicById")
+    @GetMapping("/getGriphicById")
     public Griphic getGriphicById(@RequestParam("grophicId") Long grophicId) {
         Griphic griphic = griphicService.getById(grophicId);
         return griphic;
     }
 
-    @GetMapping("getBuiltifulImageAndSentence")
+    @GetMapping("/getBuiltifulImageAndSentence")
     public List<Griphic> getBuiltifulImageAndSentence() {
         List<Griphic> griphicList = griphicService.getBuiltifulImageAndSentence();
         return griphicList;
     }
-    @GetMapping("getHandWriteBeautifulSentence")
+    @GetMapping("/getHandWriteBeautifulSentence")
     public List<Griphic> getHandWriteBeautifulSentence() {
         List<Griphic> griphicList = griphicService.getHandWriteBeautifulSentence();
         return griphicList;
     }
-    @GetMapping("getClassicDialogue")
+
+    @GetMapping("/getClassicDialogue")
     public List<Griphic> getClassicDialogue() {
         List<Griphic> griphicList = griphicService.getClassicDialogue();
         return griphicList;
     }
+
+
 }

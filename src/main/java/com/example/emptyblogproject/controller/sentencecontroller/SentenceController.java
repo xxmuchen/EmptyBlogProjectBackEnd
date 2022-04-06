@@ -161,4 +161,10 @@ public class SentenceController {
         List<SentenceTag> sentenceTagList = sentenceTagService.getAllTagsStateSuccess();
         return sentenceTagList;
     }
+
+    @GetMapping("/getSentenceByTag")
+    public List<Sentence> getAllSentenceByTag(@RequestParam("sentenceTag") String sentenceTag) {
+        List<Sentence> sentenceList = sentenceService.getAllSentenceByTag(sentenceTag);
+        return sentenceList;
+    }
 }

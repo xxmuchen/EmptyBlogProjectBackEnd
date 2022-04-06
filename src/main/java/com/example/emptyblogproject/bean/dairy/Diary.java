@@ -24,6 +24,7 @@ public class Diary implements Serializable {
     private Long authorId;
     private String authorName;
     private boolean see;
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String errorReason;
     @TableField(fill = FieldFill.INSERT)
     private String state;

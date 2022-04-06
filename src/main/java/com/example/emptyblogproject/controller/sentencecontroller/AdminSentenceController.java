@@ -1,15 +1,14 @@
 package com.example.emptyblogproject.controller.sentencecontroller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,5 +47,39 @@ public class AdminSentenceController {
         }else {
             throw new RuntimeException("删除错误，请重试");
         }
+    }
+
+    /*待审批*/
+    @PutMapping("/adminSentenceApproveWait")
+    public Page<Sentence> adminSentenceApproveWait (@RequestBody String sentenceData) {
+        JSONObject jsonObject = JSON.parseObject(sentenceData);
+        Sentence sentence = sentenceService.getById(jsonObject.getLong("sentenceId"));
+        sentence.setState("待审批");
+        sentence.setErrorReason(null);
+        sentenceService.updateById(sentence);
+        Page<Sentence> sentencePage = sentenceService.adminGetAllSentenceByPageAndCreateTime(1);
+        return sentencePage;
+    }
+    /*审批通过*/
+    @PutMapping("/adminSentenceApproveSuccess")
+    public Page<Sentence> adminSentenceApproveSuccess(@RequestBody String sentenceData) {
+        JSONObject jsonObject = JSON.parseObject(sentenceData);
+        Sentence sentence = sentenceService.getById(jsonObject.getLong("sentenceId"));
+        sentence.setState("审批通过");
+        sentence.setErrorReason(null);
+        sentenceService.updateById(sentence);
+        Page<Sentence> sentencePage = sentenceService.adminGetAllSentenceByPageAndCreateTime(1);
+        return sentencePage;
+    }
+    //    审批不通过
+    @PutMapping("/adminSentenceApproveFail")
+    public Page<Sentence> adminSentenceApproveFail(@RequestBody String sentenceData) {
+        JSONObject jsonObject = JSON.parseObject(sentenceData);
+        Sentence sentence = sentenceService.getById(jsonObject.getLong("sentenceId"));
+        sentence.setState("审批不通过");
+        sentence.setErrorReason(jsonObject.getString("errorReason"));
+        sentenceService.updateById(sentence);
+        Page<Sentence> sentencePage = sentenceService.adminGetAllSentenceByPageAndCreateTime(1);
+        return sentencePage;
     }
 }

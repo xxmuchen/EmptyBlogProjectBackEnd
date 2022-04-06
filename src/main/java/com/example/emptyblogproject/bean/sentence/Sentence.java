@@ -25,6 +25,7 @@ public class Sentence {
     private String authorName;
     private String authorAvatar;
     private boolean see;
+    @TableField(updateStrategy = FieldStrategy.IGNORED)
     private String errorReason;
     @TableField(fill = FieldFill.INSERT)
     private String state;

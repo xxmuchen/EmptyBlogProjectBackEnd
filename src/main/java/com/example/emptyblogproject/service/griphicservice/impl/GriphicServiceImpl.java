@@ -58,7 +58,6 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getClassicDialogue() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
-
         queryWrapper.eq("state" , "审批通过");
         queryWrapper.eq("type" , "经典对白");
         List<Griphic> griphicList = this.list(queryWrapper);
@@ -92,6 +91,7 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     @Override
     public List<Griphic> adminGetAllGriphicByPageAndCreateTime() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("state");
         queryWrapper.orderByDesc("create_time");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
