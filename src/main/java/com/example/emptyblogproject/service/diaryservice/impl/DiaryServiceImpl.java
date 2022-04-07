@@ -7,6 +7,7 @@ import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
 import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.productionstar.ProductionStar;
+import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.mapper.diarymapper.DiaryMapper;
 import com.example.emptyblogproject.service.diaryservice.DiaryService;
 import com.example.emptyblogproject.service.productioncollectionservice.ProductionCollectionService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -196,6 +198,23 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
             dataVisualizationBO.getYAxis().add(dataVisualizationDateAndInteger.getNumber());
         }
         return dataVisualizationBO;
+    }
+
+    @Override
+    public List<Diary> getDiaryByKeyValue(String diaryKeyValue) {
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("see" , true);
+        List<Diary> list = this.list(queryWrapper);
+
+        List<Diary> diaryList = new ArrayList<>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            if (list.get(i).toString().contains(diaryKeyValue)) {
+                diaryList.add(list.get(i));
+            }
+        }
+        return diaryList;
     }
 
 //    @Override

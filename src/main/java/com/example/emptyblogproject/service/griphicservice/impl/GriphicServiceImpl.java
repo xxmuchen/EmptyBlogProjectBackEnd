@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -187,6 +188,23 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
         queryWrapper.orderByDesc("create_time");
 //        Page<Griphic> diaryPage = this.page(page, queryWrapper);
         List<Griphic> griphicList = this.list(queryWrapper);
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getGriphicByKeyValue(String griphicKeyValue) {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("see" , true);
+        List<Griphic> list = this.list(queryWrapper);
+
+        List<Griphic> griphicList = new ArrayList<>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            if (list.get(i).toString().contains(griphicKeyValue)) {
+                griphicList.add(list.get(i));
+            }
+        }
         return griphicList;
     }
 }

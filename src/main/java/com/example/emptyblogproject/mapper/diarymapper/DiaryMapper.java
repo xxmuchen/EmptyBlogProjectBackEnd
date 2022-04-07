@@ -171,4 +171,10 @@ public interface DiaryMapper extends BaseMapper<Diary> {
             "    ) as t2 ON t1.timeDay = t2.time\n" +
             "    ORDER BY t1.timeDay")
     public List<DataVisualizationDateAndInteger> getDiaryCollectAWeekDataVisualization();
+
+   /* @Select("select *\n" +
+            "from  diary where diary.del = 0 and diary.state = '审批通过' and diary.see = true and\n" +
+            "CONCAT_WS(diary.title , diary.content , diary.mood , diary.weather , diary.author_name) like CONCAT('%' , #{diaryKeyValue} , '%') \n" +
+            "order by create_time DESC ;")
+    public List<Diary> getDiaryByKeyValue(String diaryKeyValue);*/
 }

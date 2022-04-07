@@ -49,4 +49,6 @@ public interface GriphicService extends IService<Griphic> {
     public List<Griphic> getUserSpaceGriphicStateWaitOrderCreateTime(Long userId);
 
     public List<Griphic> getUserSpaceGriphicStateFailOrderCreateTime(Long userId);
+
+    public List<Griphic> getGriphicByKeyValue(String griphicKeyValue);
 }

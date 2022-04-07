@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -160,5 +161,22 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
         queryWrapper.orderByDesc("create_time");
         Page<Vlog> vlogPage = this.page(page, queryWrapper);
         return vlogPage;
+    }
+
+    @Override
+    public List<Vlog> getVlogByKeyValue(String vlogKeyValue) {
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("see" , true);
+        List<Vlog> list = this.list(queryWrapper);
+
+        List<Vlog> vlogList = new ArrayList<>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            if (list.get(i).toString().contains(vlogKeyValue)) {
+                vlogList.add(list.get(i));
+            }
+        }
+        return vlogList;
     }
 }

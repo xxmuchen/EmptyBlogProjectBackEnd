@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.sentence.Sentence;
 import com.example.emptyblogproject.bean.sentence.sentencetag.SentenceTag;
@@ -165,6 +166,13 @@ public class SentenceController {
     @GetMapping("/getSentenceByTag")
     public List<Sentence> getAllSentenceByTag(@RequestParam("sentenceTag") String sentenceTag) {
         List<Sentence> sentenceList = sentenceService.getAllSentenceByTag(sentenceTag);
+        return sentenceList;
+    }
+
+    //    前端通过关键字获取句子
+    @GetMapping("/getSentenceByKeyValue")
+    public List<Sentence> getSentenceByKeyValue(@RequestParam("sentenceKeyValue") String sentenceKeyValue) {
+        List<Sentence> sentenceList = sentenceService.getSentenceByKeyValue(sentenceKeyValue);
         return sentenceList;
     }
 }

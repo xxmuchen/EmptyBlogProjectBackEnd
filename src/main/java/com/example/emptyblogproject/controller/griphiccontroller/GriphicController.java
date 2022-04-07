@@ -2,6 +2,7 @@ package com.example.emptyblogproject.controller.griphiccontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.griphic.Griphic;
 import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.user.User;
@@ -129,5 +130,12 @@ public class GriphicController {
         return griphicList;
     }
 
+
+    //    前端通过关键字获取图文
+    @GetMapping("/getGriphicByKeyValue")
+    public List<Griphic> getGriphicByKeyValue(@RequestParam("griphicKeyValue") String griphicKeyValue) {
+        List<Griphic> griphicList = griphicService.getGriphicByKeyValue(griphicKeyValue);
+        return griphicList;
+    }
 
 }

@@ -225,6 +225,23 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         return sentenceList;
     }
 
+    @Override
+    public List<Sentence> getSentenceByKeyValue(String sentenceKeyValue) {
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("see" , true);
+        List<Sentence> list = this.list(queryWrapper);
+        this.addTagsToSentenceList(list);
+        List<Sentence> sentenceList = new ArrayList<>();
+
+        for (int i = 0 ; i < list.size() ; i++) {
+            if (list.get(i).toString().contains(sentenceKeyValue)) {
+                sentenceList.add(list.get(i));
+            }
+        }
+        return sentenceList;
+    }
+
 
     /*为句子列表添加标签*/
     public void addTagsToSentenceList(List<Sentence> sentenceList) {

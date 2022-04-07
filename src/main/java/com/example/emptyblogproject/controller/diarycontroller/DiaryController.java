@@ -296,7 +296,13 @@ public class DiaryController {
 //        return null;
     }
 
-    
+
+//    前端通过关键字获取日记
+    @GetMapping("/getDiaryByKeyValue")
+    public List<Diary> getDiaryByKeyValue(@RequestParam("diaryKeyValue") String diaryKeyValue) {
+        List<Diary> diaryList = diaryService.getDiaryByKeyValue(diaryKeyValue);
+        return diaryList;
+    }
 }
 
 

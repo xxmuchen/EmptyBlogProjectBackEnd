@@ -3,6 +3,7 @@ package com.example.emptyblogproject.controller.vlogcontroller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.emptyblogproject.annotation.UserLoginToken;
+import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.sensitivewords.SensitiveWords;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.bean.vlog.Vlog;
@@ -42,7 +43,7 @@ public class VlogController {
 
     @PostMapping("/addVlog")
     @UserLoginToken
-    public String addVlog(@RequestBody String vlogData , HttpServletRequest httpServletRequest) {
+    public String addVlog(@RequestBody String vlogData, HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
 
@@ -52,7 +53,7 @@ public class VlogController {
         vlog.setAuthorId(user.getId());
         vlog.setAuthorAvatar(user.getAvatar());
         vlog.setAuthorName(user.getUserName());
-        vlog.setVlogId(System.currentTimeMillis() + UUID.randomUUID().toString().replace("-" , ""));
+        vlog.setVlogId(System.currentTimeMillis() + UUID.randomUUID().toString().replace("-", ""));
 
         vlog.setTitle(jsonObject.getString("title"));
         vlog.setSee(jsonObject.getBoolean("see"));
@@ -63,7 +64,7 @@ public class VlogController {
         for (SensitiveWords sensitiveWords : sensitiveWordsList) {
             if (vlog.getTitle().contains(sensitiveWords.getSensitiveWord())) {
                 throw new RuntimeException("该Vlog标题中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
-            }else if (vlog.getDescription().contains(sensitiveWords.getSensitiveWord())) {
+            } else if (vlog.getDescription().contains(sensitiveWords.getSensitiveWord())) {
                 throw new RuntimeException("该Vlog描述中含有敏感词:" + sensitiveWords.getSensitiveWord() + ",请修改后重新上传");
             }
         }
@@ -73,7 +74,7 @@ public class VlogController {
 
         if (flag) {
             return "上传成功";
-        }else {
+        } else {
             throw new RuntimeException("上传失败，请重试");
         }
     }
@@ -92,7 +93,7 @@ public class VlogController {
 
         String imageFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() + originalFilename.substring(originalFilename.lastIndexOf("."));
 
-        File dest = new File(absolutePath , imageFileName);
+        File dest = new File(absolutePath, imageFileName);
         try {
             multipartFile.transferTo(dest);
 
@@ -104,7 +105,7 @@ public class VlogController {
         }
     }
 
-//    获取所有可见视频
+    //    获取所有可见视频
     @GetMapping("/getAllVlog")
     public List<Vlog> getAllVlog() {
         List<Vlog> vlogList = vlogService.getAllVlogBySee();
@@ -115,5 +116,12 @@ public class VlogController {
     public Vlog getVlogById(@RequestParam(name = "vlogId") Long vlogId) {
         Vlog vlog = vlogService.getById(vlogId);
         return vlog;
+    }
+
+    //    前端通过关键字获取日记
+    @GetMapping("/getVlogByKeyValue")
+    public List<Vlog> getVlogByKeyValue(@RequestParam("VlogKeyValue") String VlogKeyValue) {
+        List<Vlog> vlogList = vlogService.getVlogByKeyValue(VlogKeyValue);
+        return vlogList;
     }
 }

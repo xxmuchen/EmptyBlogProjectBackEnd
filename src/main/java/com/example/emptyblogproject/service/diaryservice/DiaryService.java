@@ -52,6 +52,8 @@ public interface DiaryService extends IService<Diary> {
 
     public DataVisualizationBO getDiaryCollectAWeekDataVisualization();
 
+    public List<Diary> getDiaryByKeyValue(String diaryKeyValue);
+
     /*管理员获取所有待审批日记*/
 //    public Page<Diary> getAllStateWaitDiary(int currentPage);
 //    /*管理员获取所有审批通过日记*/

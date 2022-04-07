@@ -176,4 +176,12 @@ public interface SentenceMapper extends BaseMapper<Sentence> {
             "    ORDER BY t1.timeDay")
     public List<DataVisualizationDateAndInteger> getSentenceObserveAWeekDataVisualization();
 
+/*    @Select("select sentence.*\n" +
+            "from  sentence  where sentence.del = 0 and sentence.state = '审批通过'\n" +
+            "and sentence.see = true and\n" +
+            "CONCAT_WS(sentence.content , sentence.original_author , sentence.author_name , sentence.author_name)\n" +
+            "like CONCAT('%' , #{sentenceKeyValue} , '%')\n" +
+            "order by create_time DESC ;")
+    public List<Sentence> getSentenceByKeyValue(String sentenceKeyValue);*/
 }
+
