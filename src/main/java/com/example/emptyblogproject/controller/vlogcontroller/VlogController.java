@@ -120,8 +120,8 @@ public class VlogController {
 
     //    前端通过关键字获取日记
     @GetMapping("/getVlogByKeyValue")
-    public List<Vlog> getVlogByKeyValue(@RequestParam("VlogKeyValue") String VlogKeyValue) {
-        List<Vlog> vlogList = vlogService.getVlogByKeyValue(VlogKeyValue);
+    public List<Vlog> getVlogByKeyValue(@RequestParam("vlogKeyValue") String vlogKeyValue) {
+        List<Vlog> vlogList = vlogService.getVlogByKeyValue(vlogKeyValue);
         return vlogList;
     }
 }

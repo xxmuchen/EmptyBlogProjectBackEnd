@@ -30,8 +30,8 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
     @Override
     public List<Vlog> getAllVlogBySee() {
         QueryWrapper<Vlog> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("see" , 1);
-        queryWrapper.eq("state" , "审批成功");
+        queryWrapper.eq("see" , true);
+        queryWrapper.eq("state" , "审批通过");
         List<Vlog> vlogList = this.list(queryWrapper);
         return vlogList;
     }
