@@ -90,7 +90,7 @@ public class UserController {
             }
             Permissions permissions = new Permissions();
             permissions.setUserPermission(0);
-            permissions.setUserId(user.getId());
+            permissions.setUserId(userByEmail.getId());
             boolean save = permissionsService.save(permissions);
             if (save) {
                 return "注册成功,马上为您转到登录界面";

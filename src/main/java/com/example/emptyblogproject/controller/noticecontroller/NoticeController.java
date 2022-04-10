@@ -1,0 +1,65 @@
+package com.example.emptyblogproject.controller.noticecontroller;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.emptyblogproject.bean.notice.Notice;
+import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.noticemapper.NoticeService;
+import com.example.emptyblogproject.utils.UserTokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: 王程翔
+ * Date: 2022/4/10
+ * Time: 8:40
+ * Description:
+ */
+@RestController
+public class NoticeController {
+
+    @Autowired
+    NoticeService noticeService;
+
+    @Autowired
+    UserTokenUtils userTokenUtils;
+
+//    获取所有的公告
+    @GetMapping("/getAllNoticeByCurrentPage")
+    public Page<Notice> getAllNoticeByCurrentPage(@RequestParam(name = "currentPage") int currentPage) {
+        Page<Notice> allNoticeByCurrentPage = noticeService.getAllNoticeByCurrentPage(currentPage);
+        return allNoticeByCurrentPage;
+    }
+
+    @GetMapping("/getOneNoticeDetailInfoById")
+    public Notice getOneNoticeDetailInfoById(@RequestParam("noticeId") Long noticeId) {
+        Notice notice = noticeService.getById(noticeId);
+        return notice;
+    }
+
+    @DeleteMapping("/deleteOneNoticeById")
+    public String deleteOneNoticeById(@RequestParam("noticeId") Long noticeId) {
+        boolean flag = noticeService.removeById(noticeId);
+        if (flag) {
+            return "公告删除成功";
+        } else {
+            return "公告删除失败";
+        }
+    }
+
+    @PostMapping("/addNotice")
+    public String addNotice(@RequestBody Notice notice , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        notice.setAuthorName(user.getUserName());
+        notice.setAuthorId(user.getId());
+        boolean flag = noticeService.save(notice);
+        if (flag) {
+            return "公告添加成功";
+        } else {
+            return "公告添加失败";
+        }
+    }
+}

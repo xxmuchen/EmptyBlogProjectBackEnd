@@ -20,4 +20,8 @@ public interface UserService extends IService<User> {
     public DataVisualizationBO getUserRegisterAWeekDataVisualization();
 
     public DataVisualizationBO getUserPlaceDataVisualization();
+
+    public Page<User> adminGetAllManagerByPageAndCreateTime(int currentPage);
+
+    public Page<User> adminGetAllSuperManagerByPageAndCreateTime(int currentPage);
 }

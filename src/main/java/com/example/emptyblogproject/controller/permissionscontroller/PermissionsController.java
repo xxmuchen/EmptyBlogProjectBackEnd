@@ -33,6 +33,28 @@ public class PermissionsController {
         Permissions permission = permissionsService.getPermissionByUserId(user.getId());
         return permission;
     }
+    @PostMapping("/setUserPermissionByUserId")
+    public String setSimpleUserByUserId(@RequestBody String userData) {
+        JSONObject jsonObject = JSON.parseObject(userData);
+        Permissions permission = permissionsService.getPermissionByUserId(jsonObject.getLong("userId"));
+        if (jsonObject.getInteger("permission") == 0) {
+            permission.setUserPermission(0);
+        } else if (jsonObject.getInteger("permission") == 1) {
+            permission.setUserPermission(1);
+        } else if (jsonObject.getInteger("permission") == 2) {
+            permission.setUserPermission(2);
+        }
+
+        boolean flag = permissionsService.updateById(permission);
+        if (flag) {
+            return "权限修改成功";
+        }else {
+            return "权限修改失败";
+        }
+//        Page<User> userPage = null;
+//        userPage = userService.adminGetAllUserByPageAndCreateTime(1);
+//        return userPage;
+    }
     @PostMapping("/setManagerByUserId")
     public Page<User> setManagerByUserId(@RequestBody String userData) {
         JSONObject jsonObject = JSON.parseObject(userData);

@@ -6,9 +6,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
 import com.example.emptyblogproject.bean.datavisualization.DataVisualizationStringAndInteger;
 import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
+import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.mapper.UserMapper.UserMapper;
+import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
 import com.example.emptyblogproject.service.userservice.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
@@ -17,6 +20,9 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper , User> implements UserService {
+
+    @Autowired
+    PermissionsService permissionsService;
 
     @Override
     public User getUserByEmail(String email) {
@@ -32,6 +38,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User> implements U
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("create_time");
         Page<User> userPage = this.page(page, queryWrapper);
+        List<User> records = userPage.getRecords();
+
+        for (int i = 0 ; i < records.size() ; i++) {
+            Permissions permission = permissionsService.getPermissionByUserId(records.get(i).getId());
+            if (permission.getUserPermission() != 0) {
+                records.remove(records.get(i));
+                i--;
+            }
+        }
+        userPage.setRecords(records);
         return userPage;
     }
 
@@ -63,5 +79,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper , User> implements U
             dataVisualizationBO.getYAxis().add(dataVisualizationStringAndInteger.getNumber());
         }
         return dataVisualizationBO;
+    }
+
+    @Override
+    public Page<User> adminGetAllManagerByPageAndCreateTime(int currentPage) {
+        Page<User> page = new Page<>(currentPage , 9);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<User> userPage = this.page(page, queryWrapper);
+        List<User> records = userPage.getRecords();
+
+        for (int i = 0 ; i < records.size() ; i++) {
+            Permissions permission = permissionsService.getPermissionByUserId(records.get(i).getId());
+            if (permission.getUserPermission() != 1) {
+                records.remove(records.get(i));
+                i--;
+            }
+        }
+        userPage.setRecords(records);
+        return userPage;
+    }
+
+    @Override
+    public Page<User> adminGetAllSuperManagerByPageAndCreateTime(int currentPage) {
+        Page<User> page = new Page<>(currentPage , 9);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("create_time");
+        Page<User> userPage = this.page(page, queryWrapper);
+        List<User> records = userPage.getRecords();
+
+        for (int i = 0 ; i < records.size() ; i++) {
+            Permissions permission = permissionsService.getPermissionByUserId(records.get(i).getId());
+            if (permission.getUserPermission() != 2) {
+                records.remove(records.get(i));
+                i--;
+            }
+        }
+        userPage.setRecords(records);
+        return userPage;
     }
 }
