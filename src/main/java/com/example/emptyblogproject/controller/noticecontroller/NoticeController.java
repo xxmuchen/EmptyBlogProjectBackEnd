@@ -3,12 +3,14 @@ package com.example.emptyblogproject.controller.noticecontroller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.emptyblogproject.bean.notice.Notice;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.noticeconfirmmapper.NoticeConfirmService;
 import com.example.emptyblogproject.service.noticemapper.NoticeService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +24,8 @@ public class NoticeController {
 
     @Autowired
     NoticeService noticeService;
-
+    @Autowired
+    NoticeConfirmService noticeConfirmService;
     @Autowired
     UserTokenUtils userTokenUtils;
 
@@ -60,6 +63,24 @@ public class NoticeController {
             return "公告添加成功";
         } else {
             return "公告添加失败";
+        }
+    }
+
+    @GetMapping("getLatestNoticeInfo")
+    public Notice getLatestNoticeInfo(HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        boolean noticeConfirmInfo = noticeConfirmService.getNoticeConfirmInfo(user.getId());
+        if (noticeConfirmInfo) {
+            return null;
+        }
+        Page<Notice> allNoticeByCurrentPage = noticeService.getAllNoticeByCurrentPage(1);
+        List<Notice> records = allNoticeByCurrentPage.getRecords();
+        if (records.size() > 0) {
+            Notice notice = records.get(0);
+            return notice;
+        } else {
+            return null;
         }
     }
 }

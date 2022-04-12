@@ -2,6 +2,7 @@ package com.example.emptyblogproject.service.noticeconfirmmapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.emptyblogproject.bean.notice.Notice;
 import com.example.emptyblogproject.bean.notice.NoticeConfirm;
 
 /**
@@ -13,4 +14,6 @@ import com.example.emptyblogproject.bean.notice.NoticeConfirm;
  */
 
 public interface NoticeConfirmService extends IService<NoticeConfirm> {
+
+    public boolean getNoticeConfirmInfo(Long userId);
 }

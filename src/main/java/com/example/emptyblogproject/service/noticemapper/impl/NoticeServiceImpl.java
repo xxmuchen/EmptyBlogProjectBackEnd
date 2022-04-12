@@ -21,7 +21,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper , Notice> implem
     public Page<Notice> getAllNoticeByCurrentPage(int currentPage) {
         QueryWrapper<Notice> queryWrapper = new QueryWrapper<>();
         Page<Notice> page = new Page<>(currentPage , 9);
-        Page<Notice> noticePage = this.page(page);
+        queryWrapper.orderByDesc("create_time");
+        Page<Notice> noticePage = this.page(page , queryWrapper);
         return noticePage;
     }
 }

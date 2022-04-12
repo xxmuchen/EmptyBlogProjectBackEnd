@@ -16,6 +16,7 @@ import java.util.Date;
 public class NoticeConfirm {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
+    private Long noticeId;
     private Long userId;
     private String userName;
     @TableField(fill = FieldFill.INSERT)
