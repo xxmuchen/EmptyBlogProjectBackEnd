@@ -30,7 +30,7 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
     public List<Griphic> getAllGriphicBySee() {
         QueryWrapper<Griphic> queryWrapper = new QueryWrapper();
         queryWrapper.eq("see" , true);
-        queryWrapper.eq("state" , "审核通过");
+        queryWrapper.eq("state" , "审批通过");
         List<Griphic> griphicList = this.list(queryWrapper);
         return griphicList;
     }

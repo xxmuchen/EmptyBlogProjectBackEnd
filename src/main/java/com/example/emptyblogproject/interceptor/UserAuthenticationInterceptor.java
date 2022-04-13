@@ -54,7 +54,7 @@ public class UserAuthenticationInterceptor implements HandlerInterceptor {
             if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
+                    throw new RuntimeException("无token，请登录");
                 }
                 // 获取 token 中的 usercontroller id
                 String userId = null;

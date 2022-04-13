@@ -1,6 +1,7 @@
 package com.example.emptyblogproject.controller.noticecontroller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.notice.Notice;
 import com.example.emptyblogproject.bean.user.User;
 import com.example.emptyblogproject.service.noticeconfirmmapper.NoticeConfirmService;
@@ -67,6 +68,7 @@ public class NoticeController {
     }
 
     @GetMapping("getLatestNoticeInfo")
+    @UserLoginToken
     public Notice getLatestNoticeInfo(HttpServletRequest httpServletRequest) {
         String authorization = httpServletRequest.getHeader("Authorization");
         User user = userTokenUtils.parseTokenAndGetUser(authorization);
