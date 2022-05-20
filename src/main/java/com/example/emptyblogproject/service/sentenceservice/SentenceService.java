@@ -56,4 +56,6 @@ public interface SentenceService extends IService<Sentence> {
     public List<Sentence> getAllSentenceByTag(String tag);
 
     public List<Sentence> getSentenceByKeyValue(String sentenceKeyValue);
+
+    public List<Sentence> getAllSentenceStateSuccessByUserId(Long userId);
 }

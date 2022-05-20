@@ -58,7 +58,6 @@ public class UserAuthenticationInterceptor implements HandlerInterceptor {
                 }
                 // 获取 token 中的 usercontroller id
                 String userId = null;
-//
                 try {
                     userId = JWT.decode(token).getAudience().get(0);
                 } catch (JWTDecodeException j) {

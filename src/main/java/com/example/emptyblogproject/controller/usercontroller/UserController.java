@@ -6,9 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.emptyblogproject.annotation.UserLoginToken;
 import com.example.emptyblogproject.bean.permissions.Permissions;
 import com.example.emptyblogproject.bean.user.User;
+import com.example.emptyblogproject.service.diaryservice.DiaryService;
+import com.example.emptyblogproject.service.griphicservice.GriphicService;
 import com.example.emptyblogproject.service.permissionsservice.PermissionsService;
+import com.example.emptyblogproject.service.sentenceservice.SentenceService;
 import com.example.emptyblogproject.service.userservice.UserService;
 
+import com.example.emptyblogproject.service.vlogservice.VlogService;
 import com.example.emptyblogproject.utils.IpUtils;
 import com.example.emptyblogproject.utils.UserLoginUtils;
 import com.example.emptyblogproject.utils.UserTokenUtils;
@@ -34,6 +38,15 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    DiaryService diaryService;
+    @Autowired
+    SentenceService sentenceService;
+    @Autowired
+    VlogService vlogService;
+    @Autowired
+    GriphicService griphicService;
+
     @Autowired
     PermissionsService permissionsService;
 
@@ -181,5 +194,22 @@ public class UserController {
         return "你已通过验证";
     }
 
+    /*获取User博客信息*/
+    @GetMapping("/getUserBlogInfoByUserId")
+    public Map<String , String> getUserBlogInfoByUserId(@RequestParam("userId") Long userId) {
+        Map<String , String> userBlogInfoMap = new HashMap<>();
+        User user = userService.getById(userId);
+        userBlogInfoMap.put("userId" , user.getId() + "");
+        userBlogInfoMap.put("userName" , user.getUserName());
+        userBlogInfoMap.put("userSynopsis" , user.getSynopsis());
+        userBlogInfoMap.put("userAvatar" , user.getAvatar());
+        userBlogInfoMap.put("userDiaryCount"  , diaryService.getAllDiaryStateSuccessByUserId(userId).size() + "");
+        userBlogInfoMap.put("userSentenceCount"  , sentenceService.getAllSentenceStateSuccessByUserId(userId).size() + "");
+        userBlogInfoMap.put("userVlogCount"  , vlogService.getAllVlogStateSuccessByUserId(userId).size() + "");
+        userBlogInfoMap.put("userGriphicCount"  , griphicService.getAllGriphicStateSuccessByUserId(userId).size() + "");
+
+        return userBlogInfoMap;
+//        userBlogInfoMap.put("")
+    }
 
 }

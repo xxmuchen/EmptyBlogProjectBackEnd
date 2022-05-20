@@ -217,6 +217,15 @@ public class DiaryServiceImpl extends ServiceImpl<DiaryMapper , Diary> implement
         return diaryList;
     }
 
+    @Override
+    public List<Diary> getAllDiaryStateSuccessByUserId(Long userId) {
+        QueryWrapper<Diary> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("author_id" , userId);
+        List<Diary> diaryList = this.list(queryWrapper);
+        return diaryList;
+    }
+
 //    @Override
 //    public Page<Diary> getAllStateWaitDiary(int currentPage) {
 //        Page<Diary> page = new Page<>(currentPage , 9);

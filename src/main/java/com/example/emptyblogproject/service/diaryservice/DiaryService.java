@@ -52,7 +52,12 @@ public interface DiaryService extends IService<Diary> {
 
     public DataVisualizationBO getDiaryCollectAWeekDataVisualization();
 
+    /*敏感词检测*/
     public List<Diary> getDiaryByKeyValue(String diaryKeyValue);
+
+    /*获取用户所有日记*/
+    public List<Diary> getAllDiaryStateSuccessByUserId(Long userId);
+
 
     /*管理员获取所有待审批日记*/
 //    public Page<Diary> getAllStateWaitDiary(int currentPage);

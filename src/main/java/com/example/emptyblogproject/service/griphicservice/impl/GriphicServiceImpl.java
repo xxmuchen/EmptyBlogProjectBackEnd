@@ -7,6 +7,7 @@ import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.datavisualization.DataVisualizationDateAndInteger;
 import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.griphic.Griphic;
+import com.example.emptyblogproject.bean.vlog.Vlog;
 import com.example.emptyblogproject.mapper.griphicmapper.GriphicMapper;
 import com.example.emptyblogproject.service.griphicservice.GriphicService;
 import org.springframework.stereotype.Service;
@@ -205,6 +206,16 @@ public class GriphicServiceImpl extends ServiceImpl<GriphicMapper , Griphic> imp
                 griphicList.add(list.get(i));
             }
         }
+        return griphicList;
+    }
+
+    @Override
+    public List<Griphic> getAllGriphicStateSuccessByUserId(Long userId) {
+        QueryWrapper<Griphic> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("author_id" , userId);
+        List<Griphic> griphicList = this.list(queryWrapper);
+//        this.addTagsToSentenceList(sentenceList);
         return griphicList;
     }
 }

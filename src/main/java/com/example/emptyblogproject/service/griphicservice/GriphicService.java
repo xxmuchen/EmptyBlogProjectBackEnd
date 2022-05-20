@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.emptyblogproject.bean.dairy.Diary;
 import com.example.emptyblogproject.bean.datavisualization.bo.DataVisualizationBO;
 import com.example.emptyblogproject.bean.griphic.Griphic;
+import com.example.emptyblogproject.bean.sentence.Sentence;
 
 import java.util.List;
 
@@ -51,4 +52,6 @@ public interface GriphicService extends IService<Griphic> {
     public List<Griphic> getUserSpaceGriphicStateFailOrderCreateTime(Long userId);
 
     public List<Griphic> getGriphicByKeyValue(String griphicKeyValue);
+
+    public List<Griphic> getAllGriphicStateSuccessByUserId(Long userId);
 }

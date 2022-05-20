@@ -179,4 +179,14 @@ public class VlogServiceImpl extends ServiceImpl<VlogMapper , Vlog> implements V
         }
         return vlogList;
     }
+
+    @Override
+    public List<Vlog> getAllVlogStateSuccessByUserId(Long userId) {
+        QueryWrapper<Vlog> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("author_id" , userId);
+        List<Vlog> vlogList = this.list(queryWrapper);
+//        this.addTagsToSentenceList(sentenceList);
+        return vlogList;
+    }
 }

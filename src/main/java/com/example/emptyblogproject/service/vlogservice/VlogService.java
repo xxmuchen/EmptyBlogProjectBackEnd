@@ -43,4 +43,6 @@ public interface VlogService extends IService<Vlog> {
     public Page<Vlog> getUserSpaceVlogStateSuccessOrderCreateTime(int currentPage, Long userId);
 
     public List<Vlog> getVlogByKeyValue(String vlogKeyValue);
+
+    public List<Vlog> getAllVlogStateSuccessByUserId(Long userId);
 }

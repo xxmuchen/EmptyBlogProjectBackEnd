@@ -242,6 +242,16 @@ public class SentenceServiceImpl extends ServiceImpl<SentenceMapper , Sentence> 
         return sentenceList;
     }
 
+    @Override
+    public List<Sentence> getAllSentenceStateSuccessByUserId(Long userId) {
+        QueryWrapper<Sentence> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("state" , "审批通过");
+        queryWrapper.eq("author_id" , userId);
+        List<Sentence> sentenceList = this.list(queryWrapper);
+        this.addTagsToSentenceList(sentenceList);
+        return sentenceList;
+    }
+
 
     /*为句子列表添加标签*/
     public void addTagsToSentenceList(List<Sentence> sentenceList) {
