@@ -50,6 +50,4 @@ public interface UserMapper extends BaseMapper<User> {
     public List<DataVisualizationStringAndInteger> getUserPlaceDataVisualization();
 
 
-
-
 }
