@@ -7,6 +7,7 @@ import com.example.emptyblogproject.service.userservice.UserService;
 import com.example.emptyblogproject.utils.UserTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,5 +85,15 @@ public class UserSpaceController {
         }else {
             throw new RuntimeException("头像更新失败");
         }
+    }
+
+    @PutMapping("/updateUserSpaceColor")
+    public Boolean updateUserSpaceColor(@RequestBody String spaceColor , HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        JSONObject jsonObject = JSON.parseObject(spaceColor);
+        User user = userTokenUtils.parseTokenAndGetUser(authorization);
+        user.setMySpaceColor(jsonObject.getString("mySpaceColorStyle"));
+        boolean flag = userService.updateById(user);
+        return flag;
     }
 }

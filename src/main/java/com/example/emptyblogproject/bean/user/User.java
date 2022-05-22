@@ -24,6 +24,7 @@ public class User implements Serializable {
     private Date birthday;
     private String avatar;
     private String location;
+    private String mySpaceColor;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
