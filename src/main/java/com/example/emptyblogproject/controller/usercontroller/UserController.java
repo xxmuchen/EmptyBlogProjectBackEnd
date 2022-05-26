@@ -209,7 +209,6 @@ public class UserController {
         userBlogInfoMap.put("userGriphicCount"  , griphicService.getAllGriphicStateSuccessByUserId(userId).size() + "");
 
         return userBlogInfoMap;
-//        userBlogInfoMap.put("")
     }
 
 }

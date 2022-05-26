@@ -42,6 +42,9 @@ public class DiaryController {
     @Value("${file.diaryVideoPath}")
     private String uploadVideoAbsolutePath;
 
+    @Value("${file.musicPath}")
+    private String uploadMusciAbsolutePath;
+
     @Autowired
     UserService userService;
 
@@ -125,6 +128,30 @@ public class DiaryController {
             url.put("url" , "http://localhost:8080/images/diary/diaryVideo/" + imageFileName);
             jsonObject.put("data" , url);
             return jsonObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("上传失败，请重试");
+        }
+    }
+
+    @PostMapping("/diaryMusicFileUpLoadAndReturnUrl")
+    public String diaryMusicFileUpLoadAndReturnUrl(@RequestParam("myMusicFileName")
+                                                         MultipartFile multipartFile) {
+        if (multipartFile.isEmpty()) {
+            throw new RuntimeException("文件不能为空");
+        }
+        String originalFilename = multipartFile.getOriginalFilename();
+        File absolutePath = new File(uploadMusciAbsolutePath);
+        if (!absolutePath.exists()) {
+            absolutePath.mkdirs();
+        }
+        String musicFileName = "" + UUID.randomUUID() + UUID.randomUUID().hashCode() +
+                originalFilename.substring(originalFilename.lastIndexOf("."));
+        File dest = new File(absolutePath , musicFileName);
+        try {
+            multipartFile.transferTo(dest);
+
+            return "http://localhost:8080/images/diary/musics/" + musicFileName;
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("上传失败，请重试");

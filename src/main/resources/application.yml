@@ -52,6 +52,7 @@ file:
   avatarPath: E:/upload/User/UserAvatar
   diaryImagePath: E:/upload/diary/diaryImage/
   diaryVideoPath: E:/upload/diary/diaryVideo/
+  musicPath: E:/upload/diary/musics/
   vlogVideoPath: E:/upload/vlog/vlogVideo/
   GriphicImagePath: E:/upload/griphic/griphicImage/
 

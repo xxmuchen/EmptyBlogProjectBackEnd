@@ -21,6 +21,7 @@ public class Diary implements Serializable {
     private String mood;
     private String weather;
     private String bgColor;
+    private String musicUrl;
     private Long authorId;
     private String authorName;
     private boolean see;
